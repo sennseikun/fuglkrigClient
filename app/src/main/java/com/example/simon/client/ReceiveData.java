@@ -10,6 +10,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by thoma on 3/20/2017.
@@ -84,6 +86,8 @@ public class ReceiveData extends Thread {
 
                 System.out.println("Gets here");
 
+                //Setup player on server side, verify name
+
                 if(packet_number.equals("0")){
                     if(translated.getString("userValid").equals("0")){
                         System.out.println("PLAYER_NAME: ERROR");
@@ -93,6 +97,27 @@ public class ReceiveData extends Thread {
                         System.out.println("PLAYER_NAME:" + translated.getString("nick"));
                         PlayerModel.setNick(translated.getString("nick"));
                         PlayerModel.setP_id(Integer.parseInt(translated.getString("pId")));
+                    }
+                }
+
+                //Get all lobbys
+
+                else if(packet_number.equals("1")){
+                    int count = translated.getInt("Count");
+
+                    for(int i = 1; i < count + 1; i++){
+                        List<String> lobby = new ArrayList<>();
+                        String name = translated.getString("Name"+i);
+                        String playerCount = translated.getString("PlayerCount"+i);
+                        String maxPlayerCount = translated.getString("MaxPlayers"+i);
+                        String password = translated.getString("Password"+i);
+
+                        lobby.add(name);
+                        lobby.add(playerCount);
+                        lobby.add(maxPlayerCount);
+                        lobby.add(password);
+
+                        PlayerModel.addLobby(lobby);
                     }
                 }
 

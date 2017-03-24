@@ -16,6 +16,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -29,6 +32,7 @@ public class LobbyActivity extends AppCompatActivity {
     private customListAdapter adapter;
     private final int AFTER_CREATE = 22;
     private List<String> item;
+    private RequestHandler handler;
 
 
     @Override
@@ -38,19 +42,11 @@ public class LobbyActivity extends AppCompatActivity {
 
         lv = (ListView) findViewById(R.id.lobbylist);
 
-        list = new ArrayList<>();
+        handler = PlayerModel.getSocket();
 
         System.out.println("Name: " + PlayerModel.getNick());
 
-//        for(int i = 0; i < 5; i++){
-//            List<String> data = new ArrayList<>();
-//
-//            data.add("Game: "+i);
-//            data.add(i+"");
-//
-//            list.add(data);
-//        }
-
+        list = LoadLobbys();
 
         Log.d("LobbyActivity","Gets here");
 
@@ -72,6 +68,37 @@ public class LobbyActivity extends AppCompatActivity {
         });
 
     }
+
+    public List<List<String>> LoadLobbys(){
+
+        List<List<String>> lobbys = new ArrayList<>();
+
+        if(handler != null){
+            JSONObject json = new JSONObject();
+
+            try {
+                json.put("Datatype","1");
+                handler.sendData(json);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        boolean run = true;
+        long startTime = System.currentTimeMillis();
+
+        while(PlayerModel.getLobbys() == null && run){
+
+            if((System.currentTimeMillis()- startTime) > 5000){
+                System.out.println("Quit from timer");
+                break;
+            }
+        }
+
+        return lobbys;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
