@@ -31,6 +31,7 @@ public class PlayerModel {
     }
 
     public static void setNick(String nick) {
+        System.out.println("Nick set: " + nick);
         PlayerModel.nick = nick;
     }
 

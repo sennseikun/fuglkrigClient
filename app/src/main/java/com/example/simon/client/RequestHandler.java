@@ -46,7 +46,7 @@ public class RequestHandler extends Thread {
         receiver.stopThread();
 
         while(!receiver.isStopped()){
-            Log.d("RequestHandler","STOPPING");
+            Log.d("ReceiveThread","STOPPING");
         }
 
         Log.d("RequestHandler","STOPPING");
@@ -55,7 +55,7 @@ public class RequestHandler extends Thread {
     }
 
     public void init(){
-        String serverName = "10.0.2.2";
+        String serverName = "129.241.151.95";
         int port = 5555;
         try {
             System.out.println("Connecting to " + serverName + " on port " + port);
@@ -82,18 +82,20 @@ public class RequestHandler extends Thread {
         while(running) {
 
             String message = json.toString();
-
-            Log.d("Message",message);
-            Log.d("LastMessage",lastSent);
+            PlayerModel.setSocket(this);
 
             try {
                 this.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                break;
             }
 
             if(!message.equals(lastSent)){
                 try {
+
+                    Log.d("Message",message);
+                    Log.d("LastMessage",lastSent);
 
                     lastSent = message;
 
@@ -103,9 +105,9 @@ public class RequestHandler extends Thread {
                     DataOutputStream out = new DataOutputStream(outToServer);
                     out.writeUTF(message);
 
-
                 } catch (IOException e) {
                     e.printStackTrace();
+                    break;
                 }
             }
         }
@@ -113,7 +115,11 @@ public class RequestHandler extends Thread {
         Log.d("RequestHandler","Jumping out of loop");
 
         try {
-            client.close();
+
+            if(client != null){
+                client.close();
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

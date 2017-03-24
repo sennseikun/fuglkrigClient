@@ -2,6 +2,7 @@ package com.example.simon.client;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,14 +31,18 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        if(PlayerModel.getSocket() != null){
+            RequestHandler s = PlayerModel.getSocket();
+            s.stopSending();
+        }
+
     }
 
     public void onClick(View v){
         startActivity(new Intent(this, GameActivity.class));
     }
-    public void onClick2(View v){
-        startActivity(new Intent(this,SendingActivity.class));
-    }
+    public void onClick2(View v){ launchNick();}
     public void onClick3(View v){
     }
 
@@ -54,21 +59,14 @@ public class MenuActivity extends AppCompatActivity {
         handler.start();
 
         boolean run = true;
-        int count = 0;
+        long startTime = System.currentTimeMillis();
 
         while(PlayerModel.getNick().equals("") && run){
-            try {
-                wait(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            count++;
 
-            if(count > 10){
-                run = false;
+            if((System.currentTimeMillis()- startTime) > 5000){
+                System.out.println("Quit from timer");
+                break;
             }
-
-            System.out.println("Waiting for nick");
         }
     }
 
@@ -77,12 +75,25 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void launchToast(){
-        Toast.makeText(this,"Nick taken",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Illegal name",Toast.LENGTH_LONG).show();
+    }
+    public void launchServerError(){
+        new AlertDialog.Builder(this)
+                .setTitle("Error connecting to server")
+                .setMessage("The server might be down")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     public void launchNick(){
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
         alertDialogBuilder.setPositiveButton("Move on", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -93,8 +104,12 @@ public class MenuActivity extends AppCompatActivity {
                 if(PlayerModel.getNick().equals("ERROR")){
                     launchToast();
                 }
-                else{
+                else if(!PlayerModel.getNick().equals("")){
                     launchLobby();
+                }
+                else{
+                    dialog.dismiss();
+                    launchServerError();
                 }
 
             }
@@ -107,6 +122,8 @@ public class MenuActivity extends AppCompatActivity {
         });
         alertDialogBuilder.setTitle("Choose name");
         alertDialogBuilder.setMessage("Choose a name for your character");
+        alertDialogBuilder.setView(input);
+
         alertDialogBuilder.create();
         alertDialogBuilder.show();
 

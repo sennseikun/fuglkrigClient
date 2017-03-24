@@ -40,7 +40,12 @@ public class ReceiveData extends Thread {
 
 
     public void stopThread(){
-        running = false;
+        try {
+            client.close();
+            isStopped = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -50,14 +55,7 @@ public class ReceiveData extends Thread {
 
         while(running) {
 
-            try {
-                this.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
             Log.d("ReceiveData","running");
-
 
             try {
 
@@ -66,9 +64,8 @@ public class ReceiveData extends Thread {
                 InputStream inFromServer = client.getInputStream();
                 in = new DataInputStream(inFromServer);
 
-                if(in != null){
-                    answer = in.readUTF();
-                }
+                answer = in.readUTF();
+
 
                 JSONObject translated = null;
                 String packet_number = "";
@@ -76,36 +73,39 @@ public class ReceiveData extends Thread {
 
                 try {
                     translated = new JSONObject(answer);
-                    translated.getString("Datatype");
+                    packet_number = translated.getString("Datatype");
+
+                    System.out.println("DATATYPE_RECEIVED: "+translated.getString("Datatype"));
+
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    break;
                 }
 
-                switch(packet_number){
-                    case init_packet:
-                        try {
-                            if(translated.getString("userValid").toString().equals("0")){
-                                PlayerModel.setNick("ERROR");
-                            }
-                            else{
-                                PlayerModel.setNick(translated.getString("nick"));
-                                PlayerModel.setP_id(Integer.parseInt(translated.getString("pId")));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                System.out.println("Gets here");
 
-
+                if(packet_number.equals("0")){
+                    if(translated.getString("userValid").equals("0")){
+                        System.out.println("PLAYER_NAME: ERROR");
+                        PlayerModel.setNick("ERROR");
+                    }
+                    else{
+                        System.out.println("PLAYER_NAME:" + translated.getString("nick"));
+                        PlayerModel.setNick(translated.getString("nick"));
+                        PlayerModel.setP_id(Integer.parseInt(translated.getString("pId")));
+                    }
                 }
 
 
             } catch (IOException e) {
                     e.printStackTrace();
-                }
+                    break;
+                } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         Log.d("RecieveData","Jumping out of loop");
-
-        isStopped = false;
+        isStopped = true;
     }
 }

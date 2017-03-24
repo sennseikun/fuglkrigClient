@@ -40,6 +40,8 @@ public class LobbyActivity extends AppCompatActivity {
 
         list = new ArrayList<>();
 
+        System.out.println("Name: " + PlayerModel.getNick());
+
 //        for(int i = 0; i < 5; i++){
 //            List<String> data = new ArrayList<>();
 //
@@ -105,6 +107,23 @@ public class LobbyActivity extends AppCompatActivity {
 
     public void goToCreate(View v){
         startActivityForResult(new Intent(this,CreateGameActivity.class),AFTER_CREATE);
+    }
+
+    public void goToMenu(){
+        startActivity(new Intent(this,MenuActivity.class));
+
+    }
+
+    @Override
+    public void onBackPressed(){
+
+        if(PlayerModel.getSocket() != null){
+            System.out.println("Gets here");
+            RequestHandler handler = PlayerModel.getSocket();
+            handler.stopSending();
+        }
+
+        goToMenu();
     }
 
     public void addItem(String name, String max_players, String password) {

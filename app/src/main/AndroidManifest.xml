@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MenuActivity">
+        <activity android:name=".MenuActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,7 +27,9 @@
         <activity android:name=".GameActivity" />
         <activity android:name=".SendingActivity" />
         <activity android:name=".CreateGameActivity" />
-        <activity android:name=".GameLobby"></activity>
+        <activity android:name=".GameLobby"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
