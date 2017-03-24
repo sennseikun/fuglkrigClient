@@ -4,11 +4,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +56,7 @@ public class GameView extends SurfaceView {
         //Testplayer
         testPlayer = new Player(this.getContext(), R.drawable.bird);
         players.add(0,testPlayer);
+        //Define testPlayer's start position
         testPlayer.setXpos(1080/2 - testPlayer.getBitmap().getWidth()/2);
         testPlayer.setYpos(1920/2 - testPlayer.getBitmap().getHeight()/2);
 
@@ -81,29 +80,25 @@ public class GameView extends SurfaceView {
         screenY = canvas.getHeight();
 
         canvas.drawColor(Color.BLUE);
-        canvas.drawBitmap(players.get(0).getBitmap(), players.get(0).getXpos()/2, players.get(0).getYpos()/2 ,new Paint());
+        canvas.drawBitmap(players.get(0).getBitmap(), players.get(0).getXpos(), players.get(0).getYpos(), new Paint());
 
     }
 
     //@Override
     public boolean onTouchEvent(MotionEvent me) {
-       if(me.getAction() == MotionEvent.ACTION_DOWN){
-           testPlayer.setTargetPos(me.getX(), me.getY());
-       }
-/*
-        switch(me.getAction()){
+       switch(me.getAction()){
             case  MotionEvent.ACTION_DOWN:
-                testPlayer.setTargetPos(me.getX(), me.getY());
-                Log.i("CLICK", "X " + me.getX());
-                Log.i("CLICK","Y " + me.getY());
+                players.get(0).setTargetPos(me.getX(), me.getY());
                 break;
         }
-        */
         return false;
     }
 
     public Player getTestPlayer() {
         return testPlayer;
+    }
+    public List<Player> getPlayers(){
+        return players;
     }
 
 
