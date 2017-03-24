@@ -12,7 +12,7 @@ public class GameLoopThread extends Thread {
     private GameView view;
     private static GameLoopThread glt = new GameLoopThread();
     private boolean running = false;
-    static final long FPS = 30;
+    static final long FPS = 60;
 
     public GameLoopThread() {
     }
@@ -27,7 +27,7 @@ public class GameLoopThread extends Thread {
             try {
                 c = view.getHolder().lockCanvas();
                 synchronized (view.getHolder()) {
-                    view.getTestPlayer().nextTick();
+                    view.getPlayers().get(0).nextTick();
                     view.onDraw(c);
                 }
             } finally {

@@ -1,26 +1,19 @@
 package com.example.simon.client;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageButton;
 
 import static android.graphics.Color.BLUE;
 
-public class GameActivity extends AppCompatActivity implements View.OnClickListener {
+public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(new GameView(this));
-
     }
-    //User input
+
+    /*User input
     @Override
     public boolean onTouchEvent(MotionEvent me) {
         switch(me.getAction()){
@@ -44,4 +37,5 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 Log.i("BUTTON CLICK", "button_3");
         }
     }
+    */
 }

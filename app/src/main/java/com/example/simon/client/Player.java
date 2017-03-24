@@ -15,7 +15,7 @@ import android.util.Log;
 
 public class Player {
     private int playerId;
-    private float Xpos, Ypos, Xspeed, Yspeed, XtargetPos, YtargetPos, direction;
+    private float Xpos, Ypos, Xspeed, Yspeed, XtargetPos, YtargetPos, dx, dy, direction;
     private Bitmap bitmap;
     private Matrix matrix;
 
@@ -25,32 +25,33 @@ public class Player {
         //draw bird
         this.bitmap = BitmapFactory.decodeResource(context.getResources(), pictureId);
         this.setMatrix(new Matrix());
+        this.setDx(0);
+        this.setDy(0);
     }
 
     public void setTargetPos(float x, float y) {
-        //used to calculate the direction while setting the targetPos.
-        //http://stackoverflow.com/questions/9970281/java-calculating-the-angle-between-two-points-in-degrees
-        //no idea if it works, needs testing
-        float dx = x - Xpos;
-        float dy = y - Ypos;
-        float targetPosLength = (float) Math.sqrt(dx*dx + dy*dy);
+        dx = x - Xpos;
+        dy = y - Ypos;
+
         //normalize
+        float targetPosLength = (float) Math.sqrt(dx*dx + dy*dy);
         this.Xspeed = dx/targetPosLength;
         this.Yspeed = dy/targetPosLength;
 
-        Log.d("Xspeed", Xspeed+ "");
-        Log.d("Yspeed", Yspeed+ "");
-        Log.d("Xpos", x+ "");
-        Log.d("Ypos", y+ "");
-
         this.XtargetPos = x;
         this.YtargetPos = y;
-
     }
 
     public void nextTick() {
-        Xpos += Xspeed * 10;
-        Ypos += Yspeed * 10;
+        if ((dx > 0 && Xpos >= XtargetPos) || (dx < 0 && Xpos <= XtargetPos)){
+            this.Xspeed = 0;
+        }
+        if ((dy > 0 && Ypos >= YtargetPos) || (dy < 0 && Ypos <= YtargetPos)){
+            this.Yspeed = 0;
+        }
+
+        Xpos += Xspeed * 15;
+        Ypos += Yspeed * 15;
     }
 
     public int getPlayerId() {
@@ -108,5 +109,14 @@ public class Player {
     }
 
     public Matrix getMatrix() { return matrix; }
+
+    public void setDx(float dx) { this.dx = dx; }
+
+    public float getDx() { return dx; }
+
+    public void setDy(float dy) { this.dy = dy; }
+
+    public float getDy() { return dy; }
+
 
 }
