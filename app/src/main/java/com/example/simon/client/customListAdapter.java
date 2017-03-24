@@ -52,9 +52,9 @@ public class customListAdapter extends BaseAdapter {
 
         List<String> item = getItem(position);
         ((TextView) result.findViewById(R.id.gameName)).setText(item.get(0));
-        ((TextView) result.findViewById(R.id.playerCount)).setText(item.get(1) + "/" + item.get(1));
+        ((TextView) result.findViewById(R.id.playerCount)).setText(item.get(1) + "/" + item.get(2));
         ImageView image = (ImageView) result.findViewById(R.id.image_id);
-        if (!item.get(2).equals("")) {
+        if (!item.get(3).equals("")) {
             image.setImageResource(R.drawable.passwordlock);
         }
         else {

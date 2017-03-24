@@ -1,6 +1,7 @@
 package com.example.simon.client;
 
 import java.net.Socket;
+import java.util.List;
 
 /**
  * Created by thoma on 3/24/2017.
@@ -20,9 +21,14 @@ public class PlayerModel {
     private static int speed = -1;
     private static int alive = -1;
     private static RequestHandler socket = null;
+    private static List<List<String>> lobbys = null;
 
     public PlayerModel (){
 
+    }
+
+    public static void addLobby(List<String> list){
+        lobbys.add(list);
     }
 
 
@@ -121,5 +127,13 @@ public class PlayerModel {
 
     public static void setSocket(RequestHandler socket) {
         PlayerModel.socket = socket;
+    }
+
+    public static List<List<String>> getLobbys() {
+        return lobbys;
+    }
+
+    public static void setLobbys(List<List<String>> lobbys) {
+        PlayerModel.lobbys = lobbys;
     }
 }
