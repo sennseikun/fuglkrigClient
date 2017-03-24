@@ -3,10 +3,12 @@ package com.example.simon.client;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,18 +20,9 @@ import java.util.List;
 public class GameView extends SurfaceView {
     private SurfaceHolder holder;
     private GameLoopThread glt;
-
-
     private int screenX, screenY;
+    private float clickX, clickY, dx, dy;
     private ArrayList<Player> players = new ArrayList<Player>();
-
-    public Player getTestPlayer() {
-        return testPlayer;
-    }
-
-    public void setTestPlayer(Player testPlayer) {
-        this.testPlayer = testPlayer;
-    }
 
     //Player object for testing
     private Player testPlayer;
@@ -38,7 +31,6 @@ public class GameView extends SurfaceView {
         super(context);
         glt = GameLoopThread.getInstance();
         glt.setView(this);
-
         holder = getHolder();
         holder.addCallback(new SurfaceHolder.Callback(){
             @Override
@@ -66,6 +58,9 @@ public class GameView extends SurfaceView {
         //Testplayer
         testPlayer = new Player(this.getContext(), R.drawable.bird);
         players.add(0,testPlayer);
+        testPlayer.setXpos(1080/2 - testPlayer.getBitmap().getWidth()/2);
+        testPlayer.setYpos(1920/2 - testPlayer.getBitmap().getHeight()/2);
+
     }
 
     //TODO: finish instantiatePlayers() method.
@@ -86,13 +81,30 @@ public class GameView extends SurfaceView {
         screenY = canvas.getHeight();
 
         canvas.drawColor(Color.BLUE);
-        /*TODO: change canvas.drawBitmap() so that it draws the bitmap at a desired position.
-          This way, one can change it's  position making motion animation is possible.
-        */
-        canvas.drawBitmap(players.get(0).getBitmap(), players.get(0).getMatrix(),null);
+        canvas.drawBitmap(players.get(0).getBitmap(), players.get(0).getXpos()/2, players.get(0).getYpos()/2 ,new Paint());
+
     }
 
+    //@Override
+    public boolean onTouchEvent(MotionEvent me) {
+       if(me.getAction() == MotionEvent.ACTION_DOWN){
+           testPlayer.setTargetPos(me.getX(), me.getY());
+       }
+/*
+        switch(me.getAction()){
+            case  MotionEvent.ACTION_DOWN:
+                testPlayer.setTargetPos(me.getX(), me.getY());
+                Log.i("CLICK", "X " + me.getX());
+                Log.i("CLICK","Y " + me.getY());
+                break;
+        }
+        */
+        return false;
+    }
 
+    public Player getTestPlayer() {
+        return testPlayer;
+    }
 
 
     /*

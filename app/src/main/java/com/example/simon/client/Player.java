@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.util.Log;
 
 /**
  * Created by oskar on 23.03.2017.
@@ -14,7 +15,7 @@ import android.graphics.Matrix;
 
 public class Player {
     private int playerId;
-    private float Xpos, Ypos, Xspeed, Yspeed;
+    private float Xpos, Ypos, Xspeed, Yspeed, XtargetPos, YtargetPos, direction;
     private Bitmap bitmap;
     private Matrix matrix;
 
@@ -24,6 +25,32 @@ public class Player {
         //draw bird
         this.bitmap = BitmapFactory.decodeResource(context.getResources(), pictureId);
         this.setMatrix(new Matrix());
+    }
+
+    public void setTargetPos(float x, float y) {
+        //used to calculate the direction while setting the targetPos.
+        //http://stackoverflow.com/questions/9970281/java-calculating-the-angle-between-two-points-in-degrees
+        //no idea if it works, needs testing
+        float dx = x - Xpos;
+        float dy = y - Ypos;
+        float targetPosLength = (float) Math.sqrt(dx*dx + dy*dy);
+        //normalize
+        this.Xspeed = dx/targetPosLength;
+        this.Yspeed = dy/targetPosLength;
+
+        Log.d("Xspeed", Xspeed+ "");
+        Log.d("Yspeed", Yspeed+ "");
+        Log.d("Xpos", x+ "");
+        Log.d("Ypos", y+ "");
+
+        this.XtargetPos = x;
+        this.YtargetPos = y;
+
+    }
+
+    public void nextTick() {
+        Xpos += Xspeed * 10;
+        Ypos += Yspeed * 10;
     }
 
     public int getPlayerId() {
@@ -64,6 +91,14 @@ public class Player {
         Yspeed = yspeed;
     }
 
+    public float getAngle() {
+        return direction;
+    }
+
+    public void setAngle(float dx, float dy) {
+        this.direction = (float) Math.atan2(dy, dx);
+    }
+
     public Bitmap getBitmap(){
         return bitmap;
     }
@@ -73,4 +108,5 @@ public class Player {
     }
 
     public Matrix getMatrix() { return matrix; }
+
 }

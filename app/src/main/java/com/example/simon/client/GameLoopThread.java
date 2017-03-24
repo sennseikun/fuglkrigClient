@@ -27,6 +27,7 @@ public class GameLoopThread extends Thread {
             try {
                 c = view.getHolder().lockCanvas();
                 synchronized (view.getHolder()) {
+                    view.getTestPlayer().nextTick();
                     view.onDraw(c);
                 }
             } finally {
@@ -47,26 +48,6 @@ public class GameLoopThread extends Thread {
 
             }
         }
-    }
-
-    //@Override
-    public boolean onTouchEvent(MotionEvent me) {
-        switch(me.getAction()){
-            case  MotionEvent.ACTION_DOWN:
-                //These methods may well be of no use.
-                float clickX = me.getX();
-                float clickY = me.getY();
-                float currentXPos = view.getTestPlayer().getXpos();
-                float currentYPos = view.getTestPlayer().getYpos();
-
-                view.getTestPlayer().setXspeed(200);
-                view.getTestPlayer().setYspeed(200);
-
-                Log.i("CLICK", "X " + me.getX());
-                Log.i("CLICK","Y " + me.getY());
-                break;
-        }
-        return false;
     }
 
     public void setView(GameView view){
