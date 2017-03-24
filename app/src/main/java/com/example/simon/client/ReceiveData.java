@@ -84,7 +84,7 @@ public class ReceiveData extends Thread {
                 switch(packet_number){
                     case init_packet:
                         try {
-                            if(translated.getString("nickValid").toString().equals("0")){
+                            if(translated.getString("userValid").toString().equals("0")){
                                 PlayerModel.setNick("ERROR");
                             }
                             else{
