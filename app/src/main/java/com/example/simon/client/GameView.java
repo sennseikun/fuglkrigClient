@@ -57,9 +57,8 @@ public class GameView extends SurfaceView {
         testPlayer = new Player(this.getContext(), R.drawable.bird);
         players.add(0,testPlayer);
         //Define testPlayer's start position
-        testPlayer.setXpos(1080/2 - testPlayer.getBitmap().getWidth()/2);
-        testPlayer.setYpos(1920/2 - testPlayer.getBitmap().getHeight()/2);
-
+        testPlayer.setYpos(1080/2 - testPlayer.getBitmap().getWidth()/2);
+        testPlayer.setXpos(1920/2 - testPlayer.getBitmap().getHeight()/2);
     }
 
     //TODO: finish instantiatePlayers() method.
@@ -74,6 +73,10 @@ public class GameView extends SurfaceView {
         }
     }
 
+    public void instantiateButtons(){
+        
+    }
+
     @Override
     public void onDraw(Canvas canvas){
         screenX = canvas.getWidth();
@@ -81,14 +84,15 @@ public class GameView extends SurfaceView {
 
         canvas.drawColor(Color.BLUE);
         canvas.drawBitmap(players.get(0).getBitmap(), players.get(0).getXpos(), players.get(0).getYpos(), new Paint());
-
     }
 
     //@Override
     public boolean onTouchEvent(MotionEvent me) {
        switch(me.getAction()){
             case  MotionEvent.ACTION_DOWN:
-                players.get(0).setTargetPos(me.getX(), me.getY());
+                if(me.getX() < screenX * 0.8) {
+                    players.get(0).setTargetPos(me.getX(), me.getY());
+                }
                 break;
         }
         return false;
@@ -104,7 +108,7 @@ public class GameView extends SurfaceView {
 
     /*
     TODO: Create correction method
-    The game screen should be corrected according to the actual game status, i.e. positions, collisions and velocities
+    The game screen should be corrected according to the actual game status. I.e. positions, collisions and velocities
     shown by the client must match the server side game loop.
     */
 }
