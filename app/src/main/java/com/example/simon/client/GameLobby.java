@@ -7,18 +7,25 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class GameLobby extends AppCompatActivity  {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class GameLobby extends AppCompatActivity implements AsyncResponse  {
 
     private TextView txtName;
     private TextView txtPlayers;
     private Button btn_cancel;
     private int playerCount;
     private int maxPlayers;
+    private RequestHandler handler;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_lobby);
+
+        handler = PlayerModel.getSocket();
 
         Bundle bundle = getIntent().getExtras();
 
@@ -30,7 +37,10 @@ public class GameLobby extends AppCompatActivity  {
         maxPlayers = bundle.getInt("Players");
 
         txtName.setText(bundle.getString("Name"));
-        txtPlayers.setText(playerCount+"/"+bundle.get("Players"));
+
+        name = bundle.getString("Name");
+
+        txtPlayers.setText(playerCount+"/"+maxPlayers);
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,6 +49,8 @@ public class GameLobby extends AppCompatActivity  {
             }
         });
 
+        PlayerModel.setGameLobby(this);
+
     }
 
     @Override
@@ -46,7 +58,47 @@ public class GameLobby extends AppCompatActivity  {
         cancel();
     }
 
+    public void updatePlayers(int players){
+        txtPlayers.setText(players+"/"+maxPlayers);
+    }
+
+    //This method sends updated info to server
+
     private void cancel(){
-        startActivity(new Intent(this,LobbyActivity.class));
+
+        JSONObject json = new JSONObject();
+
+        String nick = PlayerModel.getNick();
+
+        try {
+            json.put("Datatype",3);
+            json.put("Name",nick);
+            json.put("Lobby",name);
+
+            handler.sendData(json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //If connection is killed a asynctask is fired to kill the process
+
+    @Override
+    public void processFinish(String output) {
+        //updatePlayers(Integer.parseInt(PlayerModel.getPlayerCount(name)));
+        if(output.equals("1")){
+            startActivity(new Intent(this,MenuActivity.class));
+        }
+
+        else if(output.equals("2")){
+            updatePlayers(Integer.parseInt(PlayerModel.getPlayerCount(name)));
+        }
+
+        else{
+            PlayerModel.setGameLobby(null);
+            startActivity(new Intent(this,LobbyActivity.class));
+            finish();
+        }
+
     }
 }

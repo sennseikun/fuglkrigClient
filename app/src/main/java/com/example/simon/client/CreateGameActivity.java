@@ -104,6 +104,7 @@ public class CreateGameActivity extends AppCompatActivity {
             try {
                 json.put("Datatype",2);
                 json.put("Name",name.getText().toString());
+                json.put("PlayerName",PlayerModel.getNick());
                 json.put("Players",players.getText().toString());
                 json.put("Password",password.getText().toString());
             } catch (JSONException e) {

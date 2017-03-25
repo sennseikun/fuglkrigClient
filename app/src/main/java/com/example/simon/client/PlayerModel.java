@@ -23,15 +23,42 @@ public class PlayerModel {
     private static int alive = -1;
     private static RequestHandler socket = null;
     private static List<List<String>> lobbys = new ArrayList<>();
+    private static GameLobby lobby = null;
     private static int gameIsValid = 0;
     private static String lastSent = null;
+    private static LobbyActivity lobbyList = null;
 
     public PlayerModel (){
 
     }
 
+    public static void setGameLobby(GameLobby lobby){
+        PlayerModel.lobby = lobby;
+    }
+
+    public static GameLobby getGameLobby(){
+        return PlayerModel.lobby;
+    }
+
     public static void addLobby(List<String> list){
         lobbys.add(list);
+    }
+
+    public static void updateLobby(String name,String playerCount){
+        for(List<String> l: lobbys){
+            if(l.get(0).equals(name)){
+                l.set(1,playerCount);
+            }
+        }
+    }
+
+    public static String getPlayerCount(String name){
+        for(List<String> l: lobbys){
+            if(l.get(0).equals(name)){
+                return l.get(1);
+            }
+        }
+        return null;
     }
 
 
@@ -158,5 +185,13 @@ public class PlayerModel {
 
     public static void setLastSent(String lastSent) {
         PlayerModel.lastSent = lastSent;
+    }
+
+    public static LobbyActivity getLobbyList() {
+        return lobbyList;
+    }
+
+    public static void setLobbyList(LobbyActivity lobbyList) {
+        PlayerModel.lobbyList = lobbyList;
     }
 }
