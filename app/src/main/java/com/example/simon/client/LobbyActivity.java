@@ -40,44 +40,65 @@ public class LobbyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
 
-        lv = (ListView) findViewById(R.id.lobbylist);
+        Log.d("OnCreate","Was here");
+
+
+    }
+    @Override
+    public void onStart(){
+        super.onStart();
+        Log.d("OnStart","Was here");
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
 
         handler = PlayerModel.getSocket();
 
-        System.out.println("Name: " + PlayerModel.getNick());
-
+        lv = (ListView) findViewById(R.id.lobbylist);
         list = LoadLobbys();
-
-        Log.d("LobbyActivity","Gets here");
-
         adapter = new customListAdapter(list);
-
         lv.setAdapter(adapter);
-
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 item = (List<String>)parent.getItemAtPosition(position);
-                if (!item.get(2).equals("")){
+                if (!item.get(3).toString().equals("")){
                     launchPasswordCheck();
                 }
                 else {
-                    launchGame(item.get(0),item.get(1));
+                    launchGame(item.get(0),Integer.parseInt(item.get(1)));
                 }
             }
         });
+        adapter.notifyDataSetChanged();
+
+        Log.d("OnResume","Was here");
 
     }
 
     public List<List<String>> LoadLobbys(){
 
         List<List<String>> lobbys = new ArrayList<>();
+        String datatype = "1";
+
+        if(PlayerModel.getLastSent() != null){
+            try {
+                JSONObject lastSent = new JSONObject(PlayerModel.getLastSent());
+                if(lastSent.getString("Datatype").equals("1")){
+                    datatype = "10";
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
         if(handler != null){
             JSONObject json = new JSONObject();
 
             try {
-                json.put("Datatype","1");
+                json.put("Datatype",datatype);
                 handler.sendData(json);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -85,18 +106,46 @@ public class LobbyActivity extends AppCompatActivity {
 
         }
 
-        boolean run = true;
         long startTime = System.currentTimeMillis();
+        Log.d("START_TIME: ",startTime+"");
 
-        while(PlayerModel.getLobbys() == null && run){
+        while(PlayerModel.getLobbys().isEmpty()){
 
-            if((System.currentTimeMillis()- startTime) > 5000){
+            if((System.currentTimeMillis()- startTime) > 10000){
+                Log.d("END_TIME",System.currentTimeMillis()+"");
                 System.out.println("Quit from timer");
                 break;
             }
         }
 
+        lobbys = PlayerModel.getLobbys();
+
+        System.out.println("Number of lobbys: "+lobbys.size());
+
         return lobbys;
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        PlayerModel.getLobbys().clear();
+
+        Log.d("OnPause","Was here");
+
+    }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        PlayerModel.getLobbys().clear();
+
+        Log.d("OnDestroy","Was here");
+    }
+    @Override
+    public void onStop(){
+        super.onStop();
+        PlayerModel.getLobbys().clear();
+
+        Log.d("OnStop","Was here");
     }
 
     @Override
@@ -104,7 +153,7 @@ public class LobbyActivity extends AppCompatActivity {
 
         Log.d("Gets here","xD");
 
-        if(requestCode == AFTER_CREATE){
+        /*if(requestCode == AFTER_CREATE){
 
             Bundle b = data.getExtras();
 
@@ -116,29 +165,32 @@ public class LobbyActivity extends AppCompatActivity {
             Log.d(name,max_players);
 
             addItem(name,max_players,password);
-        }
+        }*/
     }
 
-    public void launchGame(String name, String player){
+    public void launchGame(String name, int player){
         Bundle bundle = new Bundle();
         bundle.putString("Name",name);
-        bundle.putString("Players",player);
+        bundle.putInt("Players",player);
 
         Intent intent = new Intent(this,GameLobby.class);
         intent.putExtras(bundle);
 
-
+        PlayerModel.getLobbys().clear();
 
         startActivity(intent);
     }
 
     public void goToCreate(View v){
         startActivityForResult(new Intent(this,CreateGameActivity.class),AFTER_CREATE);
+
+        PlayerModel.getLobbys().clear();
     }
 
     public void goToMenu(){
         startActivity(new Intent(this,MenuActivity.class));
 
+        PlayerModel.getLobbys().clear();
     }
 
     @Override
@@ -175,7 +227,7 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //Check password with server here
-                launchGame(item.get(0),item.get(1));
+                launchGame(item.get(0),Integer.parseInt(item.get(1)));
                 dialog.dismiss();
             }
         });

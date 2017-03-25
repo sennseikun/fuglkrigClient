@@ -7,11 +7,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class GameLobby extends AppCompatActivity {
+public class GameLobby extends AppCompatActivity  {
 
     private TextView txtName;
     private TextView txtPlayers;
     private Button btn_cancel;
+    private int playerCount;
+    private int maxPlayers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +26,11 @@ public class GameLobby extends AppCompatActivity {
         txtPlayers = (TextView)findViewById(R.id.txt_count);
         btn_cancel = (Button)findViewById(R.id.cancel_gamelobby);
 
+        playerCount = 1;
+        maxPlayers = bundle.getInt("Players");
+
         txtName.setText(bundle.getString("Name"));
-        txtPlayers.setText("1/"+bundle.get("Players"));
+        txtPlayers.setText(playerCount+"/"+bundle.get("Players"));
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +39,11 @@ public class GameLobby extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed(){
+        cancel();
     }
 
     private void cancel(){

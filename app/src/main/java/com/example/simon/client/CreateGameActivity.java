@@ -10,6 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class CreateGameActivity extends AppCompatActivity {
 
@@ -19,6 +23,8 @@ public class CreateGameActivity extends AppCompatActivity {
     private EditText name;
     private EditText players;
     private EditText password;
+
+    private RequestHandler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +38,15 @@ public class CreateGameActivity extends AppCompatActivity {
         players = (EditText)findViewById(R.id.players_edit);
         password = (EditText)findViewById(R.id.password_edit);
 
+        handler = PlayerModel.getSocket();
+
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                create();
+
+                if(handler != null){
+                    create();
+                }
             }
         });
 
@@ -61,6 +72,20 @@ public class CreateGameActivity extends AppCompatActivity {
         alertDialogBuilder.show();
 
     }
+    public void LaunchError(){
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialogBuilder.setTitle("Error");
+        alertDialogBuilder.setMessage("It was a error creating the game");
+        alertDialogBuilder.create();
+        alertDialogBuilder.show();
+
+    }
 
     public void create(){
 
@@ -68,17 +93,53 @@ public class CreateGameActivity extends AppCompatActivity {
         System.out.println(name.getText().equals(null));
 
         if(!name.getText().equals(null) && (players.getText().toString().equals("2") || players.getText().toString().equals("3") || players.getText().toString().equals("4")) && (password.length() == 4  || password.length() == 0)){
-            Bundle bundle = new Bundle();
 
-            bundle.putString("Name",name.getText()+"");
-            bundle.putString("Players",players.getText()+"");
-            bundle.putString("Password",password.getText()+"");
+            if(PlayerModel.getSocket() == null){
+                Toast.makeText(this,"Connection lost",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(this,MenuActivity.class));
+            }
 
-            Intent intent = new Intent(this,LobbyActivity.class);
-            intent.putExtras(bundle);
+            JSONObject json = new JSONObject();
 
-            setResult(Activity.RESULT_OK, intent);
-            finish();
+            try {
+                json.put("Datatype",2);
+                json.put("Name",name.getText().toString());
+                json.put("Players",players.getText().toString());
+                json.put("Password",password.getText().toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            handler.sendData(json);
+
+            long startTime = System.currentTimeMillis();
+
+            boolean success = true;
+
+            while(PlayerModel.getGameIsValid() == 0){
+                if((System.currentTimeMillis()- startTime) > 5000){
+                    success = false;
+                    break;
+                }
+            }
+
+            if(success){
+
+                Bundle b = new Bundle();
+
+                b.putInt("Players",Integer.parseInt(players.getText().toString()));
+                b.putString("Name",name.getText().toString());
+
+
+                Intent intent = new Intent(this,GameLobby.class);
+
+                intent.putExtras(b);
+
+                startActivity(intent);
+            }
+            else{
+                LaunchError();
+            }
         }
         else{
             LaunchAlert();

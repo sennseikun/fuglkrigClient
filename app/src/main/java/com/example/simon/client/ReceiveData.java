@@ -105,6 +105,8 @@ public class ReceiveData extends Thread {
                 else if(packet_number.equals("1")){
                     int count = translated.getInt("Count");
 
+                    System.out.println(count);
+
                     for(int i = 1; i < count + 1; i++){
                         List<String> lobby = new ArrayList<>();
                         String name = translated.getString("Name"+i);
@@ -119,6 +121,11 @@ public class ReceiveData extends Thread {
 
                         PlayerModel.addLobby(lobby);
                     }
+
+                }
+                else if(packet_number.equals("2")){
+                    int value = translated.getInt("Valid");
+                    PlayerModel.setGameIsValid(value);
                 }
 
 
