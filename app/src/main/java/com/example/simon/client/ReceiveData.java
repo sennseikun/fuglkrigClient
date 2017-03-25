@@ -105,6 +105,8 @@ public class ReceiveData extends Thread {
                 else if(packet_number.equals("1")){
                     int count = translated.getInt("Count");
 
+                    System.out.println(count);
+
                     for(int i = 1; i < count + 1; i++){
                         List<String> lobby = new ArrayList<>();
                         String name = translated.getString("Name"+i);
@@ -119,6 +121,57 @@ public class ReceiveData extends Thread {
 
                         PlayerModel.addLobby(lobby);
                     }
+
+                    if(PlayerModel.getLobbyList() != null){
+                        System.out.println("Gets in the right place");
+                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        data.delegate = PlayerModel.getLobbyList();
+                        data.execute();
+                    }
+                }
+                else if(packet_number.equals("2")){
+                    int value = translated.getInt("Valid");
+                    PlayerModel.setGameIsValid(value);
+                }
+                else if(packet_number.equals("3")){
+
+                    String lobbyname = translated.getString("LobbyID");
+                    String playerCount = translated.getString("PlayerCount");
+                    PlayerModel.updateLobby(lobbyname,playerCount);
+                    System.out.println("Removed one player from: "+lobbyname);
+
+                    if(PlayerModel.getGameLobby() != null){
+                        System.out.println("GameLobby: Launch async");
+                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        data.delegate = PlayerModel.getGameLobby();
+                        data.execute();
+                    }
+                    if(PlayerModel.getLobbyList() != null){
+                        System.out.println("Lobby: Launch async");
+                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        data.delegate = PlayerModel.getLobbyList();
+                        data.execute();
+                    }
+
+                }
+                else if(packet_number.equals("4")){
+                    String lobbyname = translated.getString("LobbyID");
+                    String playerCount = translated.getString("PlayerCount");
+                    PlayerModel.updateLobby(lobbyname,playerCount);
+                    System.out.println("Removed one player from: "+lobbyname);
+
+                    if(PlayerModel.getGameLobby() != null){
+                        System.out.println("Gets in the right place 2");
+                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        data.delegate = PlayerModel.getGameLobby();
+                        data.execute();
+                    }
+                    if(PlayerModel.getLobbyList() != null){
+                        System.out.println("Gets in the right place 1");
+                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        data.delegate = PlayerModel.getLobbyList();
+                        data.execute();
+                    }
                 }
 
 
@@ -129,6 +182,20 @@ public class ReceiveData extends Thread {
                 e.printStackTrace();
             }
         }
+        if(PlayerModel.getGameLobby() != null){
+            System.out.println("Connection lost: Ending gamelobby");
+            AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+            data.delegate = PlayerModel.getGameLobby();
+            data.execute("1");
+        }
+        if(PlayerModel.getLobbyList() != null){
+            System.out.println("Connection lost: Ending lobby list");
+            AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+            data.delegate = PlayerModel.getLobbyList();
+            data.execute("1");
+        }
+
+
 
         Log.d("RecieveData","Jumping out of loop");
         isStopped = true;

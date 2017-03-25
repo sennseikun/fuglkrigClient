@@ -55,7 +55,7 @@ public class RequestHandler extends Thread {
     }
 
     public void init(){
-        String serverName = "129.241.151.95";
+        String serverName = "10.0.2.2";
         int port = 5555;
         try {
             System.out.println("Connecting to " + serverName + " on port " + port);
@@ -98,6 +98,8 @@ public class RequestHandler extends Thread {
                     Log.d("LastMessage",lastSent);
 
                     lastSent = message;
+
+                    PlayerModel.setLastSent(lastSent);
 
                     Log.d("RequestHandler",message);
 

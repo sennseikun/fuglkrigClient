@@ -40,6 +40,12 @@ public class customListAdapter extends BaseAdapter {
         return 0;
     }
 
+    public void updateReceiptsList(List<List<String>> newList) {
+        data.clear();
+        data.addAll(newList);
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final View result;

@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -25,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class LobbyActivity extends AppCompatActivity {
+public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
 
     private ListView lv;
     private List<List<String>> list;
@@ -33,113 +35,147 @@ public class LobbyActivity extends AppCompatActivity {
     private final int AFTER_CREATE = 22;
     private List<String> item;
     private RequestHandler handler;
+    private RelativeLayout loadingLayout;
+    private TextView noLobbies;
+
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
+        loadingLayout = (RelativeLayout)findViewById(R.id.loadingScreenLayout);
+
+        Log.d("LobbyActivity","Setting lobbylist in PlayerModel");
+
+        PlayerModel.setLobbyList(this);
+        handler = PlayerModel.getSocket();
+        noLobbies = (TextView)findViewById(R.id.noLobbyTxt);
+
+        Log.d("LobbyActivity","Starting to load lobbies");
+
+        LoadLobbys();
+    }
+
+    //This method updates the listview from PlayerModel's lobbylist
+
+    public void updateList(){
 
         lv = (ListView) findViewById(R.id.lobbylist);
-
-        handler = PlayerModel.getSocket();
-
-        System.out.println("Name: " + PlayerModel.getNick());
-
-        list = LoadLobbys();
-
-        Log.d("LobbyActivity","Gets here");
-
+        list = PlayerModel.getLobbys();
         adapter = new customListAdapter(list);
-
         lv.setAdapter(adapter);
-
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 item = (List<String>)parent.getItemAtPosition(position);
-                if (!item.get(2).equals("")){
+                if (!item.get(3).toString().equals("")){
                     launchPasswordCheck();
                 }
                 else {
-                    launchGame(item.get(0),item.get(1));
+                    launchGame(item.get(0),Integer.parseInt(item.get(2)));
                 }
             }
         });
 
+        adapter.notifyDataSetChanged();
+
+        if(list.size() == 0){
+            lv.setVisibility(View.GONE);
+            noLobbies.setVisibility(View.VISIBLE);
+        }
+
+        Log.d("Update list","Was called");
     }
 
-    public List<List<String>> LoadLobbys(){
+    //This method sends JSON object to server and asks for lobbies
 
-        List<List<String>> lobbys = new ArrayList<>();
+    public void LoadLobbys(){
+
+        PlayerModel.getLobbys().clear();
+        String datatype = "1";
+
+        System.out.println("Started loading lobbys");
+
+        if(PlayerModel.getLastSent() != null){
+            try {
+                JSONObject lastSent = new JSONObject(PlayerModel.getLastSent());
+                if(lastSent.getString("Datatype").equals("1")){
+                    datatype = "10";
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
         if(handler != null){
             JSONObject json = new JSONObject();
-
+            System.out.println("Datatype "+datatype+" sent from LobbyActivity");
             try {
-                json.put("Datatype","1");
+                json.put("Datatype",datatype);
                 handler.sendData(json);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
         }
-
-        boolean run = true;
-        long startTime = System.currentTimeMillis();
-
-        while(PlayerModel.getLobbys() == null && run){
-
-            if((System.currentTimeMillis()- startTime) > 5000){
-                System.out.println("Quit from timer");
-                break;
-            }
-        }
-
-        return lobbys;
     }
+
+    //Makes sure the lobbylist is reset on quit
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        Log.d("Gets here","xD");
-
-        if(requestCode == AFTER_CREATE){
-
-            Bundle b = data.getExtras();
-
-            String name = b.getString("Name");
-            String max_players = b.getString("Players");
-
-            String password = b.getString("Password");
-
-            Log.d(name,max_players);
-
-            addItem(name,max_players,password);
-        }
+    public void onDestroy(){
+        super.onDestroy();
+        Log.d("OnDestroy","Was here");
+        PlayerModel.setLobbyList(null);
     }
 
-    public void launchGame(String name, String player){
+    //Launches a game lobby, reset game lobby data on phone and lobby list data
+
+    public void launchGame(String name, int player){
+
+        PlayerModel.setGameLobby(null);
+        PlayerModel.setLobbyList(null);
+
+        JSONObject json = new JSONObject();
+
+        try {
+            json.put("Name",PlayerModel.getNick());
+            json.put("Lobby",name);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        handler.sendData(json);
+
         Bundle bundle = new Bundle();
         bundle.putString("Name",name);
-        bundle.putString("Players",player);
+        bundle.putInt("Players",player);
 
         Intent intent = new Intent(this,GameLobby.class);
         intent.putExtras(bundle);
-
-
-
         startActivity(intent);
     }
 
+    //Go to create game, make sure to reset lobbylist
+
     public void goToCreate(View v){
+        PlayerModel.setLobbyList(null);
         startActivityForResult(new Intent(this,CreateGameActivity.class),AFTER_CREATE);
+        finish();
     }
+
+    //Go to menu, reset lobby list
 
     public void goToMenu(){
+        PlayerModel.setLobbyList(null);
         startActivity(new Intent(this,MenuActivity.class));
-
+        finish();
     }
+
+    //Make sure that the right logic is called on quitting the game, kill connection
 
     @Override
     public void onBackPressed(){
@@ -153,17 +189,7 @@ public class LobbyActivity extends AppCompatActivity {
         goToMenu();
     }
 
-    public void addItem(String name, String max_players, String password) {
-
-        List<String> item = new ArrayList<>();
-
-        item.add(name);
-        item.add(max_players);
-        item.add(password);
-
-        list.add(item);
-        adapter.notifyDataSetChanged();
-    }
+    //Launches password check if game has password
 
     public void launchPasswordCheck(){
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -175,7 +201,7 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //Check password with server here
-                launchGame(item.get(0),item.get(1));
+                launchGame(item.get(0),Integer.parseInt(item.get(2)));
                 dialog.dismiss();
             }
         });
@@ -191,5 +217,20 @@ public class LobbyActivity extends AppCompatActivity {
         alertDialogBuilder.create();
         alertDialogBuilder.show();
 
+    }
+
+    //Here async tasks called in receiver thread is executed
+
+    @Override
+    public void processFinish(String output) {
+        System.out.println("Output from processfinish in LobbyActivity: "+output);
+        loadingLayout.setVisibility(View.GONE);
+
+        if(output.equals("1")){
+            startActivity(new Intent(this,MenuActivity.class));
+        }
+        else{
+            updateList();
+        }
     }
 }
