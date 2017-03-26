@@ -59,10 +59,17 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/btn_create"
+    android:id="@+id/btn_create"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Create"
+    android:textSize="36sp"
+    android:onClick="goToCreate"/>
+    <Button
+        android:id="@+id/btn_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create"
+        android:text="Refresh"
         android:textSize="36sp"
-        android:onClick="goToCreate"/>
+        android:onClick="RefreshLobbys"/>
 </LinearLayout>

@@ -108,18 +108,15 @@ public class ReceiveData extends Thread {
                     System.out.println(count);
 
                     for(int i = 1; i < count + 1; i++){
-                        List<String> lobby = new ArrayList<>();
+
                         String name = translated.getString("Name"+i);
                         String playerCount = translated.getString("PlayerCount"+i);
                         String maxPlayerCount = translated.getString("MaxPlayers"+i);
                         String password = translated.getString("Password"+i);
 
-                        lobby.add(name);
-                        lobby.add(playerCount);
-                        lobby.add(maxPlayerCount);
-                        lobby.add(password);
+                        Lobby l = new Lobby(name,playerCount,maxPlayerCount,password);
 
-                        PlayerModel.addLobby(lobby);
+                        PlayerModel.addLobby(l);
                     }
 
                     if(PlayerModel.getLobbyList() != null){
@@ -129,22 +126,32 @@ public class ReceiveData extends Thread {
                         data.execute();
                     }
                 }
+
+                //Answer when creating a new lobby
+
                 else if(packet_number.equals("2")){
                     int value = translated.getInt("Valid");
                     PlayerModel.setGameIsValid(value);
                 }
+
+                //Leave lobby
+
                 else if(packet_number.equals("3")){
 
                     String lobbyname = translated.getString("LobbyID");
                     String playerCount = translated.getString("PlayerCount");
+                    String name = translated.getString("PlayerName");
+
                     PlayerModel.updateLobby(lobbyname,playerCount);
+
                     System.out.println("Removed one player from: "+lobbyname);
 
                     if(PlayerModel.getGameLobby() != null){
                         System.out.println("GameLobby: Launch async");
+                        PlayerModel.removePlayerFromLobby(name);
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                         data.delegate = PlayerModel.getGameLobby();
-                        data.execute();
+                        data.execute("2");
                     }
                     if(PlayerModel.getLobbyList() != null){
                         System.out.println("Lobby: Launch async");
@@ -154,12 +161,38 @@ public class ReceiveData extends Thread {
                     }
 
                 }
+
+                //Join lobby
+
                 else if(packet_number.equals("4")){
                     String lobbyname = translated.getString("LobbyID");
                     String playerCount = translated.getString("PlayerCount");
+                    String maxPlayerCount = translated.getString("Max_player_count");
+                    String name = translated.getString("PlayerName");
                     PlayerModel.updateLobby(lobbyname,playerCount);
                     System.out.println("Removed one player from: "+lobbyname);
 
+                    if(PlayerModel.getGameLobby() != null){
+                        System.out.println("Gets in the right place 2");
+                        PlayerModel.addPlayerToLobby(name);
+                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        data.delegate = PlayerModel.getGameLobby();
+                        data.execute("2");
+                    }
+                    if(PlayerModel.getLobbyList() != null){
+                        System.out.println("Gets in the right place 1");
+                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        data.delegate = PlayerModel.getLobbyList();
+                        data.execute(lobbyname+":"+playerCount);
+                    }
+                }
+                else if(packet_number.equals("5")){
+                    if(translated.getString("Status").equals("1")){
+                        System.out.println("Deleted player on server side: Worked out");
+                    }
+                    else{
+                        System.out.println("Deleted player on server side: Did not work");
+                    }
                     if(PlayerModel.getGameLobby() != null){
                         System.out.println("Gets in the right place 2");
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();

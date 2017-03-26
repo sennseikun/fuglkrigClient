@@ -15,8 +15,8 @@ public class GameLobby extends AppCompatActivity implements AsyncResponse  {
     private TextView txtName;
     private TextView txtPlayers;
     private Button btn_cancel;
-    private int playerCount;
-    private int maxPlayers;
+    private String playerCount;
+    private String maxPlayers;
     private RequestHandler handler;
     private String name;
 
@@ -33,13 +33,12 @@ public class GameLobby extends AppCompatActivity implements AsyncResponse  {
         txtPlayers = (TextView)findViewById(R.id.txt_count);
         btn_cancel = (Button)findViewById(R.id.cancel_gamelobby);
 
-        playerCount = 1;
-        maxPlayers = bundle.getInt("Players");
-
-        txtName.setText(bundle.getString("Name"));
-
         name = bundle.getString("Name");
 
+        maxPlayers = PlayerModel.getLobby(name).getMaxPlayerCount();
+        playerCount = PlayerModel.getLobby(name).getPlayerCount();
+
+        txtName.setText(name);
         txtPlayers.setText(playerCount+"/"+maxPlayers);
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {

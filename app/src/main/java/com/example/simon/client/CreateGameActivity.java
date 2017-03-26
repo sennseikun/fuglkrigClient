@@ -15,7 +15,10 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CreateGameActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class CreateGameActivity extends AppCompatActivity implements AsyncResponse {
 
     private Button btn_create;
     private Button btn_cancel;
@@ -33,6 +36,11 @@ public class CreateGameActivity extends AppCompatActivity {
 
         btn_create = (Button)findViewById(R.id.create_button);
         btn_cancel = (Button)findViewById(R.id.cancel_button);
+
+        PlayerModel.setGameIsValid(0);
+        PlayerModel.setLobbyList(null);
+        PlayerModel.setGameLobby(null);
+        PlayerModel.setCreateGame(this);
 
         name = (EditText)findViewById(R.id.gamename_edit);
         players = (EditText)findViewById(R.id.players_edit);
@@ -128,7 +136,11 @@ public class CreateGameActivity extends AppCompatActivity {
 
                 Bundle b = new Bundle();
 
-                b.putInt("Players",Integer.parseInt(players.getText().toString()));
+                Lobby l = new Lobby(name.getText().toString(),"1",players.getText().toString(),password.getText().toString());
+
+                PlayerModel.addLobby(l);
+                PlayerModel.addPlayerToLobby(PlayerModel.getNick());
+
                 b.putString("Name",name.getText().toString());
 
 
@@ -148,28 +160,19 @@ public class CreateGameActivity extends AppCompatActivity {
     }
 
     public void cancel(){
-        Bundle bundle = new Bundle();
-
-        bundle.putString("Name","CLOSE");
-        bundle.putString("Players","CLOSE");
-        bundle.putString("Password","CLOSE");
 
         Intent intent = new Intent(this,LobbyActivity.class);
-        intent.putExtras(bundle);
-
         startActivity(intent);
     }
     @Override
     public void onBackPressed(){
-        Bundle bundle = new Bundle();
 
-        bundle.putString("Name","CLOSE");
-        bundle.putString("Players","CLOSE");
-        bundle.putString("Password","CLOSE");
-
-        Intent intent = new Intent(this,LobbyActivity.class);
-        intent.putExtras(bundle);
 
         startActivity(new Intent(this,LobbyActivity.class));
+    }
+
+    @Override
+    public void processFinish(String output) {
+
     }
 }

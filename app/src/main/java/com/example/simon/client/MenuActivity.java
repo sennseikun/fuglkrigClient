@@ -32,6 +32,8 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        PlayerModel.setNick("");
+
         if(PlayerModel.getSocket() != null){
             RequestHandler s = PlayerModel.getSocket();
             s.stopSending();
@@ -63,7 +65,7 @@ public class MenuActivity extends AppCompatActivity {
 
         while(PlayerModel.getNick().equals("") && run){
 
-            if((System.currentTimeMillis()- startTime) > 5000){
+            if((System.currentTimeMillis()- startTime) > 10000){
                 System.out.println("Quit from timer");
                 break;
             }

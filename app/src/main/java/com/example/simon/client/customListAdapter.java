@@ -19,9 +19,9 @@ import java.util.TreeMap;
 
 public class customListAdapter extends BaseAdapter {
 
-    private List<List<String>> data;
+    private List<Lobby> data;
 
-    public customListAdapter(List<List<String>> data){
+    public customListAdapter(List<Lobby> data){
         this.data = data;
     }
 
@@ -31,7 +31,7 @@ public class customListAdapter extends BaseAdapter {
     }
 
     @Override
-    public List<String> getItem(int position) {
+    public Lobby getItem(int position) {
         return data.get(position);
     }
 
@@ -40,9 +40,17 @@ public class customListAdapter extends BaseAdapter {
         return 0;
     }
 
-    public void updateReceiptsList(List<List<String>> newList) {
+    public void updateReceiptsList(List<Lobby> newList) {
+
         data.clear();
+
+        System.out.println("Current data in list: " + data);
+        System.out.println("New data: "+newList);
+
         data.addAll(newList);
+
+        System.out.println("New list after inserting data: "+data);
+
         this.notifyDataSetChanged();
     }
 
@@ -56,11 +64,11 @@ public class customListAdapter extends BaseAdapter {
             result = convertView;
         }
 
-        List<String> item = getItem(position);
-        ((TextView) result.findViewById(R.id.gameName)).setText(item.get(0));
-        ((TextView) result.findViewById(R.id.playerCount)).setText(item.get(1) + "/" + item.get(2));
+        Lobby item = getItem(position);
+        ((TextView) result.findViewById(R.id.gameName)).setText(item.getName());
+        ((TextView) result.findViewById(R.id.playerCount)).setText(item.getPlayerCount() + "/" + item.getMaxPlayerCount());
         ImageView image = (ImageView) result.findViewById(R.id.image_id);
-        if (!item.get(3).equals("")) {
+        if (!item.getPassword().equals("")) {
             image.setImageResource(R.drawable.passwordlock);
         }
         else {

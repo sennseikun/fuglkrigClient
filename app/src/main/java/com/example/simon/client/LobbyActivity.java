@@ -30,13 +30,14 @@ import java.util.ListIterator;
 public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
 
     private ListView lv;
-    private List<List<String>> list;
     private customListAdapter adapter;
     private final int AFTER_CREATE = 22;
-    private List<String> item;
+    private Lobby item;
     private RequestHandler handler;
     private RelativeLayout loadingLayout;
     private TextView noLobbies;
+    private boolean firstLoad;
+    private List<Lobby> list = new ArrayList<>();
 
 
 
@@ -46,6 +47,8 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
+        firstLoad = false;
+        lv = (ListView) findViewById(R.id.lobbylist);
         loadingLayout = (RelativeLayout)findViewById(R.id.loadingScreenLayout);
 
         Log.d("LobbyActivity","Setting lobbylist in PlayerModel");
@@ -61,38 +64,70 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
 
     //This method updates the listview from PlayerModel's lobbylist
 
-    public void updateList(){
+    public void updateList() {
+        // replace the array adapters contents with the ArrayList corresponding to the day
 
-        lv = (ListView) findViewById(R.id.lobbylist);
-        list = PlayerModel.getLobbys();
+        lv.setVisibility(View.VISIBLE);
+
+        List<Lobby> newList = new ArrayList<>();
+
+        newList.addAll(PlayerModel.getLobbys());
+
+        if (newList.isEmpty()) {
+            lv.setVisibility(View.GONE);
+            noLobbies.setVisibility(View.VISIBLE);
+        } else {
+            adapter.updateReceiptsList(newList);
+
+            lv.setAdapter(null);
+            lv.setAdapter(adapter);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    item = (Lobby)parent.getItemAtPosition(position);
+                    if (!item.getPassword().equals("")){
+                        launchPasswordCheck();
+                    }
+                    else {
+                        launchGame(item.getName(),Integer.parseInt(item.getMaxPlayerCount()));
+                    }
+                }
+            });
+        }
+    }
+
+    public void initList(){
+
         adapter = new customListAdapter(list);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                item = (List<String>)parent.getItemAtPosition(position);
-                if (!item.get(3).toString().equals("")){
+                item = (Lobby)parent.getItemAtPosition(position);
+                if (!item.getPassword().equals("")){
                     launchPasswordCheck();
                 }
                 else {
-                    launchGame(item.get(0),Integer.parseInt(item.get(2)));
+                    launchGame(item.getName(),Integer.parseInt(item.getMaxPlayerCount()));
                 }
             }
         });
-
-        adapter.notifyDataSetChanged();
 
         if(list.size() == 0){
             lv.setVisibility(View.GONE);
             noLobbies.setVisibility(View.VISIBLE);
         }
 
-        Log.d("Update list","Was called");
+        firstLoad = true;
+
+        Log.d("Init list","Was called");
     }
 
     //This method sends JSON object to server and asks for lobbies
 
     public void LoadLobbys(){
+
+        noLobbies.setVisibility(View.GONE);
 
         PlayerModel.getLobbys().clear();
         String datatype = "1";
@@ -137,11 +172,11 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
     public void launchGame(String name, int player){
 
         PlayerModel.setGameLobby(null);
-        PlayerModel.setLobbyList(null);
 
         JSONObject json = new JSONObject();
 
         try {
+            json.put("Datatype",4);
             json.put("Name",PlayerModel.getNick());
             json.put("Lobby",name);
         } catch (JSONException e) {
@@ -149,14 +184,6 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
         }
 
         handler.sendData(json);
-
-        Bundle bundle = new Bundle();
-        bundle.putString("Name",name);
-        bundle.putInt("Players",player);
-
-        Intent intent = new Intent(this,GameLobby.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
     }
 
     //Go to create game, make sure to reset lobbylist
@@ -201,7 +228,7 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //Check password with server here
-                launchGame(item.get(0),Integer.parseInt(item.get(2)));
+                launchGame(item.getName(),Integer.parseInt(item.getMaxPlayerCount()));
                 dialog.dismiss();
             }
         });
@@ -219,18 +246,41 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
 
     }
 
+    public void RefreshLobbys(View v){
+        loadingLayout.setVisibility(View.VISIBLE);
+        LoadLobbys();
+    }
+
     //Here async tasks called in receiver thread is executed
 
     @Override
     public void processFinish(String output) {
         System.out.println("Output from processfinish in LobbyActivity: "+output);
+        list = PlayerModel.getLobbys();
         loadingLayout.setVisibility(View.GONE);
 
         if(output.equals("1")){
             startActivity(new Intent(this,MenuActivity.class));
         }
+
+        else if(output.equals("2")){
+
+            Bundle b = new Bundle();
+
+            b.putString("Name",item.getName());
+
+            Intent intent = new Intent(this,GameLobby.class);
+            startActivity(intent);
+        }
+
         else{
-            updateList();
+            if(!firstLoad){
+                initList();
+            }
+            else{
+                updateList();
+
+            }
         }
     }
 }
