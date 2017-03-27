@@ -55,7 +55,7 @@ public class RequestHandler extends Thread {
     }
 
     public void init(){
-        String serverName = "10.0.2.2";
+        String serverName = "129.241.151.95";
         int port = 5555;
         try {
             System.out.println("Connecting to " + serverName + " on port " + port);

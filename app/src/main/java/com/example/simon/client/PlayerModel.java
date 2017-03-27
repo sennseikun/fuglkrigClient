@@ -22,15 +22,18 @@ public class PlayerModel {
     private static int speed = -1;
     private static int alive = -1;
     private static RequestHandler socket = null;
-    private static List<List<String>> lobbys = new ArrayList<>();
+    private static List<Lobby> lobbys = new ArrayList<>();
     private static GameLobby lobby = null;
     private static int gameIsValid = 0;
     private static String lastSent = null;
     private static LobbyActivity lobbyList = null;
+    private static CreateGameActivity CreateGame = null;
+    private static List<String> playersInLobby = new ArrayList<>();
 
     public PlayerModel (){
 
     }
+
 
     public static void setGameLobby(GameLobby lobby){
         PlayerModel.lobby = lobby;
@@ -40,25 +43,38 @@ public class PlayerModel {
         return PlayerModel.lobby;
     }
 
-    public static void addLobby(List<String> list){
-        lobbys.add(list);
+    public static void addLobby(Lobby lobby){
+        lobbys.add(lobby);
+    }
+
+    public static Lobby getLobby(String name){
+        for(Lobby l: lobbys){
+            if(l.getName().equals(name)){
+                return l;
+            }
+        }
+        return null;
     }
 
     public static void updateLobby(String name,String playerCount){
-        for(List<String> l: lobbys){
-            if(l.get(0).equals(name)){
-                l.set(1,playerCount);
+        for(Lobby l: lobbys){
+            if(l.getName().equals(name)){
+                l.setPlayerCount(playerCount);
             }
         }
     }
 
     public static String getPlayerCount(String name){
-        for(List<String> l: lobbys){
-            if(l.get(0).equals(name)){
-                return l.get(1);
+        for(Lobby l: lobbys){
+            if(l.getName().equals(name)){
+                return l.getPlayerCount();
             }
         }
         return null;
+    }
+
+    public static void resetLobbyList(){
+        lobbys.clear();
     }
 
 
@@ -159,11 +175,11 @@ public class PlayerModel {
         PlayerModel.socket = socket;
     }
 
-    public static List<List<String>> getLobbys() {
+    public static List<Lobby> getLobbys() {
         return lobbys;
     }
 
-    public static void setLobbys(List<List<String>> lobbys) {
+    public static void setLobbys(List<Lobby> lobbys) {
         PlayerModel.lobbys = lobbys;
     }
 
@@ -193,5 +209,36 @@ public class PlayerModel {
 
     public static void setLobbyList(LobbyActivity lobbyList) {
         PlayerModel.lobbyList = lobbyList;
+    }
+
+    public static CreateGameActivity getCreateGame() {
+        return CreateGame;
+    }
+
+    public static void setCreateGame(CreateGameActivity createGame) {
+        CreateGame = createGame;
+    }
+
+    public static void addPlayerToLobby(String name){
+        if(!playersInLobby.contains(name)){
+            playersInLobby.add(name);
+
+        }
+    }
+
+    public static void removePlayerFromLobby(String name){
+
+        if(playersInLobby.contains(name)){
+            playersInLobby.remove(name);
+
+        }
+    }
+
+    public static List<String> getPlayersInLobby() {
+        return playersInLobby;
+    }
+
+    public static void setPlayersInLobby(List<String> playersInLobby) {
+        PlayerModel.playersInLobby = playersInLobby;
     }
 }
