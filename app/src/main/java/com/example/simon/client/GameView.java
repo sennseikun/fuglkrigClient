@@ -4,9 +4,15 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +21,13 @@ import java.util.List;
  * Created by oskar on 23.03.2017.
  */
 
-public class GameView extends SurfaceView {
+public class GameView extends SurfaceView implements View.OnClickListener{
     private SurfaceHolder holder;
     private GameLoopThread glt;
     private int screenX, screenY;
     private float clickX, clickY, dx, dy;
     private ArrayList<Player> players = new ArrayList<Player>();
+    private ListView buttonsView;
 
     //Player object for testing
     private Player testPlayer;
@@ -53,16 +60,18 @@ public class GameView extends SurfaceView {
             }
         });
 
+        buttonsInit(context);
+
         //Testplayer
         testPlayer = new Player(this.getContext(), R.drawable.bird);
         players.add(0,testPlayer);
         //Define testPlayer's start position
-        testPlayer.setYpos(1080/2 - testPlayer.getBitmap().getWidth()/2);
         testPlayer.setXpos(1920/2 - testPlayer.getBitmap().getHeight()/2);
+        testPlayer.setYpos(1080/2 - testPlayer.getBitmap().getWidth()/2);
     }
 
     //TODO: finish instantiatePlayers() method.
-    public void instantiatePlayers(List l){
+    public void playersInit(List l){
         //List l is a list of skinIds to be accessed in R.drawables.
         //Instantiate this client's bird.
         players.add(0, new Player(this.getContext(), R.drawable.bird));
@@ -73,8 +82,8 @@ public class GameView extends SurfaceView {
         }
     }
 
-    public void instantiateButtons(){
-        
+    public void buttonsInit(Context context){
+        buttonsView = new ListView(context);
     }
 
     @Override
@@ -97,6 +106,21 @@ public class GameView extends SurfaceView {
         }
         return false;
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_1:
+                Log.i("BUTTON CLICK", "button_1");
+                break;
+            case R.id.button_2:
+                Log.i("BUTTON CLICK", "button_2");
+                break;
+            case R.id.button_3:
+                Log.i("BUTTON CLICK", "button_3");
+        }
+    }
+
 
     public Player getTestPlayer() {
         return testPlayer;
