@@ -17,13 +17,46 @@
         android:textAlignment="center"
         android:text="Lobby"
         android:typeface="monospace"
+        android:background="@color/colorPrimaryDark"
         />
+
+    <TextView
+        android:id="@+id/noLobbyTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="There are no lobbies"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:visibility="gone"/>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/lobbylist"
         android:layout_weight="1"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:id="@+id/loadingScreenLayout"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <ProgressBar
+                style="?android:progressBarStyleLarge"
+                android:layout_height="75dp"
+                android:layout_width="75dp"
+                android:layout_gravity="center_horizontal"
+                android:indeterminate="true"
+                android:id="@+id/progressBar"
+                android:layout_weight="2"
+                android:layout_marginBottom="150dp"
+                />
+        </LinearLayout>
+    </RelativeLayout>
 
     <Button
         android:id="@+id/btn_create"
