@@ -53,6 +53,8 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
 
         Log.d("LobbyActivity","Setting lobbylist in PlayerModel");
 
+        PlayerModel.getPlayersInLobby().clear();
+
         PlayerModel.setLobbyList(this);
         handler = PlayerModel.getSocket();
         noLobbies = (TextView)findViewById(R.id.noLobbyTxt);
@@ -165,6 +167,7 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
         super.onDestroy();
         Log.d("OnDestroy","Was here");
         PlayerModel.setLobbyList(null);
+        finish();
     }
 
     //Launches a game lobby, reset game lobby data on phone and lobby list data
@@ -184,6 +187,8 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
         }
 
         handler.sendData(json);
+        lv.setVisibility(View.GONE);
+        loadingLayout.setVisibility(View.VISIBLE);
     }
 
     //Go to create game, make sure to reset lobbylist
@@ -228,7 +233,22 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //Check password with server here
-                launchGame(item.getName(),Integer.parseInt(item.getMaxPlayerCount()));
+                lv.setVisibility(View.GONE);
+                loadingLayout.setVisibility(View.VISIBLE);
+
+
+                try {
+                    JSONObject json = new JSONObject();
+                    json.put("Datatype",8);
+                    json.put("GameName",item.getName());
+                    json.put("Password",input.getText().toString());
+                    handler.sendData(json);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
                 dialog.dismiss();
             }
         });
@@ -251,13 +271,27 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
         LoadLobbys();
     }
 
+    public void LaunchAlert(){
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialogBuilder.setTitle("Wrong password");
+        alertDialogBuilder.setMessage("Password is incorrect");
+        alertDialogBuilder.create();
+        alertDialogBuilder.show();
+
+    }
+
     //Here async tasks called in receiver thread is executed
 
     @Override
     public void processFinish(String output) {
         System.out.println("Output from processfinish in LobbyActivity: "+output);
         list = PlayerModel.getLobbys();
-        loadingLayout.setVisibility(View.GONE);
 
         if(output.equals("1")){
             startActivity(new Intent(this,MenuActivity.class));
@@ -269,15 +303,29 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
 
             b.putString("Name",item.getName());
 
+            PlayerModel.setLobbyList(null);
             Intent intent = new Intent(this,GameLobby.class);
+
+            intent.putExtras(b);
+
             startActivity(intent);
+        }
+        else if(output.equals("3")){
+            loadingLayout.setVisibility(View.GONE);
+            lv.setVisibility(View.VISIBLE);
+            LaunchAlert();
+        }
+        else if(output.equals("4")){
+            launchGame(item.getName(),Integer.parseInt(item.getMaxPlayerCount()));
         }
 
         else{
             if(!firstLoad){
+                loadingLayout.setVisibility(View.GONE);
                 initList();
             }
             else{
+                loadingLayout.setVisibility(View.GONE);
                 updateList();
 
             }

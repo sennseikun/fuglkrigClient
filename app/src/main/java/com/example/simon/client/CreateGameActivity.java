@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +30,8 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
     private EditText password;
 
     private RequestHandler handler;
+    private RelativeLayout loadingLayout;
+    private LinearLayout regularScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,8 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
         name = (EditText)findViewById(R.id.gamename_edit);
         players = (EditText)findViewById(R.id.players_edit);
         password = (EditText)findViewById(R.id.password_edit);
+        loadingLayout = (RelativeLayout)findViewById(R.id.create_game_loading);
+        regularScreen = (LinearLayout)findViewById(R.id.create_view);
 
         handler = PlayerModel.getSocket();
 
@@ -120,39 +126,8 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
             }
 
             handler.sendData(json);
-
-            long startTime = System.currentTimeMillis();
-
-            boolean success = true;
-
-            while(PlayerModel.getGameIsValid() == 0){
-                if((System.currentTimeMillis()- startTime) > 5000){
-                    success = false;
-                    break;
-                }
-            }
-
-            if(success){
-
-                Bundle b = new Bundle();
-
-                Lobby l = new Lobby(name.getText().toString(),"1",players.getText().toString(),password.getText().toString());
-
-                PlayerModel.addLobby(l);
-                PlayerModel.addPlayerToLobby(PlayerModel.getNick());
-
-                b.putString("Name",name.getText().toString());
-
-
-                Intent intent = new Intent(this,GameLobby.class);
-
-                intent.putExtras(b);
-
-                startActivity(intent);
-            }
-            else{
-                LaunchError();
-            }
+            regularScreen.setVisibility(View.GONE);
+            loadingLayout.setVisibility(View.VISIBLE);
         }
         else{
             LaunchAlert();
@@ -166,13 +141,28 @@ public class CreateGameActivity extends AppCompatActivity implements AsyncRespon
     }
     @Override
     public void onBackPressed(){
-
-
         startActivity(new Intent(this,LobbyActivity.class));
+        finish();
     }
 
     @Override
     public void processFinish(String output) {
 
+        if(PlayerModel.getGameIsValid() == 1){
+            Bundle b = new Bundle();
+
+            Lobby l = new Lobby(name.getText().toString(),"1",players.getText().toString(),password.getText().toString());
+
+            PlayerModel.addLobby(l);
+            PlayerModel.addPlayerToLobby(PlayerModel.getNick());
+            b.putString("Name",name.getText().toString());
+            Intent intent = new Intent(this,GameLobby.class);
+            intent.putExtras(b);
+
+            startActivity(intent);
+        }
+        else{
+            LaunchError();
+        }
     }
 }

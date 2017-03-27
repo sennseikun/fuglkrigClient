@@ -28,11 +28,12 @@ public class PlayerModel {
     private static String lastSent = null;
     private static LobbyActivity lobbyList = null;
     private static CreateGameActivity CreateGame = null;
-    private static List<String> playersInLobby;
+    private static List<String> playersInLobby = new ArrayList<>();
 
     public PlayerModel (){
 
     }
+
 
     public static void setGameLobby(GameLobby lobby){
         PlayerModel.lobby = lobby;

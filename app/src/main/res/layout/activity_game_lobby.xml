@@ -41,6 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
             android:text="Players: "
             android:layout_width="match_parent"
@@ -54,7 +55,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="24sp"/>
+
     </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:id="@+id/GameLobby_list"/>
 
     <Button
         android:id="@+id/start_button"
@@ -63,6 +71,7 @@
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:text="Start" />
+
     <Button
         android:id="@+id/cancel_gamelobby"
         android:layout_width="match_parent"
