@@ -5,20 +5,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameLobby extends AppCompatActivity implements AsyncResponse  {
 
     private TextView txtName;
     private TextView txtPlayers;
     private Button btn_cancel;
-    private int playerCount;
-    private int maxPlayers;
+    private String playerCount;
+    private String maxPlayers;
     private RequestHandler handler;
     private String name;
+    private ListView lv;
+    private PlayerListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +40,19 @@ public class GameLobby extends AppCompatActivity implements AsyncResponse  {
         txtName = (TextView)findViewById(R.id.txt_name);
         txtPlayers = (TextView)findViewById(R.id.txt_count);
         btn_cancel = (Button)findViewById(R.id.cancel_gamelobby);
+        lv = (ListView)findViewById(R.id.GameLobby_list);
 
-        playerCount = 1;
-        maxPlayers = bundle.getInt("Players");
 
-        txtName.setText(bundle.getString("Name"));
 
         name = bundle.getString("Name");
 
+        maxPlayers = PlayerModel.getLobby(name).getMaxPlayerCount();
+        playerCount = PlayerModel.getLobby(name).getPlayerCount();
+
+        txtName.setText(name);
         txtPlayers.setText(playerCount+"/"+maxPlayers);
+
+        InitListView();
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,9 +65,35 @@ public class GameLobby extends AppCompatActivity implements AsyncResponse  {
 
     }
 
+    public void goToLobbyList(){
+        startActivity(new Intent(this,LobbyActivity.class));
+        finish();
+    }
+
+    public void updateListView(){
+
+        System.out.println("Should update listview");
+
+        List<String> newList = new ArrayList<>();
+        newList.addAll(PlayerModel.getPlayersInLobby());
+
+        adapter.updateReceiptsList(newList);
+
+        lv.setAdapter(null);
+        lv.setAdapter(adapter);
+    }
+
+    public void InitListView(){
+        List<String> players = PlayerModel.getPlayersInLobby();
+        adapter = new PlayerListAdapter(players);
+        lv.setAdapter(adapter);
+    }
+
     @Override
-    public void onBackPressed(){
-        cancel();
+    public void onDestroy(){
+        super.onDestroy();
+        PlayerModel.setGameLobby(null);
+        finish();
     }
 
     public void updatePlayers(int players){
@@ -81,6 +119,11 @@ public class GameLobby extends AppCompatActivity implements AsyncResponse  {
         }
     }
 
+    @Override
+    public void onBackPressed(){
+        cancel();
+    }
+
     //If connection is killed a asynctask is fired to kill the process
 
     @Override
@@ -88,15 +131,16 @@ public class GameLobby extends AppCompatActivity implements AsyncResponse  {
         //updatePlayers(Integer.parseInt(PlayerModel.getPlayerCount(name)));
         if(output.equals("1")){
             startActivity(new Intent(this,MenuActivity.class));
+            finish();
         }
 
         else if(output.equals("2")){
             updatePlayers(Integer.parseInt(PlayerModel.getPlayerCount(name)));
+            updateListView();
         }
 
         else{
-            PlayerModel.setGameLobby(null);
-            startActivity(new Intent(this,LobbyActivity.class));
+            goToLobbyList();
             finish();
         }
 

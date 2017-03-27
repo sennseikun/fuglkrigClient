@@ -108,18 +108,17 @@ public class ReceiveData extends Thread {
                     System.out.println(count);
 
                     for(int i = 1; i < count + 1; i++){
-                        List<String> lobby = new ArrayList<>();
+
                         String name = translated.getString("Name"+i);
                         String playerCount = translated.getString("PlayerCount"+i);
                         String maxPlayerCount = translated.getString("MaxPlayers"+i);
                         String password = translated.getString("Password"+i);
 
-                        lobby.add(name);
-                        lobby.add(playerCount);
-                        lobby.add(maxPlayerCount);
-                        lobby.add(password);
+                        Lobby l = new Lobby(name,playerCount,maxPlayerCount,password);
 
-                        PlayerModel.addLobby(lobby);
+                        PlayerModel.addLobby(l);
+
+                        System.out.println(playerCount);
                     }
 
                     if(PlayerModel.getLobbyList() != null){
@@ -129,37 +128,90 @@ public class ReceiveData extends Thread {
                         data.execute();
                     }
                 }
+
+                //Answer when creating a new lobby
+
                 else if(packet_number.equals("2")){
                     int value = translated.getInt("Valid");
                     PlayerModel.setGameIsValid(value);
+                    System.out.println("GameLobby: Launch async");
+                    AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                    data.delegate = PlayerModel.getCreateGame();
+                    data.execute();
                 }
+
+                //Leave lobby
+
                 else if(packet_number.equals("3")){
 
                     String lobbyname = translated.getString("LobbyID");
                     String playerCount = translated.getString("PlayerCount");
+                    String name = translated.getString("PlayerName");
+
                     PlayerModel.updateLobby(lobbyname,playerCount);
+
                     System.out.println("Removed one player from: "+lobbyname);
 
                     if(PlayerModel.getGameLobby() != null){
                         System.out.println("GameLobby: Launch async");
+                        PlayerModel.removePlayerFromLobby(name);
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                         data.delegate = PlayerModel.getGameLobby();
-                        data.execute();
-                    }
-                    if(PlayerModel.getLobbyList() != null){
-                        System.out.println("Lobby: Launch async");
-                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
-                        data.delegate = PlayerModel.getLobbyList();
-                        data.execute();
-                    }
 
+                        //If the player is the one leaving
+
+                        if(name.equals(PlayerModel.getNick())){
+                            System.out.println("Leave logic should be called");
+                            data.execute();
+                        }
+
+                        //If someone else is leaving
+
+                        else{
+                            data.execute("2");
+                        }
+                    }
                 }
+
+                //Join lobby
+
                 else if(packet_number.equals("4")){
                     String lobbyname = translated.getString("LobbyID");
                     String playerCount = translated.getString("PlayerCount");
                     PlayerModel.updateLobby(lobbyname,playerCount);
-                    System.out.println("Removed one player from: "+lobbyname);
+                    System.out.println("Added one player too: "+lobbyname);
 
+                    if(PlayerModel.getLobbyList() != null){
+                        System.out.println("Going into game lobby");
+
+                        for(int i = 0; i < Integer.parseInt(playerCount); i++){
+                            String name = translated.getString("PlayerName"+i);
+                            PlayerModel.addPlayerToLobby(name);
+                        }
+
+                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        data.delegate = PlayerModel.getLobbyList();
+                        data.execute("2");
+                    }
+
+                    //IF player is in game lobby already
+
+                    else if(PlayerModel.getGameLobby() != null){
+                        String name = translated.getString("PlayerName");
+                        System.out.println("Updating gamelobby");
+                        PlayerModel.addPlayerToLobby(name);
+                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        data.delegate = PlayerModel.getGameLobby();
+                        data.execute("2");
+                    }
+                }
+                else if(packet_number.equals("5")){
+                    if(translated.getString("Status").equals("1")){
+                        System.out.println("Deleted player on server side: Worked out");
+                    }
+                    else{
+                        System.out.println("Deleted player on server side: Did not work");
+                    }
                     if(PlayerModel.getGameLobby() != null){
                         System.out.println("Gets in the right place 2");
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
@@ -171,6 +223,18 @@ public class ReceiveData extends Thread {
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                         data.delegate = PlayerModel.getLobbyList();
                         data.execute();
+                    }
+                }
+                else if(packet_number.equals("8")){
+                    if(translated.getString("Status").equals("1")){
+                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        data.delegate = PlayerModel.getLobbyList();
+                        data.execute("4");
+                    }
+                    else{
+                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        data.delegate = PlayerModel.getLobbyList();
+                        data.execute("3");
                     }
                 }
 
