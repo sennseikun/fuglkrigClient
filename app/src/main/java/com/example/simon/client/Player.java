@@ -65,17 +65,13 @@ public class Player {
         return Xpos;
     }
 
-    public void setXpos(float xpos) {
-        Xpos = xpos;
-    }
+    public void setXpos(float xpos) { Xpos = xpos; }
 
     public float getYpos() {
         return Ypos;
     }
 
-    public void setYpos(float ypos) {
-        Ypos = ypos;
-    }
+    public void setYpos(float ypos) { Ypos = ypos; }
 
     public float getXspeed() {
         return Xspeed;
