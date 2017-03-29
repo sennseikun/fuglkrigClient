@@ -74,6 +74,17 @@ public class GameLobby extends Activity implements AsyncResponse  {
         finish();
     }
 
+    public void StartGame(View view) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("Datatype", 11);
+            handler.sendData(json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void updateListView(){
 
         System.out.println("Should update listview");
