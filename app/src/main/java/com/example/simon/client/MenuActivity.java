@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,29 +13,22 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
-
 public class MenuActivity extends Activity {
 
     private RequestHandler handler;
-    private PlayerModel player;
+    private DataModel player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        PlayerModel.setNick("");
-        PlayerModel.setLobbyList(null);
-        PlayerModel.setGameLobby(null);
+        DataModel.setNick("");
+        DataModel.setLobbyList(null);
+        DataModel.setGameLobby(null);
 
-        if(PlayerModel.getSocket() != null){
-            RequestHandler s = PlayerModel.getSocket();
+        if(DataModel.getSocket() != null){
+            RequestHandler s = DataModel.getSocket();
             JSONObject json = new JSONObject();
             try {
                 json.put("Datatype",5);
@@ -72,7 +63,7 @@ public class MenuActivity extends Activity {
         boolean run = true;
         long startTime = System.currentTimeMillis();
 
-        while(PlayerModel.getNick().equals("") && run){
+        while(DataModel.getNick().equals("") && run){
 
             if((System.currentTimeMillis()- startTime) > 10000){
                 System.out.println("Quit from timer");
@@ -119,10 +110,10 @@ public class MenuActivity extends Activity {
                 String name = input.getText().toString();
                 initializeConnection(name);
 
-                if(PlayerModel.getNick().equals("ERROR")){
+                if(DataModel.getNick().equals("ERROR")){
                     launchToast();
                 }
-                else if(!PlayerModel.getNick().equals("")){
+                else if(!DataModel.getNick().equals("")){
                     launchLobby();
                 }
                 else{

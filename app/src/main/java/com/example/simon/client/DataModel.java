@@ -1,6 +1,5 @@
 package com.example.simon.client;
 
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,19 +7,9 @@ import java.util.List;
  * Created by thoma on 3/24/2017.
  */
 
-public class PlayerModel {
+public class DataModel {
 
     private static String nick = "";
-    private static int p_id = -1;
-    private static int hp = -1;
-    private static int skin = -1;
-    private static float targetPosX = -1;
-    private static float targetPosY = -1;
-    private static float coordX = -1;
-    private static float coordY = -1;
-    private static int direction = -1;
-    private static int speed = -1;
-    private static int alive = -1;
     private static RequestHandler socket = null;
     private static List<Lobby> lobbys = new ArrayList<>();
     private static GameLobby lobby = null;
@@ -29,28 +18,28 @@ public class PlayerModel {
     private static LobbyActivity lobbyList = null;
     private static CreateGameActivity CreateGame = null;
     private static List<String> playersInLobby = new ArrayList<>();
-    private static PlayerModel model = null;
+    private static DataModel model = null;
 
-    public PlayerModel (){
+    public DataModel(){
 
     }
 
     //Should this one be a singleton?
 
-    /*public static PlayerModel getInstance(){
+    /*public static DataModel getInstance(){
         if(model == null){
-            model = new PlayerModel();
+            model = new DataModel();
         }
         return model;
     }*/
 
 
     public static void setGameLobby(GameLobby lobby){
-        PlayerModel.lobby = lobby;
+        DataModel.lobby = lobby;
     }
 
     public static GameLobby getGameLobby(){
-        return PlayerModel.lobby;
+        return DataModel.lobby;
     }
 
     public static void addLobby(Lobby lobby){
@@ -94,87 +83,7 @@ public class PlayerModel {
 
     public static void setNick(String nick) {
         System.out.println("Nick set: " + nick);
-        PlayerModel.nick = nick;
-    }
-
-    public static int getP_id() {
-        return p_id;
-    }
-
-    public static void setP_id(int p_id) {
-        PlayerModel.p_id = p_id;
-    }
-
-    public static int getHp() {
-        return hp;
-    }
-
-    public static void setHp(int hp) {
-        PlayerModel.hp = hp;
-    }
-
-    public static int getSkin() {
-        return skin;
-    }
-
-    public static void setSkin(int skin) {
-        PlayerModel.skin = skin;
-    }
-
-    public static float getTargetPosX() {
-        return targetPosX;
-    }
-
-    public static void setTargetPosX(float targetPosX) {
-        PlayerModel.targetPosX = targetPosX;
-    }
-
-    public static float getTargetPosY() {
-        return targetPosY;
-    }
-
-    public static void setTargetPosY(float targetPosY) {
-        PlayerModel.targetPosY = targetPosY;
-    }
-
-    public static float getCoordX() {
-        return coordX;
-    }
-
-    public static void setCoordX(float coordX) {
-        PlayerModel.coordX = coordX;
-    }
-
-    public static float getCoordY() {
-        return coordY;
-    }
-
-    public static void setCoordY(float coordY) {
-        PlayerModel.coordY = coordY;
-    }
-
-    public static int getDirection() {
-        return direction;
-    }
-
-    public static void setDirection(int direction) {
-        PlayerModel.direction = direction;
-    }
-
-    public static int getSpeed() {
-        return speed;
-    }
-
-    public static void setSpeed(int speed) {
-        PlayerModel.speed = speed;
-    }
-
-    public static int isAlive() {
-        return alive;
-    }
-
-    public static void setAlive(int alive) {
-        PlayerModel.alive = alive;
+        DataModel.nick = nick;
     }
 
     public static RequestHandler getSocket() {
@@ -182,7 +91,7 @@ public class PlayerModel {
     }
 
     public static void setSocket(RequestHandler socket) {
-        PlayerModel.socket = socket;
+        DataModel.socket = socket;
     }
 
     public static List<Lobby> getLobbys() {
@@ -190,7 +99,7 @@ public class PlayerModel {
     }
 
     public static void setLobbys(List<Lobby> lobbys) {
-        PlayerModel.lobbys = lobbys;
+        DataModel.lobbys = lobbys;
     }
 
     public static void setGameIsValid(int i){
@@ -210,7 +119,7 @@ public class PlayerModel {
     }
 
     public static void setLastSent(String lastSent) {
-        PlayerModel.lastSent = lastSent;
+        DataModel.lastSent = lastSent;
     }
 
     public static LobbyActivity getLobbyList() {
@@ -218,7 +127,7 @@ public class PlayerModel {
     }
 
     public static void setLobbyList(LobbyActivity lobbyList) {
-        PlayerModel.lobbyList = lobbyList;
+        DataModel.lobbyList = lobbyList;
     }
 
     public static CreateGameActivity getCreateGame() {
@@ -249,6 +158,6 @@ public class PlayerModel {
     }
 
     public static void setPlayersInLobby(List<String> playersInLobby) {
-        PlayerModel.playersInLobby = playersInLobby;
+        DataModel.playersInLobby = playersInLobby;
     }
 }
