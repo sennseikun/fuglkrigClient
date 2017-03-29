@@ -72,7 +72,7 @@ public class customListAdapter extends BaseAdapter {
             image.setImageResource(R.drawable.passwordlock);
         }
         else {
-            image.setImageResource(R.drawable.startbutton);
+            image.setImageResource(R.drawable.openpasswordlock);
         }
 
         return result;

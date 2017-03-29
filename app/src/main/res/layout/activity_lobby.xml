@@ -9,16 +9,16 @@
     tools:layout_editor_absoluteY="8dp"
     android:background="@drawable/lobbybackground"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
     <TextView
-        android:textSize="36sp"
         android:id="@+id/item_class"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:text="Lobby"
-        android:typeface="monospace"
         android:background="@color/colorPrimaryDark"
-        />
+        android:text="LOBBY "
+        android:textAlignment="center"
+        android:textSize="36sp"
+        android:typeface="monospace" />
 
     <TextView
         android:id="@+id/noLobbyTxt"
@@ -33,7 +33,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/lobbylist"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:background="@drawable/borderlobbylist"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
