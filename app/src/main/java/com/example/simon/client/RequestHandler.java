@@ -84,13 +84,6 @@ public class RequestHandler extends Thread {
             String message = json.toString();
             PlayerModel.setSocket(this);
 
-            try {
-                this.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                break;
-            }
-
             if(!message.equals(lastSent)){
                 try {
 
