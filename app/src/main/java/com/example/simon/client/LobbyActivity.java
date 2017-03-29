@@ -323,6 +323,7 @@ public class LobbyActivity extends Activity implements AsyncResponse {
             LaunchAlert("Lobby full","This lobby appears to be full already");
             loadingLayout.setVisibility(View.GONE);
             lv.setVisibility(View.VISIBLE);
+            LoadLobbys();
         }
 
         else{
