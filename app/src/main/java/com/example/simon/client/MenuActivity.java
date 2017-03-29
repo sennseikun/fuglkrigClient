@@ -30,16 +30,11 @@ public class MenuActivity extends Activity {
         DataModel.setLobbyList(null);
         DataModel.setGameLobby(null);
 
-<<<<<<< HEAD
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.birds);
         mediaPlayer.start();
 
-        if(PlayerModel.getSocket() != null){
-            RequestHandler s = PlayerModel.getSocket();
-=======
         if(DataModel.getSocket() != null){
             RequestHandler s = DataModel.getSocket();
->>>>>>> 4d5d718a223dee50f40723709001da0ad2c6f435
             JSONObject json = new JSONObject();
             try {
                 json.put("Datatype",5);
