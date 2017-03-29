@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Bundle;
 import android.text.InputType;
@@ -35,6 +36,9 @@ public class MenuActivity extends Activity {
         PlayerModel.setNick("");
         PlayerModel.setLobbyList(null);
         PlayerModel.setGameLobby(null);
+
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.birds);
+        mediaPlayer.start();
 
         if(PlayerModel.getSocket() != null){
             RequestHandler s = PlayerModel.getSocket();
