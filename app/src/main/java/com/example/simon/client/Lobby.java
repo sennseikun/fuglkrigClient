@@ -15,7 +15,7 @@ public class Lobby {
     private String password;
 
 
-    public Lobby(String name, String pc,String mpc, String password){
+    public Lobby(String name, String pc, String mpc, String password){
         this.name = name;
         this.playerCount = pc;
         this.maxPlayerCount = mpc;
