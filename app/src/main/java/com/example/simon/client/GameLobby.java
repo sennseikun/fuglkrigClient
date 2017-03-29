@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -36,7 +34,7 @@ public class GameLobby extends Activity implements AsyncResponse  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_lobby);
 
-        handler = PlayerModel.getSocket();
+        handler = DataModel.getSocket();
 
         Bundle bundle = getIntent().getExtras();
 
@@ -49,8 +47,8 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
         name = bundle.getString("Name");
 
-        maxPlayers = PlayerModel.getLobby(name).getMaxPlayerCount();
-        playerCount = PlayerModel.getLobby(name).getPlayerCount();
+        maxPlayers = DataModel.getLobby(name).getMaxPlayerCount();
+        playerCount = DataModel.getLobby(name).getPlayerCount();
 
 
         font = Typeface.createFromAsset(getAssets(), "bulkypix.ttf");
@@ -67,7 +65,7 @@ public class GameLobby extends Activity implements AsyncResponse  {
             }
         });
 
-        PlayerModel.setGameLobby(this);
+        DataModel.setGameLobby(this);
 
     }
 
@@ -81,7 +79,7 @@ public class GameLobby extends Activity implements AsyncResponse  {
         System.out.println("Should update listview");
 
         List<String> newList = new ArrayList<>();
-        newList.addAll(PlayerModel.getPlayersInLobby());
+        newList.addAll(DataModel.getPlayersInLobby());
 
         adapter.updateReceiptsList(newList);
 
@@ -90,7 +88,7 @@ public class GameLobby extends Activity implements AsyncResponse  {
     }
 
     public void InitListView(){
-        List<String> players = PlayerModel.getPlayersInLobby();
+        List<String> players = DataModel.getPlayersInLobby();
         adapter = new PlayerListAdapter(players);
         lv.setAdapter(adapter);
     }
@@ -98,7 +96,7 @@ public class GameLobby extends Activity implements AsyncResponse  {
     @Override
     public void onDestroy(){
         super.onDestroy();
-        PlayerModel.setGameLobby(null);
+        DataModel.setGameLobby(null);
         finish();
     }
 
@@ -112,7 +110,7 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
         JSONObject json = new JSONObject();
 
-        String nick = PlayerModel.getNick();
+        String nick = DataModel.getNick();
 
         try {
             json.put("Datatype",3);
@@ -134,14 +132,14 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
     @Override
     public void processFinish(String output) {
-        //updatePlayers(Integer.parseInt(PlayerModel.getPlayerCount(name)));
+        //updatePlayers(Integer.parseInt(DataModel.getPlayerCount(name)));
         if(output.equals("1")){
             startActivity(new Intent(this,MenuActivity.class));
             finish();
         }
 
         else if(output.equals("2")){
-            updatePlayers(Integer.parseInt(PlayerModel.getPlayerCount(name)));
+            updatePlayers(Integer.parseInt(DataModel.getPlayerCount(name)));
             updateListView();
         }
 

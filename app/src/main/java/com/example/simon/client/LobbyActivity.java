@@ -5,28 +5,21 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringDef;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 public class LobbyActivity extends Activity implements AsyncResponse {
 
@@ -57,12 +50,12 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         font = Typeface.createFromAsset(getAssets(), "bulkypix.ttf");
         lobbyHeader.setTypeface(font);
 
-        Log.d("LobbyActivity","Setting lobbylist in PlayerModel");
+        Log.d("LobbyActivity","Setting lobbylist in DataModel");
 
-        PlayerModel.getPlayersInLobby().clear();
+        DataModel.getPlayersInLobby().clear();
 
-        PlayerModel.setLobbyList(this);
-        handler = PlayerModel.getSocket();
+        DataModel.setLobbyList(this);
+        handler = DataModel.getSocket();
         noLobbies = (TextView)findViewById(R.id.noLobbyTxt);
 
         Log.d("LobbyActivity","Starting to load lobbies");
@@ -70,7 +63,7 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         LoadLobbys();
     }
 
-    //This method updates the listview from PlayerModel's lobbylist
+    //This method updates the listview from DataModel's lobbylist
 
     public void updateList() {
         // replace the array adapters contents with the ArrayList corresponding to the day
@@ -79,7 +72,7 @@ public class LobbyActivity extends Activity implements AsyncResponse {
 
         List<Lobby> newList = new ArrayList<>();
 
-        newList.addAll(PlayerModel.getLobbys());
+        newList.addAll(DataModel.getLobbys());
 
         if (newList.isEmpty()) {
             lv.setVisibility(View.GONE);
@@ -137,14 +130,14 @@ public class LobbyActivity extends Activity implements AsyncResponse {
 
         noLobbies.setVisibility(View.GONE);
 
-        PlayerModel.getLobbys().clear();
+        DataModel.getLobbys().clear();
         String datatype = "1";
 
         System.out.println("Started loading lobbys");
 
-        if(PlayerModel.getLastSent() != null){
+        if(DataModel.getLastSent() != null){
             try {
-                JSONObject lastSent = new JSONObject(PlayerModel.getLastSent());
+                JSONObject lastSent = new JSONObject(DataModel.getLastSent());
                 if(lastSent.getString("Datatype").equals("1")){
                     datatype = "10";
                 }
@@ -172,7 +165,7 @@ public class LobbyActivity extends Activity implements AsyncResponse {
     public void onDestroy(){
         super.onDestroy();
         Log.d("OnDestroy","Was here");
-        PlayerModel.setLobbyList(null);
+        DataModel.setLobbyList(null);
         finish();
     }
 
@@ -180,13 +173,13 @@ public class LobbyActivity extends Activity implements AsyncResponse {
 
     public void launchGame(String name, int player){
 
-        PlayerModel.setGameLobby(null);
+        DataModel.setGameLobby(null);
 
         JSONObject json = new JSONObject();
 
         try {
             json.put("Datatype",4);
-            json.put("Name",PlayerModel.getNick());
+            json.put("Name", DataModel.getNick());
             json.put("Lobby",name);
             json.put("PlayerCount",item.getPlayerCount());
             json.put("MaxPlayerCount",item.getMaxPlayerCount());
@@ -202,7 +195,7 @@ public class LobbyActivity extends Activity implements AsyncResponse {
     //Go to create game, make sure to reset lobbylist
 
     public void goToCreate(View v){
-        PlayerModel.setLobbyList(null);
+        DataModel.setLobbyList(null);
         startActivityForResult(new Intent(this,CreateGameActivity.class),AFTER_CREATE);
         finish();
     }
@@ -210,7 +203,7 @@ public class LobbyActivity extends Activity implements AsyncResponse {
     //Go to menu, reset lobby list
 
     public void goToMenu(){
-        PlayerModel.setLobbyList(null);
+        DataModel.setLobbyList(null);
         startActivity(new Intent(this,MenuActivity.class));
         finish();
     }
@@ -220,9 +213,9 @@ public class LobbyActivity extends Activity implements AsyncResponse {
     @Override
     public void onBackPressed(){
 
-        if(PlayerModel.getSocket() != null){
+        if(DataModel.getSocket() != null){
             System.out.println("Gets here");
-            RequestHandler handler = PlayerModel.getSocket();
+            RequestHandler handler = DataModel.getSocket();
             handler.stopSending();
         }
 
@@ -299,7 +292,7 @@ public class LobbyActivity extends Activity implements AsyncResponse {
     @Override
     public void processFinish(String output) {
         System.out.println("Output from processfinish in LobbyActivity: "+output);
-        list = PlayerModel.getLobbys();
+        list = DataModel.getLobbys();
 
         if(output.equals("1")){
             startActivity(new Intent(this,MenuActivity.class));
@@ -311,7 +304,7 @@ public class LobbyActivity extends Activity implements AsyncResponse {
 
             b.putString("Name",item.getName());
 
-            PlayerModel.setLobbyList(null);
+            DataModel.setLobbyList(null);
             Intent intent = new Intent(this,GameLobby.class);
 
             intent.putExtras(b);
@@ -328,6 +321,8 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         }
         else if(output.equals("5")){
             LaunchAlert("Lobby full","This lobby appears to be full already");
+            loadingLayout.setVisibility(View.GONE);
+            lv.setVisibility(View.VISIBLE);
         }
 
         else{

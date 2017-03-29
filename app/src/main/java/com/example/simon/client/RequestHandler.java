@@ -1,17 +1,13 @@
 package com.example.simon.client;
 
-import android.os.AsyncTask;
 import android.os.Build;
-import android.os.CountDownTimer;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import org.json.JSONObject;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
@@ -82,7 +78,7 @@ public class RequestHandler extends Thread {
         while(running) {
 
             String message = json.toString();
-            PlayerModel.setSocket(this);
+            DataModel.setSocket(this);
 
             if(!message.equals(lastSent)){
                 try {
@@ -92,7 +88,7 @@ public class RequestHandler extends Thread {
 
                     lastSent = message;
 
-                    PlayerModel.setLastSent(lastSent);
+                    DataModel.setLastSent(lastSent);
 
                     Log.d("RequestHandler",message);
 
