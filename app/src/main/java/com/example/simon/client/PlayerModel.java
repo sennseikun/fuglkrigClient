@@ -29,10 +29,20 @@ public class PlayerModel {
     private static LobbyActivity lobbyList = null;
     private static CreateGameActivity CreateGame = null;
     private static List<String> playersInLobby = new ArrayList<>();
+    private static PlayerModel model = null;
 
     public PlayerModel (){
 
     }
+
+    //Should this one be a singleton?
+
+    /*public static PlayerModel getInstance(){
+        if(model == null){
+            model = new PlayerModel();
+        }
+        return model;
+    }*/
 
 
     public static void setGameLobby(GameLobby lobby){
