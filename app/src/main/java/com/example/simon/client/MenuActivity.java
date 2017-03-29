@@ -1,5 +1,6 @@
 package com.example.simon.client;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
@@ -22,7 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends Activity {
 
     private RequestHandler handler;
     private PlayerModel player;

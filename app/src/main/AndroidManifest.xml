@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MenuActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,7 +25,8 @@
         <activity
             android:name=".LobbyActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".GameActivity"/>
+        <activity android:name=".GameActivity"
+            android:screenOrientation="landscape"/>
         <activity android:name=".SendingActivity" />
         <activity android:name=".CreateGameActivity" />
         <activity android:name=".GameLobby"

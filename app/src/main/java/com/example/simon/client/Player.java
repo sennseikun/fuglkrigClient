@@ -22,7 +22,6 @@ public class Player {
     public Player(Context context, int pictureId){
         //TODO: set initial position and speed
 
-        //draw bird
         this.bitmap = BitmapFactory.decodeResource(context.getResources(), pictureId);
         this.setMatrix(new Matrix());
         this.setDx(0);
@@ -66,17 +65,13 @@ public class Player {
         return Xpos;
     }
 
-    public void setXpos(float xpos) {
-        Xpos = xpos;
-    }
+    public void setXpos(float xpos) { Xpos = xpos; }
 
     public float getYpos() {
         return Ypos;
     }
 
-    public void setYpos(float ypos) {
-        Ypos = ypos;
-    }
+    public void setYpos(float ypos) { Ypos = ypos; }
 
     public float getXspeed() {
         return Xspeed;
