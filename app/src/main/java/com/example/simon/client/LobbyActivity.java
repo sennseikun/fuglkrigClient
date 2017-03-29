@@ -2,6 +2,7 @@ package com.example.simon.client;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 import android.support.v7.app.AlertDialog;
@@ -36,6 +37,8 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
     private RequestHandler handler;
     private RelativeLayout loadingLayout;
     private TextView noLobbies;
+    private TextView lobbyHeader;
+    Typeface font;
     private boolean firstLoad;
     private List<Lobby> list = new ArrayList<>();
 
@@ -50,6 +53,9 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
         firstLoad = false;
         lv = (ListView) findViewById(R.id.lobbylist);
         loadingLayout = (RelativeLayout)findViewById(R.id.loadingScreenLayout);
+        lobbyHeader = (TextView) findViewById(R.id.item_class);
+        font = Typeface.createFromAsset(getAssets(), "bulkypix.ttf");
+        lobbyHeader.setTypeface(font);
 
         Log.d("LobbyActivity","Setting lobbylist in PlayerModel");
 
