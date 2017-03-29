@@ -2,6 +2,8 @@ package com.example.simon.client;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +27,7 @@ public class GameLobby extends Activity implements AsyncResponse  {
     private String name;
     private ListView lv;
     private PlayerListAdapter adapter;
+    private Typeface font;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,7 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
         Bundle bundle = getIntent().getExtras();
 
-        txtName = (TextView)findViewById(R.id.txt_name);
+        txtName = (TextView)findViewById(R.id.item_class);
         txtPlayers = (TextView)findViewById(R.id.txt_count);
         btn_cancel = (Button)findViewById(R.id.cancel_gamelobby);
         lv = (ListView)findViewById(R.id.GameLobby_list);
@@ -47,6 +50,9 @@ public class GameLobby extends Activity implements AsyncResponse  {
         maxPlayers = DataModel.getLobby(name).getMaxPlayerCount();
         playerCount = DataModel.getLobby(name).getPlayerCount();
 
+
+        font = Typeface.createFromAsset(getAssets(), "bulkypix.ttf");
+        txtName.setTypeface(font);
         txtName.setText(name);
         txtPlayers.setText(playerCount+"/"+maxPlayers);
 
