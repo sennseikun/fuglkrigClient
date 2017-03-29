@@ -2,9 +2,12 @@ package com.example.simon.client;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
@@ -17,6 +20,8 @@ public class MenuActivity extends Activity {
 
     private RequestHandler handler;
     private DataModel player;
+    Context test = this;
+    String PrefName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +46,29 @@ public class MenuActivity extends Activity {
 
     }
 
-    public void onClick(View v){
-        startActivity(new Intent(this, GameActivity.class));
+    public void setPrefName(String prefName, Context context){
+        SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = SPname.edit();
+        editor.putString(PrefName, prefName);
+        editor.commit();
     }
+
+    public String getPrefName(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(PrefName, "");
+    }
+
+
+    public void onClick(View v){startActivity(new Intent(this, GameActivity.class));}
     public void onClick2(View v){ launchNick();}
     public void onClick3(View v){
+        if(getPrefName(test).isEmpty()) {
+            launchNick();
+        }
+        else {
+            String tester = getPrefName(test);
+            DataModel.setNick(tester);
+            launchLobby();
+        }
     }
 
     public void initializeConnection(String name){
@@ -109,7 +132,7 @@ public class MenuActivity extends Activity {
                 dialog.dismiss();
                 String name = input.getText().toString();
                 initializeConnection(name);
-
+                setPrefName(input.getText().toString(), test);
                 if(DataModel.getNick().equals("ERROR")){
                     launchToast();
                 }
