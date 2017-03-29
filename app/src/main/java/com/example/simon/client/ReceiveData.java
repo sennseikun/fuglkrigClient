@@ -237,6 +237,11 @@ public class ReceiveData extends Thread {
                         data.execute("3");
                     }
                 }
+                else if(packet_number.equals("9")){
+                    AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                    data.delegate = PlayerModel.getLobbyList();
+                    data.execute("5");
+                }
 
 
             } catch (IOException e) {

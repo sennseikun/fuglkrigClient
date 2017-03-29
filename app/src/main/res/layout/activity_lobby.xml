@@ -70,6 +70,7 @@
         android:id="@+id/btn_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="RefreshLobbys"
         android:text="Refresh">
     </Button>
 </LinearLayout>

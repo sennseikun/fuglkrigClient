@@ -188,6 +188,8 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
             json.put("Datatype",4);
             json.put("Name",PlayerModel.getNick());
             json.put("Lobby",name);
+            json.put("PlayerCount",item.getPlayerCount());
+            json.put("MaxPlayerCount",item.getMaxPlayerCount());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -277,7 +279,7 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
         LoadLobbys();
     }
 
-    public void LaunchAlert(){
+    public void LaunchAlert(String title, String message){
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
@@ -285,8 +287,8 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
                 dialog.dismiss();
             }
         });
-        alertDialogBuilder.setTitle("Wrong password");
-        alertDialogBuilder.setMessage("Password is incorrect");
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setMessage(message);
         alertDialogBuilder.create();
         alertDialogBuilder.show();
 
@@ -319,10 +321,13 @@ public class LobbyActivity extends AppCompatActivity implements AsyncResponse {
         else if(output.equals("3")){
             loadingLayout.setVisibility(View.GONE);
             lv.setVisibility(View.VISIBLE);
-            LaunchAlert();
+            LaunchAlert("Wrong password","You entered the a incorrect password");
         }
         else if(output.equals("4")){
             launchGame(item.getName(),Integer.parseInt(item.getMaxPlayerCount()));
+        }
+        else if(output.equals("5")){
+            LaunchAlert("Lobby full","This lobby appears to be full already");
         }
 
         else{

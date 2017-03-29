@@ -76,6 +76,13 @@ public class MenuActivity extends AppCompatActivity {
 
             if((System.currentTimeMillis()- startTime) > 10000){
                 System.out.println("Quit from timer");
+                JSONObject removeReq = new JSONObject();
+                try {
+                    removeReq.put("Datatype","5");
+                    handler.sendData(removeReq);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
             }
         }
