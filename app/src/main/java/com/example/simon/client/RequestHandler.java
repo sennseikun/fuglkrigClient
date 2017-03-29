@@ -55,7 +55,7 @@ public class RequestHandler extends Thread {
     }
 
     public void init(){
-        String serverName = "129.241.151.95";
+        String serverName = "104.199.108.89";
         int port = 5555;
         try {
             System.out.println("Connecting to " + serverName + " on port " + port);
@@ -83,13 +83,6 @@ public class RequestHandler extends Thread {
 
             String message = json.toString();
             PlayerModel.setSocket(this);
-
-            try {
-                this.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                break;
-            }
 
             if(!message.equals(lastSent)){
                 try {
