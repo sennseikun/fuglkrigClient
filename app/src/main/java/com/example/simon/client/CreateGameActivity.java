@@ -1,10 +1,9 @@
 package com.example.simon.client;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +19,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateGameActivity extends AppCompatActivity implements AsyncResponse {
+public class CreateGameActivity extends Activity implements AsyncResponse {
 
     private Button btn_create;
     private Button btn_cancel;

@@ -1,8 +1,8 @@
 package com.example.simon.client;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class SendingActivity extends AppCompatActivity implements AsyncResponse {
+public class SendingActivity extends Activity implements AsyncResponse {
 
     private Button btnSend;
     private EditText key;

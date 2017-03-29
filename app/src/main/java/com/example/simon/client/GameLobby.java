@@ -1,7 +1,7 @@
 package com.example.simon.client;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +16,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameLobby extends AppCompatActivity implements AsyncResponse  {
+public class GameLobby extends Activity implements AsyncResponse  {
 
     private TextView txtName;
     private TextView txtPlayers;
