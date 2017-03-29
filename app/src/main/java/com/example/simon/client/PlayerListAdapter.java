@@ -1,5 +1,13 @@
 package com.example.simon.client;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.List;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -17,11 +25,11 @@ import java.util.TreeMap;
  * Created by thoma on 3/23/2017.
  */
 
-public class customListAdapter extends BaseAdapter {
+public class PlayerListAdapter extends BaseAdapter {
 
-    private List<Lobby> data;
+    private List<String> data;
 
-    public customListAdapter(List<Lobby> data){
+    public PlayerListAdapter(List<String> data){
         this.data = data;
     }
 
@@ -31,8 +39,17 @@ public class customListAdapter extends BaseAdapter {
     }
 
     @Override
-    public Lobby getItem(int position) {
+    public String getItem(int position) {
         return data.get(position);
+    }
+
+    public int getPosition(String item){
+        for(int i = 0; i < data.size(); i++){
+            if(data.get(i).equals(item)){
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -40,7 +57,7 @@ public class customListAdapter extends BaseAdapter {
         return 0;
     }
 
-    public void updateReceiptsList(List<Lobby> newList) {
+    public void updateReceiptsList(List<String> newList) {
 
         data.clear();
 
@@ -64,16 +81,11 @@ public class customListAdapter extends BaseAdapter {
             result = convertView;
         }
 
-        Lobby item = getItem(position);
-        ((TextView) result.findViewById(R.id.gameName)).setText(item.getName());
-        ((TextView) result.findViewById(R.id.playerCount)).setText(item.getPlayerCount() + "/" + item.getMaxPlayerCount());
+        String item = getItem(position);
+        ((TextView) result.findViewById(R.id.gameName)).setText("Player: "+getPosition(item));
+        ((TextView) result.findViewById(R.id.playerCount)).setText(item);
         ImageView image = (ImageView) result.findViewById(R.id.image_id);
-        if (!item.getPassword().equals("")) {
-            image.setImageResource(R.drawable.passwordlock);
-        }
-        else {
-            image.setImageResource(R.drawable.startbutton);
-        }
+        image.setImageResource(R.drawable.passwordlock);
 
         return result;
     }

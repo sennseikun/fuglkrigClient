@@ -33,8 +33,19 @@ public class MenuActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        PlayerModel.setNick("");
+        PlayerModel.setLobbyList(null);
+        PlayerModel.setGameLobby(null);
+
         if(PlayerModel.getSocket() != null){
             RequestHandler s = PlayerModel.getSocket();
+            JSONObject json = new JSONObject();
+            try {
+                json.put("Datatype",5);
+                s.sendData(json);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             s.stopSending();
         }
 
@@ -64,8 +75,15 @@ public class MenuActivity extends Activity {
 
         while(PlayerModel.getNick().equals("") && run){
 
-            if((System.currentTimeMillis()- startTime) > 5000){
+            if((System.currentTimeMillis()- startTime) > 10000){
                 System.out.println("Quit from timer");
+                JSONObject removeReq = new JSONObject();
+                try {
+                    removeReq.put("Datatype","5");
+                    handler.sendData(removeReq);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
             }
         }
