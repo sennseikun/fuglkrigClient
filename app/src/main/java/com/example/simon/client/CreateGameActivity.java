@@ -10,14 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CreateGameActivity extends Activity implements AsyncResponse {
 
@@ -40,10 +36,10 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
         btn_create = (Button)findViewById(R.id.create_button);
         btn_cancel = (Button)findViewById(R.id.cancel_button);
 
-        PlayerModel.setGameIsValid(0);
-        PlayerModel.setLobbyList(null);
-        PlayerModel.setGameLobby(null);
-        PlayerModel.setCreateGame(this);
+        DataModel.setGameIsValid(0);
+        DataModel.setLobbyList(null);
+        DataModel.setGameLobby(null);
+        DataModel.setCreateGame(this);
 
         name = (EditText)findViewById(R.id.gamename_edit);
         players = (EditText)findViewById(R.id.players_edit);
@@ -51,7 +47,7 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
         loadingLayout = (RelativeLayout)findViewById(R.id.create_game_loading);
         regularScreen = (LinearLayout)findViewById(R.id.create_view);
 
-        handler = PlayerModel.getSocket();
+        handler = DataModel.getSocket();
 
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +103,7 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
 
         if(!name.getText().equals(null) && (players.getText().toString().equals("2") || players.getText().toString().equals("3") || players.getText().toString().equals("4")) && (password.length() == 4  || password.length() == 0)){
 
-            if(PlayerModel.getSocket() == null){
+            if(DataModel.getSocket() == null){
                 Toast.makeText(this,"Connection lost",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(this,MenuActivity.class));
             }
@@ -117,7 +113,7 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
             try {
                 json.put("Datatype",2);
                 json.put("Name",name.getText().toString());
-                json.put("PlayerName",PlayerModel.getNick());
+                json.put("PlayerName", DataModel.getNick());
                 json.put("Players",players.getText().toString());
                 json.put("Password",password.getText().toString());
             } catch (JSONException e) {
@@ -147,13 +143,13 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
     @Override
     public void processFinish(String output) {
 
-        if(PlayerModel.getGameIsValid() == 1){
+        if(DataModel.getGameIsValid() == 1){
             Bundle b = new Bundle();
 
             Lobby l = new Lobby(name.getText().toString(),"1",players.getText().toString(),password.getText().toString());
 
-            PlayerModel.addLobby(l);
-            PlayerModel.addPlayerToLobby(PlayerModel.getNick());
+            DataModel.addLobby(l);
+            DataModel.addPlayerToLobby(DataModel.getNick());
             b.putString("Name",name.getText().toString());
             Intent intent = new Intent(this,GameLobby.class);
             intent.putExtras(b);

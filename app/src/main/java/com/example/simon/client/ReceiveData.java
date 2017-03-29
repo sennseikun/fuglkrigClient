@@ -6,12 +6,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by thoma on 3/20/2017.
@@ -91,12 +88,11 @@ public class ReceiveData extends Thread {
                 if(packet_number.equals("0")){
                     if(translated.getString("userValid").equals("0")){
                         System.out.println("PLAYER_NAME: ERROR");
-                        PlayerModel.setNick("ERROR");
+                        DataModel.setNick("ERROR");
                     }
                     else{
                         System.out.println("PLAYER_NAME:" + translated.getString("nick"));
-                        PlayerModel.setNick(translated.getString("nick"));
-                        PlayerModel.setP_id(Integer.parseInt(translated.getString("pId")));
+                        DataModel.setNick(translated.getString("nick"));
                     }
                 }
 
@@ -116,15 +112,15 @@ public class ReceiveData extends Thread {
 
                         Lobby l = new Lobby(name,playerCount,maxPlayerCount,password);
 
-                        PlayerModel.addLobby(l);
+                        DataModel.addLobby(l);
 
                         System.out.println(playerCount);
                     }
 
-                    if(PlayerModel.getLobbyList() != null){
+                    if(DataModel.getLobbyList() != null){
                         System.out.println("Gets in the right place");
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
-                        data.delegate = PlayerModel.getLobbyList();
+                        data.delegate = DataModel.getLobbyList();
                         data.execute();
                     }
                 }
@@ -133,10 +129,10 @@ public class ReceiveData extends Thread {
 
                 else if(packet_number.equals("2")){
                     int value = translated.getInt("Valid");
-                    PlayerModel.setGameIsValid(value);
+                    DataModel.setGameIsValid(value);
                     System.out.println("GameLobby: Launch async");
                     AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
-                    data.delegate = PlayerModel.getCreateGame();
+                    data.delegate = DataModel.getCreateGame();
                     data.execute();
                 }
 
@@ -148,19 +144,19 @@ public class ReceiveData extends Thread {
                     String playerCount = translated.getString("PlayerCount");
                     String name = translated.getString("PlayerName");
 
-                    PlayerModel.updateLobby(lobbyname,playerCount);
+                    DataModel.updateLobby(lobbyname,playerCount);
 
                     System.out.println("Removed one player from: "+lobbyname);
 
-                    if(PlayerModel.getGameLobby() != null){
+                    if(DataModel.getGameLobby() != null){
                         System.out.println("GameLobby: Launch async");
-                        PlayerModel.removePlayerFromLobby(name);
+                        DataModel.removePlayerFromLobby(name);
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
-                        data.delegate = PlayerModel.getGameLobby();
+                        data.delegate = DataModel.getGameLobby();
 
                         //If the player is the one leaving
 
-                        if(name.equals(PlayerModel.getNick())){
+                        if(name.equals(DataModel.getNick())){
                             System.out.println("Leave logic should be called");
                             data.execute();
                         }
@@ -178,30 +174,30 @@ public class ReceiveData extends Thread {
                 else if(packet_number.equals("4")){
                     String lobbyname = translated.getString("LobbyID");
                     String playerCount = translated.getString("PlayerCount");
-                    PlayerModel.updateLobby(lobbyname,playerCount);
+                    DataModel.updateLobby(lobbyname,playerCount);
                     System.out.println("Added one player too: "+lobbyname);
 
-                    if(PlayerModel.getLobbyList() != null){
+                    if(DataModel.getLobbyList() != null){
                         System.out.println("Going into game lobby");
 
                         for(int i = 0; i < Integer.parseInt(playerCount); i++){
                             String name = translated.getString("PlayerName"+i);
-                            PlayerModel.addPlayerToLobby(name);
+                            DataModel.addPlayerToLobby(name);
                         }
 
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
-                        data.delegate = PlayerModel.getLobbyList();
+                        data.delegate = DataModel.getLobbyList();
                         data.execute("2");
                     }
 
                     //IF player is in game lobby already
 
-                    else if(PlayerModel.getGameLobby() != null){
+                    else if(DataModel.getGameLobby() != null){
                         String name = translated.getString("PlayerName");
                         System.out.println("Updating gamelobby");
-                        PlayerModel.addPlayerToLobby(name);
+                        DataModel.addPlayerToLobby(name);
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
-                        data.delegate = PlayerModel.getGameLobby();
+                        data.delegate = DataModel.getGameLobby();
                         data.execute("2");
                     }
                 }
@@ -212,34 +208,34 @@ public class ReceiveData extends Thread {
                     else{
                         System.out.println("Deleted player on server side: Did not work");
                     }
-                    if(PlayerModel.getGameLobby() != null){
+                    if(DataModel.getGameLobby() != null){
                         System.out.println("Gets in the right place 2");
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
-                        data.delegate = PlayerModel.getGameLobby();
+                        data.delegate = DataModel.getGameLobby();
                         data.execute();
                     }
-                    if(PlayerModel.getLobbyList() != null){
+                    if(DataModel.getLobbyList() != null){
                         System.out.println("Gets in the right place 1");
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
-                        data.delegate = PlayerModel.getLobbyList();
+                        data.delegate = DataModel.getLobbyList();
                         data.execute();
                     }
                 }
                 else if(packet_number.equals("8")){
                     if(translated.getString("Status").equals("1")){
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
-                        data.delegate = PlayerModel.getLobbyList();
+                        data.delegate = DataModel.getLobbyList();
                         data.execute("4");
                     }
                     else{
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
-                        data.delegate = PlayerModel.getLobbyList();
+                        data.delegate = DataModel.getLobbyList();
                         data.execute("3");
                     }
                 }
                 else if(packet_number.equals("9")){
                     AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
-                    data.delegate = PlayerModel.getLobbyList();
+                    data.delegate = DataModel.getLobbyList();
                     data.execute("5");
                 }
 
@@ -251,16 +247,16 @@ public class ReceiveData extends Thread {
                 e.printStackTrace();
             }
         }
-        if(PlayerModel.getGameLobby() != null){
+        if(DataModel.getGameLobby() != null){
             System.out.println("Connection lost: Ending gamelobby");
             AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
-            data.delegate = PlayerModel.getGameLobby();
+            data.delegate = DataModel.getGameLobby();
             data.execute("1");
         }
-        if(PlayerModel.getLobbyList() != null){
+        if(DataModel.getLobbyList() != null){
             System.out.println("Connection lost: Ending lobby list");
             AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
-            data.delegate = PlayerModel.getLobbyList();
+            data.delegate = DataModel.getLobbyList();
             data.execute("1");
         }
 
