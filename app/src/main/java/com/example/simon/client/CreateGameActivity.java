@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -23,10 +25,13 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
     private EditText name;
     private EditText players;
     private EditText password;
+    private TextView header;
 
     private RequestHandler handler;
     private RelativeLayout loadingLayout;
     private LinearLayout regularScreen;
+
+    private Typeface font;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,10 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
         password = (EditText)findViewById(R.id.password_edit);
         loadingLayout = (RelativeLayout)findViewById(R.id.create_game_loading);
         regularScreen = (LinearLayout)findViewById(R.id.create_view);
+        header = (TextView)findViewById(R.id.item_class);
+
+        font = Typeface.createFromAsset(getAssets(), "bulkypix.ttf");
+        header.setTypeface(font);
 
         handler = DataModel.getSocket();
 

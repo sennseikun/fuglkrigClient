@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.os.Handler;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.InputType;
@@ -31,6 +33,9 @@ public class MenuActivity extends Activity {
         DataModel.setNick("");
         DataModel.setLobbyList(null);
         DataModel.setGameLobby(null);
+
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.birds);
+        mediaPlayer.start();
 
         if(DataModel.getSocket() != null){
             RequestHandler s = DataModel.getSocket();
