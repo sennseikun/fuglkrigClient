@@ -22,7 +22,7 @@ public class MenuActivity extends Activity {
 
     private RequestHandler handler;
     private DataModel player;
-    Context test = this;
+    Context context = this;
     String PrefName;
 
     @Override
@@ -66,12 +66,13 @@ public class MenuActivity extends Activity {
     public void onClick(View v){startActivity(new Intent(this, GameActivity.class));}
     public void onClick2(View v){ launchNick();}
     public void onClick3(View v){
-        if(getPrefName(test).isEmpty()) {
+        if(getPrefName(context).isEmpty()) {
             launchNick();
         }
         else {
-            String tester = getPrefName(test);
-            DataModel.setNick(tester);
+            String nick = getPrefName(context);
+            initializeConnection(nick);
+            DataModel.setNick(nick);
             launchLobby();
         }
     }
@@ -137,7 +138,7 @@ public class MenuActivity extends Activity {
                 dialog.dismiss();
                 String name = input.getText().toString();
                 initializeConnection(name);
-                setPrefName(input.getText().toString(), test);
+                setPrefName(input.getText().toString(), context);
                 if(DataModel.getNick().equals("ERROR")){
                     launchToast();
                 }
