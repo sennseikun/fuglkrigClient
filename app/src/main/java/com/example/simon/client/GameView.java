@@ -6,10 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -17,10 +14,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +23,11 @@ import java.util.List;
  * Created by oskar on 23.03.2017.
  */
 
-public class GameView extends SurfaceView implements View.OnClickListener{
+public class GameView extends SurfaceView {
     private SurfaceHolder holder;
     private GameLoopThread glt;
     private int canvasHeight, canvasWidth;
-    private float clickX, clickY, dx, dy;
+    private int clickX, clickY, dx, dy;
     private ArrayList<Player> players = new ArrayList<Player>();
     private ArrayList<Bitmap> buttonBitmaps = new ArrayList<Bitmap>();
     private ArrayList<Rect> rects = new ArrayList<Rect>();
@@ -87,10 +82,11 @@ public class GameView extends SurfaceView implements View.OnClickListener{
         //Instantiate this client's bird.
         players.add(0, new Player(this.getContext(), R.drawable.bird));
         //Instantiate the competitors' birds.
-        for(int i = 0; i < l.size(); i++){
-            //Player player = new Player(this.getContext(), #Input to access right picture in R.drawables#);
-            //players.add(i, player);
+        /*
+        for(int i = 1; i < l.size(); i++){
+            players.add(0, new Player(this.getContext(), #R.drawable.blackbird#));
         }
+        */
     }
 
     public void buttonsInit(){
@@ -106,21 +102,17 @@ public class GameView extends SurfaceView implements View.OnClickListener{
         //Button 4
         buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.arrow_right));
         rects.add(new Rect((int)(canvasWidth*0.9), 3*canvasHeight/4, canvasWidth, canvasHeight));
-
-        for(int i=0; i < rects.size(); i++){
-            Log.d("RECTANGLE "+i, rects.get(i).centerY()+ "");
-        }
-
     }
 
     @Override
     public void onDraw(Canvas canvas){
         canvas.drawColor(Color.BLUE);
-        canvas.drawBitmap(players.get(0).getBitmap(), players.get(0).getXpos(), players.get(0).getYpos(), new Paint());
-        canvas.drawBitmap(buttonBitmaps.get(0), (float)(0.9*canvasWidth), (float) canvasHeight*0/4, new Paint());
-        canvas.drawBitmap(buttonBitmaps.get(1), (float)(0.9*canvasWidth), (float) canvasHeight*1/4, new Paint());
-        canvas.drawBitmap(buttonBitmaps.get(2), (float)(0.9*canvasWidth), (float) canvasHeight*2/4, new Paint());
-        canvas.drawBitmap(buttonBitmaps.get(3), (float)(0.9*canvasWidth), (float) canvasHeight*3/4, new Paint());
+        for(int i = 0; i < players.size(); i++){
+            canvas.drawBitmap(players.get(i).getBitmap(), players.get(i).getXpos(), players.get(i).getYpos(), null);
+        }
+        for(int i = 0; i < buttonBitmaps.size(); i++){
+            canvas.drawBitmap(buttonBitmaps.get(i), (float)(0.9*canvasWidth), (float) canvasHeight*i/4, null);
+        }
     }
 
     //@Override
@@ -152,21 +144,6 @@ public class GameView extends SurfaceView implements View.OnClickListener{
         }
         return false;
     }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_1:
-                Log.i("BUTTON CLICK", "button_1");
-                break;
-            case R.id.button_2:
-                Log.i("BUTTON CLICK", "button_2");
-                break;
-            case R.id.button_3:
-                Log.i("BUTTON CLICK", "button_3");
-        }
-    }
-
 
     public Player getTestPlayer() {
         return testPlayer;

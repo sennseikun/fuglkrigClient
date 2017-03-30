@@ -11,81 +11,91 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/create_view"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/colorPrimaryLight">
+
         <TextView
-            android:textSize="36sp"
             android:id="@+id/item_class"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
+            android:layout_margin="10dp"
             android:layout_marginBottom="25sp"
             android:text="Create game"
-            android:typeface="monospace"
-            />
+            android:textAlignment="center"
+            android:textSize="36sp"
+            android:typeface="monospace" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20sp"
+            android:layout_margin="10dp"
             android:orientation="horizontal">
+
             <TextView
-                android:text="Name : "
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="24sp"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:text="Name : "
+                android:textSize="24sp" />
+
             <EditText
-                android:hint="Name"
                 android:id="@+id/gamename_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="24sp"/>
+                android:hint="Name"
+                android:textSize="24sp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:orientation="horizontal">
+
             <TextView
-                android:text="Players: "
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="24sp"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:text="Players: "
+                android:textSize="24sp" />
+
             <EditText
-                android:hint="(2-4)"
                 android:id="@+id/players_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="24sp"
-                android:inputType="number"/>
+                android:hint="(2-4)"
+                android:inputType="number"
+                android:textSize="24sp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:orientation="horizontal">
 
             <TextView
-                android:text="Password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="24sp"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:text="Password"
+                android:textSize="24sp" />
 
             <EditText
-                android:hint="4 Digit Pin"
                 android:id="@+id/password_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:contentDescription="Leave blank if no password"
+                android:hint="4 Digit Pin"
+                android:inputType="numberPassword"
                 android:text=""
-                android:textSize="24sp"
-                android:inputType="numberPassword"/>
+                android:textSize="24sp" />
         </LinearLayout>
 
         <Button
@@ -93,14 +103,12 @@
             android:layout_marginTop="100sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:text="Create game" />
+            android:background="@drawable/createbutton"/>
         <Button
             android:id="@+id/cancel_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:text="Cancel" />
+            android:background="@drawable/cancelbutton" />
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
