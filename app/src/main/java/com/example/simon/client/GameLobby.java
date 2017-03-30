@@ -28,6 +28,7 @@ public class GameLobby extends Activity implements AsyncResponse  {
     private ListView lv;
     private PlayerListAdapter adapter;
     private Typeface font;
+    private Button btn_start;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +39,17 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
         Bundle bundle = getIntent().getExtras();
 
+        btn_start = (Button)findViewById(R.id.start_button);
+
+        if(!DataModel.getHostPlayer().equals(DataModel.getNick())){
+            btn_start.setEnabled(false);
+        }
+
         txtName = (TextView)findViewById(R.id.item_class);
         txtPlayers = (TextView)findViewById(R.id.txt_count);
         btn_cancel = (Button)findViewById(R.id.cancel_gamelobby);
         lv = (ListView)findViewById(R.id.GameLobby_list);
+
 
 
 
@@ -151,7 +159,15 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
         else if(output.equals("2")){
             updatePlayers(Integer.parseInt(DataModel.getPlayerCount(name)));
+            if(DataModel.getNick().equals(DataModel.getNick())){
+                btn_start.setEnabled(true);
+            }
             updateListView();
+        }
+
+        else if(output.equals("3")){
+            startActivity(new Intent(this,GameActivity.class));
+            finish();
         }
 
         else{

@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -42,6 +44,9 @@ public class LobbyActivity extends Activity implements AsyncResponse {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_lobby);
         firstLoad = false;
         lv = (ListView) findViewById(R.id.lobbylist);
@@ -323,6 +328,12 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         }
         else if(output.equals("5")){
             LaunchAlert("Lobby full","This lobby appears to be full already");
+        }
+        else if(output.equals("6")){
+            LaunchAlert("Lobby doesn't exist anymore","This lobby appears to have been deleted please refresh");
+        }
+        else if(output.equals("7")){
+            LaunchAlert("Game started","This game has already started");
         }
 
         else{

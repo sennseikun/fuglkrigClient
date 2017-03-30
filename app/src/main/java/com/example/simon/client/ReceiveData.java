@@ -1,7 +1,9 @@
 package com.example.simon.client;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,6 +11,8 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by thoma on 3/20/2017.
@@ -93,6 +97,7 @@ public class ReceiveData extends Thread {
                     else{
                         System.out.println("PLAYER_NAME:" + translated.getString("nick"));
                         DataModel.setNick(translated.getString("nick"));
+                        DataModel.setP_id(translated.getInt("pId"));
                     }
                 }
 
@@ -130,6 +135,7 @@ public class ReceiveData extends Thread {
                 else if(packet_number.equals("2")){
                     int value = translated.getInt("Valid");
                     DataModel.setGameIsValid(value);
+                    DataModel.setHostPlayer(DataModel.getNick());
                     System.out.println("GameLobby: Launch async");
                     AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                     data.delegate = DataModel.getCreateGame();
@@ -143,6 +149,9 @@ public class ReceiveData extends Thread {
                     String lobbyname = translated.getString("LobbyID");
                     String playerCount = translated.getString("PlayerCount");
                     String name = translated.getString("PlayerName");
+
+                    String hostPlayer = translated.getString("hostPlayer");
+                    DataModel.setHostPlayer(hostPlayer);
 
                     DataModel.updateLobby(lobbyname,playerCount);
 
@@ -175,6 +184,10 @@ public class ReceiveData extends Thread {
 
                     String lobbyname = translated.getString("LobbyID");
                     String playerCount = translated.getString("PlayerCount");
+
+                    String hostPlayer = translated.getString("hostPlayer");
+                    DataModel.setHostPlayer(hostPlayer);
+
                     DataModel.updateLobby(lobbyname,playerCount);
                     System.out.println("Added one player too: "+lobbyname);
 
@@ -234,10 +247,102 @@ public class ReceiveData extends Thread {
                         data.execute("3");
                     }
                 }
+
+                //Lobby is full package
+
                 else if(packet_number.equals("9")){
                     AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                     data.delegate = DataModel.getLobbyList();
                     data.execute("5");
+                }
+
+                //Game doesn't exist package
+
+                else if(packet_number.equals("20")){
+                    AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                    data.delegate = DataModel.getLobbyList();
+                    data.execute("6");
+                }
+
+                //Game is started package
+
+                else if(packet_number.equals("21")){
+                    AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                    data.delegate = DataModel.getLobbyList();
+                    data.execute("7");
+                }
+
+                //Begin game package
+
+                else if(packet_number.equals("14")){
+
+                    int width = translated.getInt("width");
+                    int height = translated.getInt("height");
+
+                    DataModel.setResolutionX(width);
+                    DataModel.setResolutionY(height);
+
+
+                    JSONArray players = translated.getJSONArray("players");
+
+                    for(int i = 0; i < players.length(); i++){
+                        JSONObject player = players.getJSONObject(i);
+                        if(player.getInt("PlayerID") == DataModel.getP_id()){
+                            //Add current player here
+                        }
+                        else{
+                            //Add to competitors
+                        }
+                    }
+
+
+                    AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                    data.delegate = DataModel.getGameLobby();
+                    data.execute("3");
+                }
+
+                //Update game package
+
+                else if(packet_number.equals("15")){
+
+                    HashMap<Integer,Player> playerMap = DataModel.getCompetitors();
+
+                    int posX = translated.getInt("posX");
+                    int posY = translated.getInt("posY");
+
+                    Player p = DataModel.getCurrplayer();
+                    p.setXpos(posX);
+                    p.setYpos(posY);
+
+                    JSONArray jsonArray = translated.getJSONArray("Competitors");
+
+                    for(int i = 0; i < jsonArray.length(); i++){
+
+                        JSONObject compJSON = jsonArray.getJSONObject(i);
+
+                        int id = compJSON.getInt("id");
+                        int competitorX = compJSON.getInt("posX");
+                        int competitorY = compJSON.getInt("posY");
+
+                        Player competitor = playerMap.get(id);
+
+                        competitor.setXpos(competitorX);
+                        competitor.setYpos(competitorY);
+
+                    }
+
+                }
+
+                //You died
+
+                else if(packet_number.equals("16")){
+                    //
+                }
+
+                //You won
+
+                else if(packet_number.equals("17")){
+                    //
                 }
 
 

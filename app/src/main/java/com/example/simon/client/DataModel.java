@@ -1,6 +1,7 @@
 package com.example.simon.client;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -17,8 +18,16 @@ public class DataModel {
     private static String lastSent = null;
     private static LobbyActivity lobbyList = null;
     private static CreateGameActivity CreateGame = null;
+    private static GameActivity inGame = null;
     private static List<String> playersInLobby = new ArrayList<>();
     private static DataModel model = null;
+    private static int p_id = -1;
+    private static Player currplayer;
+    private static HashMap<Integer, Player> competitors = new HashMap<>();
+    private static int resolutionX = -1;
+    private static  int resolutionY = -1;
+    private static String hostPlayer = "";
+
 
     public DataModel(){
 
@@ -159,5 +168,53 @@ public class DataModel {
 
     public static void setPlayersInLobby(List<String> playersInLobby) {
         DataModel.playersInLobby = playersInLobby;
+    }
+
+    public static int getP_id() {
+        return p_id;
+    }
+
+    public static void setP_id(int p_id) {
+        DataModel.p_id = p_id;
+    }
+
+    public static Player getCurrplayer() {
+        return currplayer;
+    }
+
+    public static void setCurrplayer(Player currplayer) {
+        DataModel.currplayer = currplayer;
+    }
+
+    public static HashMap<Integer, Player> getCompetitors() {
+        return competitors;
+    }
+
+    public static void setCompetitors(HashMap<Integer, Player> competitors) {
+        DataModel.competitors = competitors;
+    }
+
+    public static int getResolutionX() {
+        return resolutionX;
+    }
+
+    public static void setResolutionX(int resolutionX) {
+        DataModel.resolutionX = resolutionX;
+    }
+
+    public static int getResolutionY() {
+        return resolutionY;
+    }
+
+    public static void setResolutionY(int resolutionY) {
+        DataModel.resolutionY = resolutionY;
+    }
+
+    public static String getHostPlayer() {
+        return hostPlayer;
+    }
+
+    public static void setHostPlayer(String hostPlayer) {
+        DataModel.hostPlayer = hostPlayer;
     }
 }
