@@ -3,6 +3,7 @@ package com.example.simon.client;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -148,6 +149,9 @@ public class ReceiveData extends Thread {
                     String playerCount = translated.getString("PlayerCount");
                     String name = translated.getString("PlayerName");
 
+                    String hostPlayer = translated.getString("hostPlayer");
+                    DataModel.setHostPlayer(hostPlayer);
+
                     DataModel.updateLobby(lobbyname,playerCount);
 
                     System.out.println("Removed one player from: "+lobbyname);
@@ -179,6 +183,10 @@ public class ReceiveData extends Thread {
 
                     String lobbyname = translated.getString("LobbyID");
                     String playerCount = translated.getString("PlayerCount");
+
+                    String hostPlayer = translated.getString("hostPlayer");
+                    DataModel.setHostPlayer(hostPlayer);
+
                     DataModel.updateLobby(lobbyname,playerCount);
                     System.out.println("Added one player too: "+lobbyname);
 
@@ -238,23 +246,61 @@ public class ReceiveData extends Thread {
                         data.execute("3");
                     }
                 }
+
+                //Lobby is full package
+
                 else if(packet_number.equals("9")){
                     AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                     data.delegate = DataModel.getLobbyList();
                     data.execute("5");
                 }
 
+                //Game doesn't exist package
+
                 else if(packet_number.equals("20")){
                     AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                     data.delegate = DataModel.getLobbyList();
                     data.execute("6");
                 }
+
+                //Game is started package
+
                 else if(packet_number.equals("21")){
                     AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                     data.delegate = DataModel.getLobbyList();
                     data.execute("7");
                 }
 
+                //Begin game package
+
+                else if(packet_number.equals("14")){
+
+                    int width = translated.getInt("width");
+                    int height = translated.getInt("height");
+
+                    DataModel.setResolutionX(width);
+                    DataModel.setResolutionY(height);
+
+
+                    JSONArray players = translated.getJSONArray("players");
+
+                    for(int i = 0; i < players.length(); i++){
+                        JSONObject player = players.getJSONObject(i);
+                        if(player.getInt("PlayerID") == DataModel.getP_id()){
+                            //Add current player here
+                        }
+                        else{
+                            //Add to competitors
+                        }
+                    }
+
+
+                    AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                    data.delegate = DataModel.getGameLobby();
+                    data.execute("3");
+                }
+
+                //Update game package
 
                 else if(packet_number.equals("15")){
 
@@ -267,12 +313,15 @@ public class ReceiveData extends Thread {
                     p.setXpos(posX);
                     p.setYpos(posY);
 
-                    int competitorCount = translated.getInt("count");
-                    for(int i = 0; i < competitorCount; i++){
-                        int id = translated.getInt("id" + i);
+                    JSONArray jsonArray = translated.getJSONArray("Competitors");
 
-                        int competitorX = translated.getInt("id"+i+"posX");
-                        int competitorY = translated.getInt("id"+i+"posY");
+                    for(int i = 0; i < jsonArray.length(); i++){
+
+                        JSONObject compJSON = jsonArray.getJSONObject(i);
+
+                        int id = compJSON.getInt("id");
+                        int competitorX = compJSON.getInt("posX");
+                        int competitorY = compJSON.getInt("posY");
 
                         Player competitor = playerMap.get(id);
 
@@ -281,6 +330,18 @@ public class ReceiveData extends Thread {
 
                     }
 
+                }
+
+                //You died
+
+                else if(packet_number.equals("16")){
+                    //
+                }
+
+                //You won
+
+                else if(packet_number.equals("17")){
+                    //
                 }
 
 
