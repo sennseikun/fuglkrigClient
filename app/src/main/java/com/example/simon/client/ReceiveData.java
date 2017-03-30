@@ -1,5 +1,6 @@
 package com.example.simon.client;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -9,6 +10,8 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by thoma on 3/20/2017.
@@ -93,6 +96,7 @@ public class ReceiveData extends Thread {
                     else{
                         System.out.println("PLAYER_NAME:" + translated.getString("nick"));
                         DataModel.setNick(translated.getString("nick"));
+                        DataModel.setP_id(translated.getInt("pId"));
                     }
                 }
 
@@ -238,6 +242,32 @@ public class ReceiveData extends Thread {
                     AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                     data.delegate = DataModel.getLobbyList();
                     data.execute("5");
+                }
+                else if(packet_number.equals("15")){
+
+                    HashMap<Integer,Player> playerMap = DataModel.getCompetitors();
+
+                    int posX = translated.getInt("posX");
+                    int posY = translated.getInt("posY");
+
+                    Player p = DataModel.getCurrplayer();
+                    p.setXpos(posX);
+                    p.setYpos(posY);
+
+                    int competitorCount = translated.getInt("count");
+                    for(int i = 0; i < competitorCount; i++){
+                        int id = translated.getInt("id" + i);
+
+                        int competitorX = translated.getInt("id"+i+"posX");
+                        int competitorY = translated.getInt("id"+i+"posY");
+
+                        Player competitor = playerMap.get(id);
+
+                        competitor.setXpos(competitorX);
+                        competitor.setYpos(competitorY);
+
+                    }
+
                 }
 
 

@@ -11,6 +11,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +31,7 @@ public class GameView extends SurfaceView {
     private ArrayList<Player> players = new ArrayList<Player>();
     private ArrayList<Bitmap> buttonBitmaps = new ArrayList<Bitmap>();
     private ArrayList<Rect> rects = new ArrayList<Rect>();
+    private RequestHandler handler = DataModel.getSocket();
 
     //Player object for testing
     private Player testPlayer;
@@ -115,6 +121,16 @@ public class GameView extends SurfaceView {
             case  MotionEvent.ACTION_DOWN:
                 if(me.getX() < canvasWidth * 0.9 - players.get(0).getBitmap().getWidth()/2) {
                     players.get(0).setTargetPos(me.getX(), me.getY());
+
+                    JSONObject inputJson = new JSONObject();
+                    try {
+                        inputJson.put("posX",me.getX());
+                        inputJson.put("posY",me.getY());
+                        inputJson.put("p_id",DataModel.getP_id());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                 }else if(rects.get(0).contains((int) me.getX(),(int) me.getY())){
                     Log.d("BUTTON CLICK: ","Button 1 (arrow left)");
                 }else if (rects.get(1).contains((int) me.getX(),(int) me.getY())){
