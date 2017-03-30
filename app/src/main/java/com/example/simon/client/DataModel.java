@@ -243,4 +243,12 @@ public class DataModel {
     public static void setTargetY(int targetY) {
         DataModel.targetY = targetY;
     }
+
+    public static GameActivity getInGame() {
+        return inGame;
+    }
+
+    public static void setInGame(GameActivity inGame) {
+        DataModel.inGame = inGame;
+    }
 }
