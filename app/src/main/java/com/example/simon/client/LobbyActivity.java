@@ -80,7 +80,6 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         newList.addAll(DataModel.getLobbys());
 
         if (newList.isEmpty()) {
-            lv.setVisibility(View.GONE);
             noLobbies.setVisibility(View.VISIBLE);
         } else {
             adapter.updateReceiptsList(newList);
