@@ -172,6 +172,7 @@ public class ReceiveData extends Thread {
                 //Join lobby
 
                 else if(packet_number.equals("4")){
+
                     String lobbyname = translated.getString("LobbyID");
                     String playerCount = translated.getString("PlayerCount");
                     DataModel.updateLobby(lobbyname,playerCount);
