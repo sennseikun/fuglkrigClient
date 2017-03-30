@@ -60,27 +60,26 @@ public class GameView extends SurfaceView {
         canvasHeight = getScreenHeight();
 
         buttonsInit();
+        initTestPlayers();
+    }
 
+    public void initTestPlayers(){
         //Testplayer
         testPlayer = new Player(this.getContext(), R.drawable.bird);
         players.add(0,testPlayer);
         //Define testPlayer's start position
         testPlayer.setXpos(canvasWidth/2 - testPlayer.getBitmap().getHeight()/2);
         testPlayer.setYpos(canvasHeight/2 - testPlayer.getBitmap().getWidth()/2);
-
+        players.add(1, new Player(this.getContext(), R.drawable.blackbird));
     }
 
-    //TODO: finish instantiatePlayers() method.
     public void playersInit(List l){
-        //List l is a list of skinIds to be accessed in R.drawables.
         //Instantiate this client's bird.
         players.add(0, new Player(this.getContext(), R.drawable.bird));
         //Instantiate the competitors' birds.
-        /*
         for(int i = 1; i < l.size(); i++){
-            players.add(0, new Player(this.getContext(), #R.drawable.blackbird#));
+            players.add(0, new Player(this.getContext(), R.drawable.blackbird));
         }
-        */
     }
 
     public void buttonsInit(){
@@ -114,7 +113,7 @@ public class GameView extends SurfaceView {
         switch(me.getAction()){
             case  MotionEvent.ACTION_DOWN:
                 if(me.getX() < canvasWidth * 0.9 - players.get(0).getBitmap().getWidth()/2) {
-                    //playerds.get(0) is the bird belonging to this client
+                    //players.get(0) is the bird belonging to this client
                     players.get(0).setTargetPos(me.getX(), me.getY());
                 }else if(rects.get(0).contains((int) me.getX(),(int) me.getY())){
                     Log.d("BUTTON CLICK: ","Button 1 (arrow left)");
@@ -130,9 +129,13 @@ public class GameView extends SurfaceView {
         return false;
     }
 
-    public Player getTestPlayer() {
-        return testPlayer;
+    public double calculateScreenWidthRatio(int x){
+        return x/canvasWidth;
     }
+    public double calculateScreenHeightRatio(int y){
+        return y/canvasHeight;
+    }
+
     public List<Player> getPlayers(){
         return players;
     }
