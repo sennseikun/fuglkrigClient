@@ -28,6 +28,7 @@ public class GameView extends SurfaceView {
     private SurfaceHolder holder;
     private GameLoopThread glt;
     private int canvasHeight, canvasWidth;
+    private double ratioX, ratioY;
     private ArrayList<Player> players = new ArrayList<Player>();
     private ArrayList<Bitmap> buttonBitmaps = new ArrayList<Bitmap>();
     private ArrayList<Rect> rects = new ArrayList<Rect>();
@@ -65,6 +66,9 @@ public class GameView extends SurfaceView {
         });
         canvasWidth = getScreenWidth();
         canvasHeight = getScreenHeight();
+        //ratio for data to send
+        ratioX = DataModel.getResolutionX()/canvasWidth;
+        ratioY = DataModel.getResolutionY()/canvasHeight;
 
         buttonsInit();
         initTestPlayers();
@@ -137,8 +141,8 @@ public class GameView extends SurfaceView {
 
                     JSONObject inputJson = new JSONObject();
                     try {
-                        inputJson.put("posX",me.getX());
-                        inputJson.put("posY",me.getY());
+                        inputJson.put("posX",me.getX()*ratioX);
+                        inputJson.put("posY",me.getY()*ratioY);
                         inputJson.put("p_id",DataModel.getP_id());
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -156,13 +160,6 @@ public class GameView extends SurfaceView {
                 break;
         }
         return false;
-    }
-
-    public double calculateScreenWidthRatio(int x){
-        return x/canvasWidth;
-    }
-    public double calculateScreenHeightRatio(int y){
-        return y/canvasHeight;
     }
 
     public List<Player> getPlayers(){

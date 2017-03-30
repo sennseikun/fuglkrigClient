@@ -1,6 +1,7 @@
 package com.example.simon.client;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -70,13 +71,19 @@ public class Player {
         return Xpos;
     }
 
-    public void setXpos(float xpos) { Xpos = xpos; }
+    public void setXpos(float xpos) {
+        Xpos = xpos;
+        //Xpos = xpos * (Resources.getSystem().getDisplayMetrics().widthPixels/DataModel.getResolutionX());
+    }
 
     public float getYpos() {
         return Ypos;
     }
 
-    public void setYpos(float ypos) { Ypos = ypos; }
+    public void setYpos(float ypos) {
+        Ypos = ypos;
+        //Ypos = ypos * (Resources.getSystem().getDisplayMetrics().heightPixels/DataModel.getResolutionY());;
+    }
 
     public float getXspeed() {
         return Xspeed;
