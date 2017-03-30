@@ -12,8 +12,6 @@ import org.json.JSONObject;
 public class UpdateServer extends Thread {
 
     private static boolean running = true;
-
-
     public static UpdateServer updater;
     //public static double ratioX = DataModel.getResolutionX()/ DataModel.getMyScreenSizeX();
     //public static double ratioY = DataModel.getResolutionY()/ DataModel.getMyScreenSizeY();
