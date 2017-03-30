@@ -29,7 +29,25 @@ public class DataModel {
     private static String hostPlayer = "";
     private static int targetX = -1;
     private static int targetY = -1;
+    private static int myScreenSizeX;
+    private static int myScreenSizeY;
 
+
+    public static int getMyScreenSizeX() {
+        return myScreenSizeX;
+    }
+
+    public static void setMyScreenSizeX(int myScreenSizeX) {
+        DataModel.myScreenSizeX = myScreenSizeX;
+    }
+
+    public static int getMyScreenSizeY() {
+        return myScreenSizeY;
+    }
+
+    public static void setMyScreenSizeY(int myScreenSizeY) {
+        DataModel.myScreenSizeY = myScreenSizeY;
+    }
 
     public DataModel(){
 
