@@ -276,22 +276,28 @@ public class ReceiveData extends Thread {
 
                 else if(packet_number.equals("14")){
 
-                    int width = translated.getInt("width");
-                    int height = translated.getInt("height");
+                    System.out.println("PACKAGE 14: " +translated);
+
+                    int width = translated.getInt("Width");
+                    int height = translated.getInt("Height");
 
                     DataModel.setResolutionX(width);
                     DataModel.setResolutionY(height);
 
 
-                    JSONArray players = translated.getJSONArray("players");
+                    JSONArray players = translated.getJSONArray("Players");
 
                     for(int i = 0; i < players.length(); i++){
                         JSONObject player = players.getJSONObject(i);
-                        if(player.getInt("PlayerID") == DataModel.getP_id()){
-                            //Add current player here
+
+                        Integer pid = player.getInt("PlayerID");
+
+                        if(pid == DataModel.getP_id()){
+                            Player me = new Player();
+                            DataModel.setCurrplayer(me);
                         }
                         else{
-                            //Add to competitors
+                            DataModel.addCompetitor(pid, new Player());
                         }
                     }
 
@@ -305,30 +311,29 @@ public class ReceiveData extends Thread {
 
                 else if(packet_number.equals("15")){
 
+                    System.out.println("PACKAGE 15: " +translated);
+
                     HashMap<Integer,Player> playerMap = DataModel.getCompetitors();
-
-                    int posX = translated.getInt("posX");
-                    int posY = translated.getInt("posY");
-
-                    Player p = DataModel.getCurrplayer();
-                    p.setXpos(posX);
-                    p.setYpos(posY);
-
-                    JSONArray jsonArray = translated.getJSONArray("Competitors");
+                    JSONArray jsonArray = translated.getJSONArray("Players");
 
                     for(int i = 0; i < jsonArray.length(); i++){
 
                         JSONObject compJSON = jsonArray.getJSONObject(i);
+                        Integer id = compJSON.getInt("PlayerID");
 
-                        int id = compJSON.getInt("id");
-                        int competitorX = compJSON.getInt("posX");
-                        int competitorY = compJSON.getInt("posY");
+                        int playerX = compJSON.getInt("PosX");
+                        int playerY = compJSON.getInt("PosY");
 
-                        Player competitor = playerMap.get(id);
-
-                        competitor.setXpos(competitorX);
-                        competitor.setYpos(competitorY);
-
+                        if(id == DataModel.getP_id()){
+                            Player me = DataModel.getCurrplayer();
+                            me.setXpos(playerX);
+                            me.setYpos(playerY);
+                        }
+                        else{
+                            Player competitor = playerMap.get(id);
+                            competitor.setXpos(playerX);
+                            competitor.setYpos(playerY);
+                        }
                     }
 
                 }
@@ -351,6 +356,7 @@ public class ReceiveData extends Thread {
                     break;
                 } catch (JSONException e) {
                 e.printStackTrace();
+                break;
             }
         }
         if(DataModel.getGameLobby() != null){

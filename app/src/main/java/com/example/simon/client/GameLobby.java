@@ -41,7 +41,8 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
         btn_start = (Button)findViewById(R.id.start_button);
 
-        if(!DataModel.getHostPlayer().equals(DataModel.getNick())){
+        if(!DataModel.getHostPlayer().equals(DataModel.getNick()) || !(DataModel.getPlayersInLobby().size() > 1)){
+            btn_start.setBackgroundResource(R.drawable.disabledstartgamebutton);
             btn_start.setEnabled(false);
         }
 
@@ -159,6 +160,10 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
         else if(output.equals("2")){
             updatePlayers(Integer.parseInt(DataModel.getPlayerCount(name)));
+            if(DataModel.getNick().equals(DataModel.getNick()) && DataModel.getPlayersInLobby().size() > 1){
+                btn_start.setBackgroundResource(R.drawable.startgamebutton);
+                btn_start.setEnabled(true);
+            }
             updateListView();
         }
 

@@ -51,7 +51,7 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
         password = (EditText)findViewById(R.id.password_edit);
         loadingLayout = (RelativeLayout)findViewById(R.id.create_game_loading);
         regularScreen = (LinearLayout)findViewById(R.id.create_view);
-        header = (TextView)findViewById(R.id.item_class);
+        header = (TextView)findViewById(R.id.textView5);
 
         font = Typeface.createFromAsset(getAssets(), "bulkypix.ttf");
         header.setTypeface(font);

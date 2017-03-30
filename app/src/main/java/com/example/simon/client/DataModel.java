@@ -194,6 +194,14 @@ public class DataModel {
         DataModel.competitors = competitors;
     }
 
+    public static void addCompetitor(Integer id,Player player){
+        DataModel.competitors.put(id,player);
+    }
+
+    public static void removeCompetitor(Integer id){
+        DataModel.competitors.remove(id);
+    }
+
     public static int getResolutionX() {
         return resolutionX;
     }
