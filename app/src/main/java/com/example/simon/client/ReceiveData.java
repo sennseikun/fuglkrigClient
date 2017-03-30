@@ -321,8 +321,8 @@ public class ReceiveData extends Thread {
                         JSONObject compJSON = jsonArray.getJSONObject(i);
                         Integer id = compJSON.getInt("PlayerID");
 
-                        int playerX = compJSON.getInt("posX");
-                        int playerY = compJSON.getInt("posY");
+                        int playerX = compJSON.getInt("PosX");
+                        int playerY = compJSON.getInt("PosY");
 
                         if(id == DataModel.getP_id()){
                             Player me = DataModel.getCurrplayer();
@@ -356,6 +356,7 @@ public class ReceiveData extends Thread {
                     break;
                 } catch (JSONException e) {
                 e.printStackTrace();
+                break;
             }
         }
         if(DataModel.getGameLobby() != null){
