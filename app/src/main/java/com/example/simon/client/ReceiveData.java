@@ -135,6 +135,7 @@ public class ReceiveData extends Thread {
                 else if(packet_number.equals("2")){
                     int value = translated.getInt("Valid");
                     DataModel.setGameIsValid(value);
+                    DataModel.setHostPlayer(DataModel.getNick());
                     System.out.println("GameLobby: Launch async");
                     AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                     data.delegate = DataModel.getCreateGame();
