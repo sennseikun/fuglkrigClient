@@ -115,7 +115,7 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         });
 
         if(list.size() == 0){
-            lv.setVisibility(View.GONE);
+            //lv.setVisibility(View.GONE);
             noLobbies.setVisibility(View.VISIBLE);
         }
 

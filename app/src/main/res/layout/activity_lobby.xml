@@ -31,11 +31,13 @@
         android:visibility="gone"/>
 
     <ListView
+        android:id="@+id/lobbylist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/lobbylist"
         android:layout_weight="1"
-        android:background="@drawable/borderlobbylist"/>
+        android:background="@drawable/borderlobbylist"
+        android:clipToPadding="false"
+        android:padding="10dp" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
