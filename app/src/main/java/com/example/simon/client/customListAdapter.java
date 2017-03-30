@@ -59,20 +59,14 @@ public class customListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final ListView result;
+        final View result;
 
         if (convertView == null) {
-            result = (ListView) LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem, parent, false);
+            result = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem, parent, false);
         } else {
-            result = (ListView) convertView;
+            result = convertView;
         }
 
-
-        //////////////////////////////////////////////////////////
-
-        result.setDividerHeight(5);
-
-        ///////////////////////////////////////////////////////////////
 
         Lobby item = getItem(position);
         ((TextView) result.findViewById(R.id.gameName)).setText(item.getName());
