@@ -2,12 +2,15 @@ package com.example.simon.client;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.LinearLayout.LayoutParams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,13 +59,20 @@ public class customListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final View result;
+        final ListView result;
 
         if (convertView == null) {
-            result = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem, parent, false);
+            result = (ListView) LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem, parent, false);
         } else {
-            result = convertView;
+            result = (ListView) convertView;
         }
+
+
+        //////////////////////////////////////////////////////////
+
+        result.setDividerHeight(5);
+
+        ///////////////////////////////////////////////////////////////
 
         Lobby item = getItem(position);
         ((TextView) result.findViewById(R.id.gameName)).setText(item.getName());
