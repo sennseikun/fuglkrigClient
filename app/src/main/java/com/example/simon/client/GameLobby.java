@@ -160,7 +160,7 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
         else if(output.equals("2")){
             updatePlayers(Integer.parseInt(DataModel.getPlayerCount(name)));
-            if(DataModel.getNick().equals(DataModel.getNick()) && DataModel.getPlayersInLobby().size() > 1){
+            if(DataModel.getNick().equals(DataModel.getHostPlayer()) && DataModel.getPlayersInLobby().size() > 1){
                 btn_start.setBackgroundResource(R.drawable.startgamebutton);
                 btn_start.setEnabled(true);
             }
