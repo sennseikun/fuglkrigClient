@@ -277,6 +277,7 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                LoadLobbys();
                 dialog.dismiss();
             }
         });
@@ -300,6 +301,8 @@ public class LobbyActivity extends Activity implements AsyncResponse {
 
         else if(output.equals("2")){
 
+            System.out.println("Gets here lobby activity");
+
             Bundle b = new Bundle();
 
             b.putString("Name",item.getName());
@@ -321,9 +324,6 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         }
         else if(output.equals("5")){
             LaunchAlert("Lobby full","This lobby appears to be full already");
-            loadingLayout.setVisibility(View.GONE);
-            lv.setVisibility(View.VISIBLE);
-            LoadLobbys();
         }
 
         else{
