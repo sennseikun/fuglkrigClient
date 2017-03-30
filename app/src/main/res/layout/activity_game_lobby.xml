@@ -5,7 +5,7 @@
     android:orientation="vertical"
     tools:layout_editor_absoluteX="8dp"
     tools:layout_editor_absoluteY="8dp"
-    android:background="@color/greenback"
+    android:background="@color/colorPrimaryLight"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
@@ -46,21 +46,21 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/borderlobbylist"
-        android:divider="@null"
-        android:dividerHeight="0dp" />
+        android:dividerHeight="0dp"
+        android:divider="@null"/>
 
     <Button
         android:id="@+id/start_button"
-        android:layout_marginTop="100sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/startgamebutton"
+        android:background="@drawable/whenstartgamepressed"
         android:onClick="StartGame"
-        />
+        android:stateListAnimator="@null" />
 
     <Button
         android:id="@+id/cancel_gamelobby"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/cancelbutton" />
+        android:background="@drawable/whencancelpressed"
+        android:stateListAnimator="@null"/>
 </LinearLayout>

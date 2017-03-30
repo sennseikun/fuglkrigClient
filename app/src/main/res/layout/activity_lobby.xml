@@ -67,13 +67,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="goToCreate"
-        android:background="@drawable/createbutton"
-        />
+        android:background="@drawable/whencreatepressed"
+        android:stateListAnimator="@null"/>
 
     <Button
         android:id="@+id/btn_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/refreshbutton"
-        android:onClick="RefreshLobbys"></Button>
+        android:background="@drawable/whenrefreshpressed"
+        android:onClick="RefreshLobbys"
+        android:stateListAnimator="@null"/>
 </LinearLayout>
