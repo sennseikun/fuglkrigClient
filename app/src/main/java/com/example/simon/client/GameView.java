@@ -22,7 +22,6 @@ public class GameView extends SurfaceView {
     private SurfaceHolder holder;
     private GameLoopThread glt;
     private int canvasHeight, canvasWidth;
-    private int clickX, clickY, dx, dy;
     private ArrayList<Player> players = new ArrayList<Player>();
     private ArrayList<Bitmap> buttonBitmaps = new ArrayList<Bitmap>();
     private ArrayList<Rect> rects = new ArrayList<Rect>();
@@ -68,6 +67,7 @@ public class GameView extends SurfaceView {
         //Define testPlayer's start position
         testPlayer.setXpos(canvasWidth/2 - testPlayer.getBitmap().getHeight()/2);
         testPlayer.setYpos(canvasHeight/2 - testPlayer.getBitmap().getWidth()/2);
+
     }
 
     //TODO: finish instantiatePlayers() method.
@@ -114,6 +114,7 @@ public class GameView extends SurfaceView {
         switch(me.getAction()){
             case  MotionEvent.ACTION_DOWN:
                 if(me.getX() < canvasWidth * 0.9 - players.get(0).getBitmap().getWidth()/2) {
+                    //playerds.get(0) is the bird belonging to this client
                     players.get(0).setTargetPos(me.getX(), me.getY());
                 }else if(rects.get(0).contains((int) me.getX(),(int) me.getY())){
                     Log.d("BUTTON CLICK: ","Button 1 (arrow left)");
