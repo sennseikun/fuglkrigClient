@@ -325,6 +325,12 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         else if(output.equals("5")){
             LaunchAlert("Lobby full","This lobby appears to be full already");
         }
+        else if(output.equals("6")){
+            LaunchAlert("Lobby doesn't exist anymore","This lobby appears to have been deleted please refresh");
+        }
+        else if(output.equals("7")){
+            LaunchAlert("Game started","This game has already started");
+        }
 
         else{
             if(!firstLoad){
