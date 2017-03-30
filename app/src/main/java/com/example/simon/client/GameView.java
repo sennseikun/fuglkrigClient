@@ -28,13 +28,14 @@ public class GameView extends SurfaceView {
     private SurfaceHolder holder;
     private GameLoopThread glt;
     private int canvasHeight, canvasWidth;
+    private double ratioX, ratioY;
     private ArrayList<Player> players = new ArrayList<Player>();
     private ArrayList<Bitmap> buttonBitmaps = new ArrayList<Bitmap>();
     private ArrayList<Rect> rects = new ArrayList<Rect>();
     private RequestHandler handler = DataModel.getSocket();
 
     //Player object for testing
-    private Player testPlayer;
+   // private Player testPlayer;
 
     public GameView(Context context){
         super(context);
@@ -63,15 +64,16 @@ public class GameView extends SurfaceView {
                 }
             }
         });
-        canvasWidth = getScreenWidth();
-        canvasHeight = getScreenHeight();
+        DataModel.setMyScreenSizeX(getScreenWidth());
+        DataModel.setMyScreenSizeY(getScreenHeight());
 
         buttonsInit();
-        initTestPlayers();
+        playersInit(DataModel.getCompetitors());
+        //initTestPlayers();
 
         UpdateServer.getInstance().start();
     }
-
+/*
     public void initTestPlayers(){
         //Testplayer
         testPlayer = new Player();
@@ -85,7 +87,7 @@ public class GameView extends SurfaceView {
         players.get(1).setContext(this.getContext());
         players.get(1).setBitmap(R.drawable.blackbird);
     }
-
+*/
     public void playersInit(HashMap hm){
         //Instantiate this client's bird.
         players.add(0, new Player());
@@ -119,10 +121,14 @@ public class GameView extends SurfaceView {
         canvas.drawColor(Color.BLUE);
 
         for(int i = 1; i < players.size(); i++){
-            canvas.drawBitmap(players.get(i).getBitmap(), players.get(i).getXpos(), players.get(i).getYpos(), null);
+            //canvas.drawBitmap(players.get(i).getBitmap(), players.get(i).getXpos(), players.get(i).getYpos(), null);
+            canvas.drawBitmap(DataModel.getCompetitors().get(i).getBitmap(), DataModel.getCompetitors().get(i).getXpos(),
+                    DataModel.getCompetitors().get(i).getYpos(), null);
         }
 
-        canvas.drawBitmap(players.get(0).getBitmap(), players.get(0).getXpos(), players.get(0).getYpos(), null);
+        //canvas.drawBitmap(players.get(0).getBitmap(), players.get(0).getXpos(), players.get(0).getYpos(), null);
+        canvas.drawBitmap(DataModel.getCurrplayer().getBitmap(), DataModel.getCurrplayer().getXpos(),
+                DataModel.getCurrplayer().getYpos(), null);
 
         for(int i = 0; i < buttonBitmaps.size(); i++){
             canvas.drawBitmap(buttonBitmaps.get(i), (float)(0.9*canvasWidth), (float) canvasHeight*i/4, null);
@@ -135,7 +141,7 @@ public class GameView extends SurfaceView {
             case  MotionEvent.ACTION_DOWN:
                 if(me.getX() < canvasWidth * 0.9 - players.get(0).getBitmap().getWidth()/2) {
                     //players.get(0) is the bird belonging to this client
-                    players.get(0).setTargetPos(me.getX(), me.getY());
+                    //players.get(0).setTargetPos(me.getX(), me.getY());
 
                     DataModel.setTargetX((int)me.getX());
                     DataModel.setTargetY((int)me.getY());
@@ -161,13 +167,6 @@ public class GameView extends SurfaceView {
                 break;
         }
         return false;
-    }
-
-    public double calculateScreenWidthRatio(int x){
-        return x/canvasWidth;
-    }
-    public double calculateScreenHeightRatio(int y){
-        return y/canvasHeight;
     }
 
     public List<Player> getPlayers(){
