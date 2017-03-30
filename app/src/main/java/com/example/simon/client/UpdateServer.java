@@ -13,6 +13,8 @@ public class UpdateServer extends Thread {
 
 
     public static UpdateServer updater;
+    //public static double ratioX = DataModel.getResolutionX()/ DataModel.getMyScreenSizeX();
+    //public static double ratioY = DataModel.getResolutionY()/ DataModel.getMyScreenSizeY();
 
     public static UpdateServer getInstance(){
         if(updater == null){
