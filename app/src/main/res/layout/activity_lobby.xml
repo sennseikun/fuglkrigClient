@@ -36,8 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@drawable/borderlobbylist"
-        android:clipToPadding="false"
-        android:padding="10dp" />
+        android:divider="@null"
+        android:dividerHeight="0dp" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -74,8 +74,6 @@
         android:id="@+id/btn_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="RefreshLobbys"
         android:background="@drawable/refreshbutton"
-        >
-    </Button>
+        android:onClick="RefreshLobbys"></Button>
 </LinearLayout>
