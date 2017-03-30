@@ -27,6 +27,8 @@ public class DataModel {
     private static int resolutionX = -1;
     private static  int resolutionY = -1;
     private static String hostPlayer = "";
+    private static int targetX = -1;
+    private static int targetY = -1;
 
 
     public DataModel(){
@@ -224,5 +226,21 @@ public class DataModel {
 
     public static void setHostPlayer(String hostPlayer) {
         DataModel.hostPlayer = hostPlayer;
+    }
+
+    public static int getTargetX() {
+        return targetX;
+    }
+
+    public static void setTargetX(int targetX) {
+        DataModel.targetX = targetX;
+    }
+
+    public static int getTargetY() {
+        return targetY;
+    }
+
+    public static void setTargetY(int targetY) {
+        DataModel.targetY = targetY;
     }
 }
