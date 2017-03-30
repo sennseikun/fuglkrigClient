@@ -26,7 +26,7 @@ public class DataModel {
     private static HashMap<Integer, Player> competitors = new HashMap<>();
     private static int resolutionX = -1;
     private static  int resolutionY = -1;
-    private static String hostPlayer = null;
+    private static String hostPlayer = "";
 
 
     public DataModel(){
