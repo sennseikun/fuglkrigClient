@@ -23,24 +23,37 @@ public class UpdateServer extends Thread {
 
     @Override
     public void run(){
-        RequestHandler handler = DataModel.getSocket();
-        JSONObject sendData = new JSONObject();
-        try {
-            sendData.put("Datatype",12);
-            sendData.put("TargetX",DataModel.getTargetX());
-            sendData.put("TargetY",DataModel.getTargetY());
 
-            handler.sendData(sendData);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        boolean running = true;
+        JSONObject lastSent = null;
 
-        //TODO: Change input to come from server
+        while(running){
 
-        try {
-            this.sleep(1000/30);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            RequestHandler handler = DataModel.getSocket();
+            JSONObject sendData = new JSONObject();
+            try {
+                sendData.put("Datatype",12);
+                sendData.put("TargetX",DataModel.getTargetX());
+                sendData.put("TargetY",DataModel.getTargetY());
+
+                if(lastSent != sendData){
+                    handler.sendData(sendData);
+                    lastSent = sendData;
+                    System.out.println("Sent X: "+DataModel.getTargetX());
+                    System.out.println("Sent Y: "+DataModel.getTargetY());
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            //TODO: Change input to come from server
+
+            try {
+                this.sleep(1000/30);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
     }
