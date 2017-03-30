@@ -11,6 +11,8 @@ import org.json.JSONObject;
 
 public class UpdateServer extends Thread {
 
+    private static boolean running = true;
+
 
     public static UpdateServer updater;
     //public static double ratioX = DataModel.getResolutionX()/ DataModel.getMyScreenSizeX();
@@ -23,26 +25,46 @@ public class UpdateServer extends Thread {
         return updater;
     }
 
+    public static boolean getRunning(){
+        return running;
+    }
+
+    public static void stopRunning(){
+        running = false;
+    }
+
     @Override
     public void run(){
-        RequestHandler handler = DataModel.getSocket();
-        JSONObject sendData = new JSONObject();
-        try {
-            sendData.put("Datatype",12);
-            sendData.put("TargetX",DataModel.getTargetX());
-            sendData.put("TargetY",DataModel.getTargetY());
 
-            handler.sendData(sendData);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        JSONObject lastSent = null;
 
-        //TODO: Change input to come from server
+        while(running){
 
-        try {
-            this.sleep(1000/30);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            RequestHandler handler = DataModel.getSocket();
+            JSONObject sendData = new JSONObject();
+            try {
+                sendData.put("Datatype",12);
+                sendData.put("TargetX",DataModel.getTargetX());
+                sendData.put("TargetY",DataModel.getTargetY());
+
+                if(lastSent != sendData){
+                    handler.sendData(sendData);
+                    lastSent = sendData;
+                    System.out.println("Sent X: "+DataModel.getTargetX());
+                    System.out.println("Sent Y: "+DataModel.getTargetY());
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            //TODO: Change input to come from server
+
+            try {
+                this.sleep(1000/30);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
     }
