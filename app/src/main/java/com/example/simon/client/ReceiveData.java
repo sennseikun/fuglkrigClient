@@ -243,6 +243,19 @@ public class ReceiveData extends Thread {
                     data.delegate = DataModel.getLobbyList();
                     data.execute("5");
                 }
+
+                else if(packet_number.equals("20")){
+                    AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                    data.delegate = DataModel.getLobbyList();
+                    data.execute("6");
+                }
+                else if(packet_number.equals("21")){
+                    AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                    data.delegate = DataModel.getLobbyList();
+                    data.execute("7");
+                }
+
+
                 else if(packet_number.equals("15")){
 
                     HashMap<Integer,Player> playerMap = DataModel.getCompetitors();
