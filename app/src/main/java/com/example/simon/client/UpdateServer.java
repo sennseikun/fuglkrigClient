@@ -11,6 +11,8 @@ import org.json.JSONObject;
 
 public class UpdateServer extends Thread {
 
+    private static boolean running = true;
+
 
     public static UpdateServer updater;
 
@@ -21,10 +23,17 @@ public class UpdateServer extends Thread {
         return updater;
     }
 
+    public static boolean getRunning(){
+        return running;
+    }
+
+    public static void stopRunning(){
+        running = false;
+    }
+
     @Override
     public void run(){
 
-        boolean running = true;
         JSONObject lastSent = null;
 
         while(running){
