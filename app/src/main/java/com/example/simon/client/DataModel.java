@@ -18,13 +18,15 @@ public class DataModel {
     private static String lastSent = null;
     private static LobbyActivity lobbyList = null;
     private static CreateGameActivity CreateGame = null;
+    private static GameActivity inGame = null;
     private static List<String> playersInLobby = new ArrayList<>();
     private static DataModel model = null;
     private static int p_id = -1;
     private static Player currplayer;
-    private static HashMap<Integer, Player> competitors;
+    private static HashMap<Integer, Player> competitors = new HashMap<>();
     private static int resolutionX = -1;
     private static  int resolutionY = -1;
+    private static String hostPlayer = null;
 
 
     public DataModel(){
@@ -206,5 +208,13 @@ public class DataModel {
 
     public static void setResolutionY(int resolutionY) {
         DataModel.resolutionY = resolutionY;
+    }
+
+    public static String getHostPlayer() {
+        return hostPlayer;
+    }
+
+    public static void setHostPlayer(String hostPlayer) {
+        DataModel.hostPlayer = hostPlayer;
     }
 }
