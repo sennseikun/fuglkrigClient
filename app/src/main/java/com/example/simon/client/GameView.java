@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,7 +28,6 @@ public class GameView extends SurfaceView {
     private SurfaceHolder holder;
     private GameLoopThread glt;
     private int canvasHeight, canvasWidth;
-    private int clickX, clickY, dx, dy;
     private ArrayList<Player> players = new ArrayList<Player>();
     private ArrayList<Bitmap> buttonBitmaps = new ArrayList<Bitmap>();
     private ArrayList<Rect> rects = new ArrayList<Rect>();
@@ -67,26 +67,34 @@ public class GameView extends SurfaceView {
         canvasHeight = getScreenHeight();
 
         buttonsInit();
+        initTestPlayers();
+    }
 
+    public void initTestPlayers(){
         //Testplayer
-        testPlayer = new Player(this.getContext(), R.drawable.bird);
+        testPlayer = new Player();
         players.add(0,testPlayer);
+        players.get(0).setContext(this.getContext());
+        players.get(0).setBitmap(R.drawable.bird);
         //Define testPlayer's start position
         testPlayer.setXpos(canvasWidth/2 - testPlayer.getBitmap().getHeight()/2);
         testPlayer.setYpos(canvasHeight/2 - testPlayer.getBitmap().getWidth()/2);
+        players.add(1, new Player());
+        players.get(1).setContext(this.getContext());
+        players.get(1).setBitmap(R.drawable.blackbird);
     }
 
-    //TODO: finish instantiatePlayers() method.
-    public void playersInit(List l){
-        //List l is a list of skinIds to be accessed in R.drawables.
+    public void playersInit(HashMap hm){
         //Instantiate this client's bird.
-        players.add(0, new Player(this.getContext(), R.drawable.bird));
-        //Instantiate the competitors' birds.
-        /*
-        for(int i = 1; i < l.size(); i++){
-            players.add(0, new Player(this.getContext(), #R.drawable.blackbird#));
+        players.add(0, new Player());
+        players.get(0).setContext(this.getContext());
+        players.get(0).setBitmap(R.drawable.bird);
+        //Instantiate the competitors' birds. hm is the competitors hashmap
+        for(int i = 1; i < hm.size(); i++){
+            players.add(i, new Player());
+            players.get(i).setContext(this.getContext());
+            players.get(i).setBitmap(R.drawable.blackbird);
         }
-        */
     }
 
     public void buttonsInit(){
@@ -107,9 +115,13 @@ public class GameView extends SurfaceView {
     @Override
     public void onDraw(Canvas canvas){
         canvas.drawColor(Color.BLUE);
-        for(int i = 0; i < players.size(); i++){
+
+        for(int i = 1; i < players.size(); i++){
             canvas.drawBitmap(players.get(i).getBitmap(), players.get(i).getXpos(), players.get(i).getYpos(), null);
         }
+
+        canvas.drawBitmap(players.get(0).getBitmap(), players.get(0).getXpos(), players.get(0).getYpos(), null);
+
         for(int i = 0; i < buttonBitmaps.size(); i++){
             canvas.drawBitmap(buttonBitmaps.get(i), (float)(0.9*canvasWidth), (float) canvasHeight*i/4, null);
         }
@@ -120,6 +132,7 @@ public class GameView extends SurfaceView {
         switch(me.getAction()){
             case  MotionEvent.ACTION_DOWN:
                 if(me.getX() < canvasWidth * 0.9 - players.get(0).getBitmap().getWidth()/2) {
+                    //players.get(0) is the bird belonging to this client
                     players.get(0).setTargetPos(me.getX(), me.getY());
 
                     JSONObject inputJson = new JSONObject();
@@ -145,9 +158,13 @@ public class GameView extends SurfaceView {
         return false;
     }
 
-    public Player getTestPlayer() {
-        return testPlayer;
+    public double calculateScreenWidthRatio(int x){
+        return x/canvasWidth;
     }
+    public double calculateScreenHeightRatio(int y){
+        return y/canvasHeight;
+    }
+
     public List<Player> getPlayers(){
         return players;
     }

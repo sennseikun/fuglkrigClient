@@ -8,9 +8,6 @@ import android.util.Log;
 
 /**
  * Created by oskar on 23.03.2017.
- *
-* The int "pictureId" in this class' constructor should refer to the bird picture's id, e.g. R.drawable.bird.
-* This class will be instantiated in GameView, hence the context should be the same as the one in GameView(Context context).
 */
 
 public class Player {
@@ -18,11 +15,9 @@ public class Player {
     private float Xpos, Ypos, Xspeed, Yspeed, XtargetPos, YtargetPos, dx, dy, direction;
     private Bitmap bitmap;
     private Matrix matrix;
+    Context context;
 
-    public Player(Context context, int pictureId){
-        //TODO: set initial position and speed
-
-        this.bitmap = BitmapFactory.decodeResource(context.getResources(), pictureId);
+    public Player(){
         this.setMatrix(new Matrix());
         this.setDx(0);
         this.setDy(0);
@@ -51,6 +46,14 @@ public class Player {
 
         Xpos += Xspeed * 15;
         Ypos += Yspeed * 15;
+    }
+
+    public void setContext(Context context){
+        this.context = context;
+    }
+
+    public Context getContext(){
+        return this.context;
     }
 
     public int getPlayerId() {
@@ -95,10 +98,6 @@ public class Player {
         this.direction = (float) Math.atan2(dy, dx);
     }
 
-    public Bitmap getBitmap(){
-        return bitmap;
-    }
-
     public void setMatrix(Matrix m){
         this.matrix = m;
     }
@@ -113,5 +112,13 @@ public class Player {
 
     public float getDy() { return dy; }
 
+    public void setBitmap(int pictureId){
+
+        this.bitmap = BitmapFactory.decodeResource(getContext().getResources(), pictureId);
+    }
+
+    public Bitmap getBitmap(){
+        return bitmap;
+    }
 
 }
