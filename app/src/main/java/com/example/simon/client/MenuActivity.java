@@ -99,6 +99,7 @@ public class MenuActivity extends Activity {
                 JSONObject removeReq = new JSONObject();
                 try {
                     removeReq.put("Datatype","5");
+                    System.out.println("Gets into here");
                     handler.sendData(removeReq);
                 } catch (JSONException e) {
                     e.printStackTrace();
