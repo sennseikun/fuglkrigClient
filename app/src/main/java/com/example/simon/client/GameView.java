@@ -68,6 +68,8 @@ public class GameView extends SurfaceView {
 
         buttonsInit();
         initTestPlayers();
+
+        UpdateServer.getInstance().start();
     }
 
     public void initTestPlayers(){
@@ -134,6 +136,9 @@ public class GameView extends SurfaceView {
                 if(me.getX() < canvasWidth * 0.9 - players.get(0).getBitmap().getWidth()/2) {
                     //players.get(0) is the bird belonging to this client
                     players.get(0).setTargetPos(me.getX(), me.getY());
+
+                    DataModel.setTargetX((int)me.getX());
+                    DataModel.setTargetY((int)me.getY());
 
                     JSONObject inputJson = new JSONObject();
                     try {
