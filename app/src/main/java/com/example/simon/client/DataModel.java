@@ -31,25 +31,25 @@ public class DataModel {
     private static String hostPlayer = "";
     private static int targetX = -1;
     private static int targetY = -1;
-    private static int myScreenSizeX;
-    private static int myScreenSizeY;
+    private static int ratioX;
+    private static int ratioY;
     private static Context gameContext;
 
 
-    public static int getMyScreenSizeX() {
-        return myScreenSizeX;
+    public static int getRatioX() {
+        return ratioX;
     }
 
-    public static void setMyScreenSizeX(int myScreenSizeX) {
-        DataModel.myScreenSizeX = myScreenSizeX;
+    public static void setRatioX(int ratioX) {
+        DataModel.ratioX = ratioX;
     }
 
-    public static int getMyScreenSizeY() {
-        return myScreenSizeY;
+    public static int getRatioY() {
+        return ratioY;
     }
 
-    public static void setMyScreenSizeY(int myScreenSizeY) {
-        DataModel.myScreenSizeY = myScreenSizeY;
+    public static void setRatioY(int ratioY) {
+        DataModel.ratioY = ratioY;
     }
 
     public DataModel(){
