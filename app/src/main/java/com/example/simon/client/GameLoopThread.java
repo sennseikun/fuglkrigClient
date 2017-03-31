@@ -27,7 +27,7 @@ public class GameLoopThread extends Thread {
             try {
                 c = view.getHolder().lockCanvas();
                 synchronized (view.getHolder()) {
-                    view.getPlayers().get(0).nextTick();
+                    DataModel.getCurrplayer().nextTick();
                     view.onDraw(c);
                 }
             } finally {

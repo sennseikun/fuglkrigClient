@@ -1,5 +1,7 @@
 package com.example.simon.client;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +31,26 @@ public class DataModel {
     private static String hostPlayer = "";
     private static int targetX = -1;
     private static int targetY = -1;
+    private static int myScreenSizeX;
+    private static int myScreenSizeY;
+    private static Context gameContext;
 
+
+    public static int getMyScreenSizeX() {
+        return myScreenSizeX;
+    }
+
+    public static void setMyScreenSizeX(int myScreenSizeX) {
+        DataModel.myScreenSizeX = myScreenSizeX;
+    }
+
+    public static int getMyScreenSizeY() {
+        return myScreenSizeY;
+    }
+
+    public static void setMyScreenSizeY(int myScreenSizeY) {
+        DataModel.myScreenSizeY = myScreenSizeY;
+    }
 
     public DataModel(){
 
@@ -242,5 +263,21 @@ public class DataModel {
 
     public static void setTargetY(int targetY) {
         DataModel.targetY = targetY;
+    }
+
+    public static GameActivity getInGame() {
+        return inGame;
+    }
+
+    public static void setInGame(GameActivity inGame) {
+        DataModel.inGame = inGame;
+    }
+
+    public static Context getGameContext() {
+        return gameContext;
+    }
+
+    public static void setGameContext(Context gameContext) {
+        DataModel.gameContext = gameContext;
     }
 }

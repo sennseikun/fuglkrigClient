@@ -25,6 +25,8 @@ public class ReceiveData extends Thread {
     DataInputStream in;
     private boolean isStopped;
     private boolean isInit;
+   // private static int ratioX = DataModel.getMyScreenSizeX() / DataModel.getResolutionX();
+   // private static int ratioY = DataModel.getMyScreenSizeY() / DataModel.getResolutionY();
 
     private final String init_packet = "0";
 
@@ -370,6 +372,12 @@ public class ReceiveData extends Thread {
             AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
             data.delegate = DataModel.getLobbyList();
             data.execute("1");
+        }
+        if(DataModel.getInGame() != null){
+            System.out.println("Connection lost: Ending game activity");
+            AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+            data.delegate = DataModel.getLobbyList();
+            data.execute();
         }
 
 

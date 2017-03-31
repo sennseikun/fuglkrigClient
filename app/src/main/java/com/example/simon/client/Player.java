@@ -1,6 +1,7 @@
 package com.example.simon.client;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -15,7 +16,7 @@ public class Player {
     private float Xpos, Ypos, Xspeed, Yspeed, XtargetPos, YtargetPos, dx, dy, direction;
     private Bitmap bitmap;
     private Matrix matrix;
-    Context context;
+    private Context context;
 
     public Player(){
         this.setMatrix(new Matrix());
@@ -39,7 +40,7 @@ public class Player {
     }
 
     public void nextTick() {
-        if ((dx > 0 && Xpos >= XtargetPos) || (dx < 0 && Xpos <= XtargetPos)){
+       if ((dx > 0 && Xpos >= XtargetPos) || (dx < 0 && Xpos <= XtargetPos)){
             this.Xspeed = 0;
         }
         if ((dy > 0 && Ypos >= YtargetPos) || (dy < 0 && Ypos <= YtargetPos)){
@@ -48,6 +49,8 @@ public class Player {
 
         Xpos += Xspeed * 15;
         Ypos += Yspeed * 15;
+
+
     }
 
     public void setContext(Context context){
@@ -70,13 +73,18 @@ public class Player {
         return Xpos;
     }
 
-    public void setXpos(float xpos) { Xpos = xpos; }
+    public void setXpos(float xpos) {
+        Xpos = xpos;
+        //Xpos = xpos * (Resources.getSystem().getDisplayMetrics().widthPixels/DataModel.getResolutionX());
+    }
 
     public float getYpos() {
         return Ypos;
     }
 
-    public void setYpos(float ypos) { Ypos = ypos; }
+    public void setYpos(float ypos) {
+        //Ypos = ypos * (Resources.getSystem().getDisplayMetrics().heightPixels/DataModel.getResolutionY());;
+    }
 
     public float getXspeed() {
         return Xspeed;
@@ -115,8 +123,7 @@ public class Player {
     public float getDy() { return dy; }
 
     public void setBitmap(int pictureId){
-
-        this.bitmap = BitmapFactory.decodeResource(getContext().getResources(), pictureId);
+        this.bitmap = BitmapFactory.decodeResource(DataModel.getGameContext().getResources(), pictureId);
     }
 
     public Bitmap getBitmap(){
