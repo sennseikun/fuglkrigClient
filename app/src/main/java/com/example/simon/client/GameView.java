@@ -70,7 +70,6 @@ public class GameView extends SurfaceView {
         DataModel.setMyScreenSizeY(getScreenHeight());
 
         buttonsInit();
-        playersInit(DataModel.getCompetitors());
         //initTestPlayers();
 
         UpdateServer.getInstance().start();
@@ -90,16 +89,12 @@ public class GameView extends SurfaceView {
         players.get(1).setBitmap(R.drawable.blackbird);
     }
 */
-    public void playersInit(HashMap hm){
-        //Instantiate this client's bird.
-        players.add(0, new Player());
-        players.get(0).setContext(this.getContext());
-        players.get(0).setBitmap(R.drawable.bird);
+    public void competitorsInit(HashMap hm){
         //Instantiate the competitors' birds. hm is the competitors hashmap
         for(int i = 1; i < hm.size(); i++){
-            players.add(i, new Player());
-            players.get(i).setContext(this.getContext());
-            players.get(i).setBitmap(R.drawable.blackbird);
+            DataModel.getCompetitors().get(i).setBitmap(R.drawable.blackbird);
+            DataModel.getCompetitors().get(i).setXpos(canvasWidth/3 - players.get(i).getBitmap().getWidth()/2);
+            DataModel.getCompetitors().get(i).setXpos(canvasHeight/3 - players.get(i).getBitmap().getHeight()/2);
         }
     }
 
@@ -122,17 +117,23 @@ public class GameView extends SurfaceView {
     public void onDraw(Canvas canvas){
         canvas.drawColor(Color.BLUE);
 
+        if(DataModel.getCompetitors().get(0).getBitmap() == null){
+            competitorsInit(DataModel.getCompetitors());
+        }
         for(int i = 1; i < players.size(); i++){
             //canvas.drawBitmap(players.get(i).getBitmap(), players.get(i).getXpos(), players.get(i).getYpos(), null);
             canvas.drawBitmap(DataModel.getCompetitors().get(i).getBitmap(), DataModel.getCompetitors().get(i).getXpos(),
                     DataModel.getCompetitors().get(i).getYpos(), null);
         }
 
-        if(!(DataModel.getCurrplayer().getBitmap() == null)){
-            //canvas.drawBitmap(players.get(0).getBitmap(), players.get(0).getXpos(), players.get(0).getYpos(), null);
-            canvas.drawBitmap(DataModel.getCurrplayer().getBitmap(), DataModel.getCurrplayer().getXpos(),
-                    DataModel.getCurrplayer().getYpos(), null);
+        if(DataModel.getCurrplayer().getBitmap() == null){
+            DataModel.getCurrplayer().setBitmap(R.drawable.bird);
+            DataModel.getCurrplayer().setXpos(canvasWidth/2 - DataModel.getCurrplayer().getBitmap().getWidth()/2);
+            DataModel.getCurrplayer().setYpos(canvasHeight/2 - DataModel.getCurrplayer().getBitmap().getHeight()/2);
         }
+        //canvas.drawBitmap(players.get(0).getBitmap(), players.get(0).getXpos(), players.get(0).getYpos(), null);
+        canvas.drawBitmap(DataModel.getCurrplayer().getBitmap(), DataModel.getCurrplayer().getXpos(),
+                DataModel.getCurrplayer().getYpos(), null);
 
         for(int i = 0; i < buttonBitmaps.size(); i++){
             canvas.drawBitmap(buttonBitmaps.get(i), (float)(0.9*canvasWidth), (float) canvasHeight*i/4, null);
