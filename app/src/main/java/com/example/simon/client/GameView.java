@@ -64,6 +64,8 @@ public class GameView extends SurfaceView {
                 }
             }
         });
+        canvasHeight = getScreenHeight();
+        canvasWidth = getScreenWidth();
         DataModel.setMyScreenSizeX(getScreenWidth());
         DataModel.setMyScreenSizeY(getScreenHeight());
 
