@@ -123,7 +123,7 @@ public class GameView extends SurfaceView {
             competitorsInit(DataModel.getCompetitors());
         }
 
-        for(int i = 1; i < players.size(); i++){
+        for(Object i: DataModel.getCompetitors().keySet()){
             //canvas.drawBitmap(players.get(i).getBitmap(), players.get(i).getXpos(), players.get(i).getYpos(), null);
             canvas.drawBitmap(DataModel.getCompetitors().get(i).getBitmap(), DataModel.getCompetitors().get(i).getXpos(),
                     DataModel.getCompetitors().get(i).getYpos(), null);
