@@ -152,8 +152,8 @@ public class GameView extends SurfaceView {
                     //players.get(0) is the bird belonging to this client
                     //players.get(0).setTargetPos(me.getX(), me.getY());
 
-                    DataModel.setTargetX((int)me.getX());
-                    DataModel.setTargetY((int)me.getY());
+                    DataModel.setTargetX((me.getX()));
+                    DataModel.setTargetY((me.getY()));
 
                     JSONObject inputJson = new JSONObject();
                     try {
