@@ -85,7 +85,13 @@ public class PlayerListAdapter extends BaseAdapter {
         ((TextView) result.findViewById(R.id.gameName)).setText("Player: "+getPosition(item));
         ((TextView) result.findViewById(R.id.playerCount)).setText(item);
         ImageView image = (ImageView) result.findViewById(R.id.image_id);
-        image.setImageResource(R.drawable.passwordlock);
+
+        if(item.equals(DataModel.getNick())) {
+            image.setImageResource(R.drawable.bird);
+        }
+        else {
+            image.setImageResource(R.drawable.blackbird);
+        }
 
         return result;
     }

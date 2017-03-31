@@ -379,7 +379,7 @@ public class ReceiveData extends Thread {
             System.out.println("Connection lost: Ending game activity");
             AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
             data.delegate = DataModel.getLobbyList();
-            data.execute();
+            data.execute("1");
         }
 
 
