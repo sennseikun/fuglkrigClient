@@ -69,6 +69,10 @@ public class GameView extends SurfaceView {
         canvasWidth = getScreenWidth();
         ratioX = getScreenWidth() / DataModel.getResolutionX();
         ratioY = getScreenHeight() / DataModel.getResolutionY();
+        System.out.println("Canvas width "+ canvasWidth);
+        System.out.println("canvas height "+ canvasHeight);
+        System.out.println("ratioX) "+ ratioX);
+        System.out.println("ratioY "+ratioY);
 
         buttonsInit();
         //initTestPlayers();
