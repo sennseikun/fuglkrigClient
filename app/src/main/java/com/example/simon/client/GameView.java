@@ -147,7 +147,7 @@ public class GameView extends SurfaceView {
     public boolean onTouchEvent(MotionEvent me) {
         switch(me.getAction()){
             case  MotionEvent.ACTION_DOWN:
-                if(me.getX() < canvasWidth * 0.9 - players.get(0).getBitmap().getWidth()/2) {
+                if(me.getX() < canvasWidth * 0.9 - DataModel.getCurrplayer().getBitmap().getWidth()/2) {
                     //players.get(0) is the bird belonging to this client
                     //players.get(0).setTargetPos(me.getX(), me.getY());
 
@@ -187,9 +187,6 @@ public class GameView extends SurfaceView {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
-    public void nextTick(){
-
-    }
 
     /*
     TODO: Create correction method
