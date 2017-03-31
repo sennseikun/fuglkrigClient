@@ -70,8 +70,8 @@ public class UpdateServer extends Thread {
             JSONObject sendData = new JSONObject();
             try {
                 sendData.put("Datatype",12);
-                sendData.put("TargetX",DataModel.getTargetX() / DataModel.getRatioX());
-                sendData.put("TargetY",DataModel.getTargetY() / DataModel.getRatioY());
+                sendData.put("TargetX",(int)(DataModel.getTargetX()));
+                sendData.put("TargetY",(int)(DataModel.getTargetY()));
 
                 if(compareJson(lastSent, sendData)){
                     System.out.println("last: " + lastSent);

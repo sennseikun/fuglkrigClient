@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -65,14 +66,21 @@ public class GameView extends SurfaceView {
                 }
             }
         });
+
         canvasHeight = getScreenHeight();
         canvasWidth = getScreenWidth();
-        ratioX = getScreenWidth() / DataModel.getResolutionX();
-        ratioY = getScreenHeight() / DataModel.getResolutionY();
+
         System.out.println("Canvas width "+ canvasWidth);
         System.out.println("canvas height "+ canvasHeight);
-        System.out.println("ratioX) "+ ratioX);
-        System.out.println("ratioY "+ratioY);
+
+        System.out.println("ResolutionX: " + DataModel.getResolutionX());
+        System.out.println("ResolutionY: " + DataModel.getResolutionY());
+
+        ratioX = getScreenWidth() / DataModel.getResolutionX();
+        ratioY = getScreenHeight() / DataModel.getResolutionY();
+
+        DataModel.setRatioX(ratioX);
+        DataModel.setRatioY(ratioY);
 
         buttonsInit();
         //initTestPlayers();

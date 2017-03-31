@@ -31,24 +31,24 @@ public class DataModel {
     private static String hostPlayer = "";
     private static int targetX = -1;
     private static int targetY = -1;
-    private static int ratioX;
-    private static int ratioY;
+    private static double ratioX;
+    private static double ratioY;
     private static Context gameContext;
 
 
-    public static int getRatioX() {
+    public static double getRatioX() {
         return ratioX;
     }
 
-    public static void setRatioX(int ratioX) {
+    public static void setRatioX(double ratioX) {
         DataModel.ratioX = ratioX;
     }
 
-    public static int getRatioY() {
+    public static double getRatioY() {
         return ratioY;
     }
 
-    public static void setRatioY(int ratioY) {
+    public static void setRatioY(double ratioY) {
         DataModel.ratioY = ratioY;
     }
 
