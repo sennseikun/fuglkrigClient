@@ -283,6 +283,9 @@ public class ReceiveData extends Thread {
                     int width = translated.getInt("Width");
                     int height = translated.getInt("Height");
 
+                    System.out.println("Height from server " + height);
+                    System.out.println("Width from server " + width);
+
                     DataModel.setResolutionX(width);
                     DataModel.setResolutionY(height);
 
@@ -330,13 +333,13 @@ public class ReceiveData extends Thread {
 
                         if(id == DataModel.getP_id()){
                             Player me = DataModel.getCurrplayer();
-                            me.setXpos(playerX * DataModel.getRatioX());
-                            me.setYpos(playerY * DataModel.getRatioY());
+                            me.setXpos(playerX);
+                            me.setYpos(playerY);
                         }
                         else{
                             Player competitor = playerMap.get(id);
-                            competitor.setXpos(playerX * DataModel.getResolutionX());
-                            competitor.setYpos(playerY * DataModel.getRatioY());
+                            competitor.setXpos(((playerX)));
+                            competitor.setYpos((playerY));
                         }
                     }
 
