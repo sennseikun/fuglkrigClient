@@ -42,11 +42,13 @@ public class UpdateServer extends Thread {
 
         try {
             //checks if X is different
-            if (obj1.get("TargetX") != obj2.get("TargetX")) {
+            if (!obj1.get("TargetX").equals(obj2.get("TargetX"))) {
+                System.out.println("X is different " + obj1.get("TargetX") + " " + obj2.get("TargetX"));
                 different = true;
             }
             //checks if Y is different
-            else if (obj1.get("TargetY") != obj2.get("TargetY")) {
+            else if (!obj1.get("TargetY").equals(obj2.get("TargetY"))) {
+                System.out.println("Y is different " + obj1.get("TargetY") + " " + obj2.get("TargetY"));
                 different = true;
             }
 
