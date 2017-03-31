@@ -94,8 +94,8 @@ public class GameView extends SurfaceView {
         //Instantiate the competitors' birds. hm is the competitors hashmap
         for(Object id: hm.keySet()){
             DataModel.getCompetitors().get(id).setBitmap(R.drawable.blackbird);
-            DataModel.getCompetitors().get(id).setXpos(canvasWidth/3 - DataModel.getCompetitors().get(i).getBitmap().getWidth()/2);
-            DataModel.getCompetitors().get(id).setXpos(canvasHeight/3 - DataModel.getCompetitors().get(i).getBitmap().getHeight()/2);
+            DataModel.getCompetitors().get(id).setXpos(canvasWidth/3 - DataModel.getCompetitors().get(id).getBitmap().getWidth()/2);
+            DataModel.getCompetitors().get(id).setXpos(canvasHeight/3 - DataModel.getCompetitors().get(id).getBitmap().getHeight()/2);
         }
         isInit = true;
     }
