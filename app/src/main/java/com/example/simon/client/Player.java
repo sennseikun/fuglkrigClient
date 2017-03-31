@@ -1,11 +1,9 @@
 package com.example.simon.client;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.util.Log;
 
 /**
  * Created by oskar on 23.03.2017.
@@ -13,7 +11,15 @@ import android.util.Log;
 
 public class Player {
     private int playerId;
-    private float Xpos, Ypos, Xspeed, Yspeed, XtargetPos, YtargetPos, dx, dy, direction;
+    private double Xpos;
+    private double Ypos;
+    private double Xspeed;
+    private double Yspeed;
+    private double XtargetPos;
+    private double YtargetPos;
+    private double dx;
+    private double dy;
+    private double direction;
     private Bitmap bitmap = null;
     private Matrix matrix;
     private Context context;
@@ -26,12 +32,12 @@ public class Player {
 
 
 
-    public void setTargetPos(float x, float y) {
+    public void setTargetPos(double x, double y) {
         dx = x - Xpos;
         dy = y - Ypos;
 
         //normalize
-        float targetPosLength = (float) Math.sqrt(dx*dx + dy*dy);
+        double targetPosLength = (double) Math.sqrt(dx*dx + dy*dy);
         this.Xspeed = dx/targetPosLength;
         this.Yspeed = dy/targetPosLength;
 
@@ -69,44 +75,44 @@ public class Player {
         this.playerId = playerId;
     }
 
-    public float getXpos() {
+    public double getXpos() {
         return Xpos;
     }
 
-    public void setXpos(float xpos) {
+    public void setXpos(double xpos) {
         Xpos = xpos;
         //Xpos = xpos * (Resources.getSystem().getDisplayMetrics().widthPixels/DataModel.getResolutionX());
     }
 
-    public float getYpos() {
+    public double getYpos() {
         return Ypos;
     }
 
-    public void setYpos(float ypos) {
+    public void setYpos(double ypos) {
         Ypos = ypos;
         //Ypos = ypos * (Resources.getSystem().getDisplayMetrics().heightPixels/DataModel.getResolutionY());;
     }
 
-    public float getXspeed() {
+    public double getXspeed() {
         return Xspeed;
     }
 
-    public void setXspeed(float xspeed) {
+    public void setXspeed(double xspeed) {
         Xspeed = xspeed;
     }
 
-    public float getYspeed() { return Yspeed; }
+    public double getYspeed() { return Yspeed; }
 
-    public void setYspeed(float yspeed) {
+    public void setYspeed(double yspeed) {
         Yspeed = yspeed;
     }
 
-    public float getAngle() {
+    public double getAngle() {
         return direction;
     }
 
-    public void setAngle(float dx, float dy) {
-        this.direction = (float) Math.atan2(dy, dx);
+    public void setAngle(double dx, double dy) {
+        this.direction = (double) Math.atan2(dy, dx);
     }
 
     public void setMatrix(Matrix m){
@@ -115,13 +121,13 @@ public class Player {
 
     public Matrix getMatrix() { return matrix; }
 
-    public void setDx(float dx) { this.dx = dx; }
+    public void setDx(double dx) { this.dx = dx; }
 
-    public float getDx() { return dx; }
+    public double getDx() { return dx; }
 
-    public void setDy(float dy) { this.dy = dy; }
+    public void setDy(double dy) { this.dy = dy; }
 
-    public float getDy() { return dy; }
+    public double getDy() { return dy; }
 
     public void setBitmap(int pictureId){
         this.bitmap = BitmapFactory.decodeResource(DataModel.getGameContext().getResources(), pictureId);

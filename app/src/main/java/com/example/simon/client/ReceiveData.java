@@ -286,9 +286,20 @@ public class ReceiveData extends Thread {
                     System.out.println("Height from server " + height);
                     System.out.println("Width from server " + width);
 
+                    System.out.println("Screenwidth: " + DataModel.getScreenWidth());
+                    System.out.println("ScreenHeight: " + DataModel.getScreenHeight());
+
                     DataModel.setResolutionX(width);
                     DataModel.setResolutionY(height);
 
+                    double ratioX = DataModel.getScreenWidth()/width;
+                    double ratioY = DataModel.getScreenHeight()/height;
+
+                    System.out.println("RatioX set: " + ratioX);
+                    System.out.println("RatioY set: "+ ratioY);
+
+                    DataModel.setRatioX(ratioX);
+                    DataModel.setRatioY(ratioY);
 
                     JSONArray players = translated.getJSONArray("Players");
 
@@ -333,8 +344,11 @@ public class ReceiveData extends Thread {
 
                         if(id == DataModel.getP_id()){
                             Player me = DataModel.getCurrplayer();
-                            me.setXpos(playerX);
-                            me.setYpos(playerY);
+
+                            System.out.println("RatioX receive: " + DataModel.getRatioX());
+
+                            me.setXpos(playerX*DataModel.getRatioX());
+                            me.setYpos(playerY*DataModel.getRatioY());
                         }
                         else{
                             Player competitor = playerMap.get(id);
