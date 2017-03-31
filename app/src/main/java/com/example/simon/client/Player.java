@@ -16,7 +16,7 @@ public class Player {
     private float Xpos, Ypos, Xspeed, Yspeed, XtargetPos, YtargetPos, dx, dy, direction;
     private Bitmap bitmap;
     private Matrix matrix;
-    Context context;
+    private Context context;
 
     public Player(){
         this.setMatrix(new Matrix());
@@ -123,8 +123,7 @@ public class Player {
     public float getDy() { return dy; }
 
     public void setBitmap(int pictureId){
-
-        this.bitmap = BitmapFactory.decodeResource(getContext().getResources(), pictureId);
+        this.bitmap = BitmapFactory.decodeResource(DataModel.getGameContext().getResources(), pictureId);
     }
 
     public Bitmap getBitmap(){
