@@ -14,7 +14,7 @@ import android.util.Log;
 public class Player {
     private int playerId;
     private float Xpos, Ypos, Xspeed, Yspeed, XtargetPos, YtargetPos, dx, dy, direction;
-    private Bitmap bitmap;
+    private Bitmap bitmap = null;
     private Matrix matrix;
     private Context context;
 

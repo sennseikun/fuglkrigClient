@@ -33,6 +33,7 @@ public class GameView extends SurfaceView {
     private ArrayList<Bitmap> buttonBitmaps = new ArrayList<Bitmap>();
     private ArrayList<Rect> rects = new ArrayList<Rect>();
     private RequestHandler handler = DataModel.getSocket();
+    private boolean isInit = false;
 
     //Player object for testing
    // private Player testPlayer;
@@ -93,9 +94,10 @@ public class GameView extends SurfaceView {
         //Instantiate the competitors' birds. hm is the competitors hashmap
         for(int i = 1; i < hm.size(); i++){
             DataModel.getCompetitors().get(i).setBitmap(R.drawable.blackbird);
-            DataModel.getCompetitors().get(i).setXpos(canvasWidth/3 - players.get(i).getBitmap().getWidth()/2);
-            DataModel.getCompetitors().get(i).setXpos(canvasHeight/3 - players.get(i).getBitmap().getHeight()/2);
+            DataModel.getCompetitors().get(i).setXpos(canvasWidth/3 - DataModel.getCompetitors().get(i).getBitmap().getWidth()/2);
+            DataModel.getCompetitors().get(i).setXpos(canvasHeight/3 - DataModel.getCompetitors().get(i).getBitmap().getHeight()/2);
         }
+        isInit = true;
     }
 
     public void buttonsInit(){
@@ -117,9 +119,10 @@ public class GameView extends SurfaceView {
     public void onDraw(Canvas canvas){
         canvas.drawColor(Color.BLUE);
 
-        if(DataModel.getCompetitors().get(0).getBitmap() == null){
+        if(!isInit){
             competitorsInit(DataModel.getCompetitors());
         }
+
         for(int i = 1; i < players.size(); i++){
             //canvas.drawBitmap(players.get(i).getBitmap(), players.get(i).getXpos(), players.get(i).getYpos(), null);
             canvas.drawBitmap(DataModel.getCompetitors().get(i).getBitmap(), DataModel.getCompetitors().get(i).getXpos(),
@@ -182,6 +185,10 @@ public class GameView extends SurfaceView {
     }
     private static int getScreenHeight(){
         return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
+
+    public void nextTick(){
+
     }
 
     /*
