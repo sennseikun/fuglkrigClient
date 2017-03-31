@@ -2,6 +2,7 @@ package com.example.simon.client;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,7 +52,13 @@ public class GameLobby extends Activity implements AsyncResponse  {
         btn_cancel = (Button)findViewById(R.id.cancel_gamelobby);
         lv = (ListView)findViewById(R.id.GameLobby_list);
 
+        int canvasHeight = getScreenHeight();
+        int canvasWidth = getScreenWidth();
 
+        //Intentionally switching between width and height here
+
+        DataModel.setScreenHeight(canvasWidth);
+        DataModel.setScreenWidth(canvasHeight);
 
 
         name = bundle.getString("Name");
@@ -76,6 +83,13 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
         DataModel.setGameLobby(this);
 
+    }
+
+    private static int getScreenWidth(){
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+    private static int getScreenHeight(){
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
     public void goToLobbyList(){

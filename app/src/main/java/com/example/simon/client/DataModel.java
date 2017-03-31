@@ -26,11 +26,13 @@ public class DataModel {
     private static int p_id = -1;
     private static Player currplayer;
     private static HashMap<Integer, Player> competitors = new HashMap<>();
-    private static int resolutionX = -1;
-    private static  int resolutionY = -1;
+    private static double resolutionX = -1;
+    private static double resolutionY = -1;
+    private static double screenWidth = -1;
+    private static double screenHeight = -1;
     private static String hostPlayer = "";
-    private static int targetX = -1;
-    private static int targetY = -1;
+    private static double targetX = -1;
+    private static double targetY = -1;
     private static double ratioX;
     private static double ratioY;
     private static Context gameContext;
@@ -225,19 +227,19 @@ public class DataModel {
         DataModel.competitors.remove(id);
     }
 
-    public static int getResolutionX() {
+    public static double getResolutionX() {
         return resolutionX;
     }
 
-    public static void setResolutionX(int resolutionX) {
+    public static void setResolutionX(double resolutionX) {
         DataModel.resolutionX = resolutionX;
     }
 
-    public static int getResolutionY() {
+    public static double getResolutionY() {
         return resolutionY;
     }
 
-    public static void setResolutionY(int resolutionY) {
+    public static void setResolutionY(double resolutionY) {
         DataModel.resolutionY = resolutionY;
     }
 
@@ -249,19 +251,19 @@ public class DataModel {
         DataModel.hostPlayer = hostPlayer;
     }
 
-    public static int getTargetX() {
+    public static double getTargetX() {
         return targetX;
     }
 
-    public static void setTargetX(int targetX) {
+    public static void setTargetX(double targetX) {
         DataModel.targetX = targetX;
     }
 
-    public static int getTargetY() {
+    public static double getTargetY() {
         return targetY;
     }
 
-    public static void setTargetY(int targetY) {
+    public static void setTargetY(double targetY) {
         DataModel.targetY = targetY;
     }
 
@@ -279,5 +281,21 @@ public class DataModel {
 
     public static void setGameContext(Context gameContext) {
         DataModel.gameContext = gameContext;
+    }
+
+    public static double getScreenWidth() {
+        return screenWidth;
+    }
+
+    public static void setScreenWidth(double screenWidth) {
+        DataModel.screenWidth = screenWidth;
+    }
+
+    public static double getScreenHeight() {
+        return screenHeight;
+    }
+
+    public static void setScreenHeight(double screenHeight) {
+        DataModel.screenHeight = screenHeight;
     }
 }
