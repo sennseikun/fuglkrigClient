@@ -297,9 +297,11 @@ public class ReceiveData extends Thread {
                         if(pid == DataModel.getP_id()){
                             Player me = new Player();
                             DataModel.setCurrplayer(me);
+                            System.out.println("currplayer added");
                         }
                         else{
                             DataModel.addCompetitor(pid, new Player());
+                            System.out.println("Competitors added");
                         }
                     }
 
