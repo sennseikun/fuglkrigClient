@@ -25,8 +25,8 @@ public class ReceiveData extends Thread {
     DataInputStream in;
     private boolean isStopped;
     private boolean isInit;
-   // private static int ratioX = DataModel.getMyScreenSizeX() / DataModel.getResolutionX();
-   // private static int ratioY = DataModel.getMyScreenSizeY() / DataModel.getResolutionY();
+   // private static int ratioX = DataModel.getRatioX() / DataModel.getResolutionX();
+   // private static int ratioY = DataModel.getRatioY() / DataModel.getResolutionY();
 
     private final String init_packet = "0";
 
@@ -330,13 +330,13 @@ public class ReceiveData extends Thread {
 
                         if(id == DataModel.getP_id()){
                             Player me = DataModel.getCurrplayer();
-                            me.setXpos(playerX);
-                            me.setYpos(playerY);
+                            me.setXpos(playerX * DataModel.getRatioX());
+                            me.setYpos(playerY * DataModel.getRatioY());
                         }
                         else{
                             Player competitor = playerMap.get(id);
-                            competitor.setXpos(playerX);
-                            competitor.setYpos(playerY);
+                            competitor.setXpos(playerX * DataModel.getResolutionX());
+                            competitor.setYpos(playerY * DataModel.getRatioY());
                         }
                     }
 

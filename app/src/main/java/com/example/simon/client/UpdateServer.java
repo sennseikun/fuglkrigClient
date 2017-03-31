@@ -13,8 +13,8 @@ public class UpdateServer extends Thread {
 
     private static boolean running = true;
     public static UpdateServer updater;
-    //public static double ratioX = DataModel.getResolutionX()/ DataModel.getMyScreenSizeX();
-    //public static double ratioY = DataModel.getResolutionY()/ DataModel.getMyScreenSizeY();
+    //public static double ratioX = DataModel.getResolutionX()/ DataModel.getRatioX();
+    //public static double ratioY = DataModel.getResolutionY()/ DataModel.getRatioY();
 
     public static UpdateServer getInstance(){
         if(updater == null){
@@ -70,8 +70,8 @@ public class UpdateServer extends Thread {
             JSONObject sendData = new JSONObject();
             try {
                 sendData.put("Datatype",12);
-                sendData.put("TargetX",DataModel.getTargetX());
-                sendData.put("TargetY",DataModel.getTargetY());
+                sendData.put("TargetX",DataModel.getTargetX() / DataModel.getRatioX());
+                sendData.put("TargetY",DataModel.getTargetY() / DataModel.getRatioY());
 
                 if(compareJson(lastSent, sendData)){
                     System.out.println("last: " + lastSent);

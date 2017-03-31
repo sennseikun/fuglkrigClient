@@ -67,8 +67,8 @@ public class GameView extends SurfaceView {
         });
         canvasHeight = getScreenHeight();
         canvasWidth = getScreenWidth();
-        DataModel.setMyScreenSizeX(getScreenWidth());
-        DataModel.setMyScreenSizeY(getScreenHeight());
+        ratioX = getScreenWidth() / DataModel.getResolutionX();
+        ratioY = getScreenHeight() / DataModel.getResolutionY();
 
         buttonsInit();
         //initTestPlayers();
