@@ -352,8 +352,8 @@ public class ReceiveData extends Thread {
                         }
                         else{
                             Player competitor = playerMap.get(id);
-                            competitor.setXpos(((playerX)));
-                            competitor.setYpos((playerY));
+                            competitor.setXpos((playerX *DataModel.getRatioX()));
+                            competitor.setYpos((playerY)*DataModel.getRatioY());
                         }
                     }
 
