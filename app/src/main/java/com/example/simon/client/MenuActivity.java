@@ -77,8 +77,12 @@ public class MenuActivity extends Activity {
         else {
             String nick = getPrefName(context);
             initializeConnection(nick);
-            DataModel.setNick(nick);
-            launchLobby();
+            if(DataModel.getNick().equals("")){
+                launchServerError();
+            }
+            else{
+                launchLobby();
+            }
         }
     }
 
