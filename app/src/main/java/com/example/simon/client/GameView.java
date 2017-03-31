@@ -126,9 +126,11 @@ public class GameView extends SurfaceView {
                     DataModel.getCompetitors().get(i).getYpos(), null);
         }
 
-        //canvas.drawBitmap(players.get(0).getBitmap(), players.get(0).getXpos(), players.get(0).getYpos(), null);
-        canvas.drawBitmap(DataModel.getCurrplayer().getBitmap(), DataModel.getCurrplayer().getXpos(),
-                DataModel.getCurrplayer().getYpos(), null);
+        if(!(DataModel.getCurrplayer().getBitmap() == null)){
+            //canvas.drawBitmap(players.get(0).getBitmap(), players.get(0).getXpos(), players.get(0).getYpos(), null);
+            canvas.drawBitmap(DataModel.getCurrplayer().getBitmap(), DataModel.getCurrplayer().getXpos(),
+                    DataModel.getCurrplayer().getYpos(), null);
+        }
 
         for(int i = 0; i < buttonBitmaps.size(); i++){
             canvas.drawBitmap(buttonBitmaps.get(i), (float)(0.9*canvasWidth), (float) canvasHeight*i/4, null);
