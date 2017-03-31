@@ -40,7 +40,7 @@ public class Player {
     }
 
     public void nextTick() {
-       if ((dx > 0 && Xpos >= XtargetPos) || (dx < 0 && Xpos <= XtargetPos)){
+       /*if ((dx > 0 && Xpos >= XtargetPos) || (dx < 0 && Xpos <= XtargetPos)){
             this.Xspeed = 0;
         }
         if ((dy > 0 && Ypos >= YtargetPos) || (dy < 0 && Ypos <= YtargetPos)){
@@ -50,7 +50,7 @@ public class Player {
         Xpos += Xspeed * 15;
         Ypos += Yspeed * 15;
 
-
+*/
     }
 
     public void setContext(Context context){
@@ -83,6 +83,7 @@ public class Player {
     }
 
     public void setYpos(float ypos) {
+        Ypos = ypos;
         //Ypos = ypos * (Resources.getSystem().getDisplayMetrics().heightPixels/DataModel.getResolutionY());;
     }
 

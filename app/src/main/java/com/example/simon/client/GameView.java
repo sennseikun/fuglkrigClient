@@ -137,6 +137,8 @@ public class GameView extends SurfaceView {
         //canvas.drawBitmap(players.get(0).getBitmap(), players.get(0).getXpos(), players.get(0).getYpos(), null);
         canvas.drawBitmap(DataModel.getCurrplayer().getBitmap(), DataModel.getCurrplayer().getXpos(),
                 DataModel.getCurrplayer().getYpos(), null);
+        System.out.println("Xpos" + DataModel.getCurrplayer().getXpos());
+        System.out.println("Ypos" + DataModel.getCurrplayer().getYpos());
 
         for(int i = 0; i < buttonBitmaps.size(); i++){
             canvas.drawBitmap(buttonBitmaps.get(i), (float)(0.9*canvasWidth), (float) canvasHeight*i/4, null);
