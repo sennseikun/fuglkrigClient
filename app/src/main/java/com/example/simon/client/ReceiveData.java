@@ -280,6 +280,34 @@ public class ReceiveData extends Thread {
 
                     System.out.println("PACKAGE 14: " +translated);
 
+                    int mapType = translated.getInt("MapType");
+
+                    String mapname = "";
+
+                    if(mapType == 1){
+                        mapname = "forestlevelbackground";
+                    }
+                    else if(mapType == 2){
+                        mapname = "egyptlevelbackground";
+                    }
+                    else if(mapType == 3){
+                        mapname = "mountainslevelbackground";
+                    }
+
+                    else{
+                        mapname = "mountainslevelbackground";
+                    }
+
+                    DataModel.setCurrentMapName(mapname);
+
+                    int mapXpos = translated.getInt("MapXPos");
+                    int nextXpos = translated.getInt("NextMapXPos");
+                    int winXpos = translated.getInt("WinMapXPos");
+
+                    DataModel.setMapXpos(mapXpos);
+                    DataModel.setNextMapXpos(nextXpos);
+                    DataModel.setWinnerMapXpos(winXpos);
+
                     int width = translated.getInt("Width");
                     int height = translated.getInt("Height");
 
@@ -330,6 +358,14 @@ public class ReceiveData extends Thread {
                 else if(packet_number.equals("15")){
 
                     System.out.println("PACKAGE 15: " +translated);
+
+                    int mapXpos = translated.getInt("MapXPos");
+                    int nextXpos = translated.getInt("NextMapXPos");
+                    int winXpos = translated.getInt("WinMapXPos");
+
+                    DataModel.setMapXpos(mapXpos);
+                    DataModel.setNextMapXpos(nextXpos);
+                    DataModel.setWinnerMapXpos(winXpos);
 
                     HashMap<Integer,Player> playerMap = DataModel.getCompetitors();
                     JSONArray jsonArray = translated.getJSONArray("Players");

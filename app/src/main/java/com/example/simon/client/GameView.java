@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -32,6 +33,9 @@ public class GameView extends SurfaceView {
     private ArrayList<Rect> rects = new ArrayList<Rect>();
     private RequestHandler handler = DataModel.getSocket();
     private boolean isInit = false;
+    private Bitmap currentMap;
+    private Bitmap nextMap;
+    private Bitmap winMap;
 
     //Player object for testing
    // private Player testPlayer;
@@ -89,6 +93,7 @@ public class GameView extends SurfaceView {
         players.get(1).setBitmap(R.drawable.blackbird);
     }
 */
+
     public void competitorsInit(HashMap hm){
         //Instantiate the competitors' birds. hm is the competitors hashmap
         for(Object id: hm.keySet()){
@@ -114,13 +119,33 @@ public class GameView extends SurfaceView {
         rects.add(new Rect((int)(canvasWidth*0.9), 3*canvasHeight/4, canvasWidth, canvasHeight));
     }
 
+    public void initMaps(){
+
+        Resources resources = getResources();
+        int resourceId = resources.getIdentifier(DataModel.getCurrentMapName(), "drawable",this.getContext().getPackageName());
+
+        nextMap = BitmapFactory.decodeResource(this.getContext().getResources(), resourceId);
+        currentMap = BitmapFactory.decodeResource(this.getContext().getResources(), resourceId);
+        winMap = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.winbackground);
+    }
+
     @Override
     public void onDraw(Canvas canvas){
         canvas.drawColor(Color.BLUE);
 
         if(!isInit){
             competitorsInit(DataModel.getCompetitors());
+            initMaps();
         }
+
+        double nextBitMapPos = DataModel.getNextMapXpos()*DataModel.getRatioX();
+        double currBitMapPos = DataModel.getMapXpos()*DataModel.getRatioX();
+        double winBitMapPos = DataModel.getWinnerMapXpos()*DataModel.getRatioX();
+
+        canvas.drawBitmap(currentMap, (int)currBitMapPos,0,null);
+        canvas.drawBitmap(nextMap,(int)nextBitMapPos,0,null);
+        //canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
+
 
         for(Object i: DataModel.getCompetitors().keySet()){
             //canvas.drawBitmap(players.get(i).getBitmap(), players.get(i).getXpos(), players.get(i).getYpos(), null);

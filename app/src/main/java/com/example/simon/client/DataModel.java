@@ -35,6 +35,14 @@ public class DataModel {
     private static double targetY = -1;
     private static double ratioX;
     private static double ratioY;
+
+    //Map values
+
+    private static int mapXpos = -1;
+    private static int nextMapXpos = -1;
+    private static int winnerMapXpos = -1;
+    private static String currentMapName = "";
+
     private static Context gameContext;
 
 
@@ -297,5 +305,37 @@ public class DataModel {
 
     public static void setScreenHeight(double screenHeight) {
         DataModel.screenHeight = screenHeight;
+    }
+
+    public static int getMapXpos() {
+        return mapXpos;
+    }
+
+    public static void setMapXpos(int mapXpos) {
+        DataModel.mapXpos = mapXpos;
+    }
+
+    public static int getNextMapXpos() {
+        return nextMapXpos;
+    }
+
+    public static void setNextMapXpos(int nextMapXpos) {
+        DataModel.nextMapXpos = nextMapXpos;
+    }
+
+    public static int getWinnerMapXpos() {
+        return winnerMapXpos;
+    }
+
+    public static void setWinnerMapXpos(int winnerMapXpos) {
+        DataModel.winnerMapXpos = winnerMapXpos;
+    }
+
+    public static String getCurrentMapName() {
+        return currentMapName;
+    }
+
+    public static void setCurrentMapName(String currentMapName) {
+        DataModel.currentMapName = currentMapName;
     }
 }
