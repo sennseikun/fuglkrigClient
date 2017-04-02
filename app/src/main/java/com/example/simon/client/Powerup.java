@@ -46,4 +46,17 @@ public class Powerup {
 
         return powerup_img;
     }
+
+
+    public int getxPos() {
+        return xPos;
+    }
+
+    public int getyPos() {
+        return yPos;
+    }
+
+    public int getId() {
+        return Id;
+    }
 }

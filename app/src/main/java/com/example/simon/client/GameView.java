@@ -165,6 +165,14 @@ public class GameView extends SurfaceView {
                     (int) DataModel.getCompetitors().get(i).getYpos(), null);
         }
 
+        /*Draw powerup icon
+        for(int i = 0; i < DataModel.getPowerups().size(); i++){
+            canvas.drawBitmap(DataModel.getPowerups().get(i).getBitMap(this.getContext()), DataModel.getPowerups().get(i).getxPos(),
+                    DataModel.getPowerups().get(i).getyPos(), null);
+        }
+        */
+
+        //draw current player, i.e. me-player
         if(DataModel.getCurrplayer().getBitmap() == null){
             DataModel.getCurrplayer().setBitmap(R.drawable.bird);
             DataModel.getCurrplayer().setXpos(canvasWidth/2 - DataModel.getCurrplayer().getBitmap().getWidth()/2);
