@@ -176,7 +176,7 @@ public class GameView extends SurfaceView {
 
         //Draw deployed powerups
         for(int i = 0; i < DataModel.getPowerups().size(); i++){
-
+            //Draw deployed powerups
         }
 
         //draw current player, i.e. me-player
