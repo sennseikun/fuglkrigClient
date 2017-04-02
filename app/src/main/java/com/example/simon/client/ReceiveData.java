@@ -11,6 +11,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -393,6 +394,26 @@ public class ReceiveData extends Thread {
                         }
                     }
 
+                    JSONArray powerupArray = translated.getJSONArray("PowerupData");
+                    List<Powerup> powerups = new ArrayList<>();
+
+                    for(int i = 0; i < powerupArray.length(); i++){
+                        JSONObject powerup = powerupArray.getJSONObject(i);
+
+                        int id = powerup.getInt("Id");
+                        int type = powerup.getInt("Type");
+                        int xPos = powerup.getInt("XPos");
+                        int yPos = powerup.getInt("YPos");
+
+                        Powerup p = new Powerup(xPos,yPos,id,type);
+                        powerups.add(p);
+
+                        System.out.println("Added powerup: " + type);
+
+                    }
+
+                    DataModel.setPowerups(powerups);
+
                 }
 
                 //You died
@@ -428,12 +449,12 @@ public class ReceiveData extends Thread {
             data.delegate = DataModel.getLobbyList();
             data.execute("1");
         }
-        if(DataModel.getInGame() != null){
+        /*if(DataModel.getInGame() != null){
             System.out.println("Connection lost: Ending game activity");
             AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
             data.delegate = DataModel.getLobbyList();
             data.execute("1");
-        }
+        }*/
 
 
 
