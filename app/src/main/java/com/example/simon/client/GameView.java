@@ -151,7 +151,7 @@ public class GameView extends SurfaceView {
 
         canvas.drawBitmap(currentMap, (int)currBitMapPos,0,null);
         canvas.drawBitmap(nextMap,(int)nextBitMapPos,0,null);
-        canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
+        //canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
 
 
         for(Object i: DataModel.getCompetitors().keySet()){
