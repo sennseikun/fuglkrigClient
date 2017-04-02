@@ -106,17 +106,22 @@ public class GameView extends SurfaceView {
 
     public void buttonsInit(){
         //Button 1
-        buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.arrow_left));
-        rects.add(new Rect((int)(canvasWidth*0.9), 0, canvasWidth, canvasHeight/4));
+        buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.bricksleft));
+        rects.add(new Rect((int)(canvasWidth - canvasHeight/4), 0, canvasWidth, canvasHeight/4));
         //Button 2
-        buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.arrow_right));
-        rects.add(new Rect((int)(canvasWidth*0.9), canvasHeight/4, canvasWidth, canvasHeight/2));
+        buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.bricksright));
+        rects.add(new Rect((int)(canvasWidth - canvasHeight/4), canvasHeight/4, canvasWidth, canvasHeight/2));
         //Button 3
-        buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.arrow_left));
-        rects.add(new Rect((int)(canvasWidth*0.9), canvasHeight/2, canvasWidth, 3*canvasHeight/4));
+        buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.birdpoop));
+        rects.add(new Rect((int)(canvasWidth - canvasHeight/4), canvasHeight/2, canvasWidth, 3*canvasHeight/4));
         //Button 4
         buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.arrow_right));
-        rects.add(new Rect((int)(canvasWidth*0.9), 3*canvasHeight/4, canvasWidth, canvasHeight));
+        rects.add(new Rect((int)(canvasWidth - canvasHeight/4), 3*canvasHeight/4, canvasWidth, canvasHeight));
+
+        for(int i = 0; i < buttonBitmaps.size(); i++){
+            Bitmap scaledBitmap = Bitmap.createScaledBitmap(buttonBitmaps.get(i), getScreenHeight()/4, getScreenHeight()/4, true);
+            buttonBitmaps.set(i, scaledBitmap);
+        }
     }
 
     public void initMaps(){
@@ -151,7 +156,7 @@ public class GameView extends SurfaceView {
 
         canvas.drawBitmap(currentMap, (int)currBitMapPos,0,null);
         canvas.drawBitmap(nextMap,(int)nextBitMapPos,0,null);
-        canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
+        //canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
 
 
         for(Object i: DataModel.getCompetitors().keySet()){
@@ -172,7 +177,7 @@ public class GameView extends SurfaceView {
         System.out.println("Ypos" + DataModel.getCurrplayer().getYpos());
 
         for(int i = 0; i < buttonBitmaps.size(); i++){
-            canvas.drawBitmap(buttonBitmaps.get(i), (int)(0.9*canvasWidth), (int) canvasHeight*i/4, null);
+            canvas.drawBitmap(buttonBitmaps.get(i), (int)(canvasWidth - canvasHeight/4), (int) canvasHeight*i/4, null);
         }
     }
 
@@ -180,7 +185,7 @@ public class GameView extends SurfaceView {
     public boolean onTouchEvent(MotionEvent me) {
         switch(me.getAction()){
             case  MotionEvent.ACTION_DOWN:
-                if(me.getX() < canvasWidth * 0.9 - DataModel.getCurrplayer().getBitmap().getWidth()/2) {
+                if(me.getX() < canvasWidth - canvasHeight/4 - DataModel.getCurrplayer().getBitmap().getWidth()/2) {
                     //players.get(0) is the bird belonging to this client
                     //players.get(0).setTargetPos(me.getX(), me.getY());
 
