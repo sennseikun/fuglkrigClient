@@ -23,6 +23,7 @@ public class Player {
     private Bitmap bitmap = null;
     private Matrix matrix;
     private Context context;
+    private boolean isAlive = true;
 
     public Player(){
         this.setMatrix(new Matrix());
@@ -137,4 +138,11 @@ public class Player {
         return bitmap;
     }
 
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
 }

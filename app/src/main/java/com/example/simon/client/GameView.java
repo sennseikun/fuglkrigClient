@@ -36,6 +36,7 @@ public class GameView extends SurfaceView {
     private Bitmap currentMap;
     private Bitmap nextMap;
     private Bitmap winMap;
+    private Bitmap powerupIcon;
 
     //Player object for testing
    // private Player testPlayer;
@@ -70,7 +71,7 @@ public class GameView extends SurfaceView {
         });
 
         buttonsInit();
-
+        powerupIcon = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.powerup);
         canvasHeight = getScreenHeight();
         canvasWidth = getScreenWidth();
 
@@ -150,6 +151,7 @@ public class GameView extends SurfaceView {
             initMaps();
         }
 
+        //Update map
         double nextBitMapPos = DataModel.getNextMapXpos()*DataModel.getRatioX();
         double currBitMapPos = DataModel.getMapXpos()*DataModel.getRatioX();
         double winBitMapPos = DataModel.getWinnerMapXpos()*DataModel.getRatioX();
@@ -158,24 +160,40 @@ public class GameView extends SurfaceView {
         canvas.drawBitmap(nextMap,(int)nextBitMapPos,0,null);
         //canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
 
-
+        //draw competitors
         for(Object i: DataModel.getCompetitors().keySet()){
-            //canvas.drawBitmap(players.get(i).getBitmap(), players.get(i).getXpos(), players.get(i).getYpos(), null);
-            canvas.drawBitmap(DataModel.getCompetitors().get(i).getBitmap(), (int) DataModel.getCompetitors().get(i).getXpos(),
-                    (int) DataModel.getCompetitors().get(i).getYpos(), null);
+            if(DataModel.getCompetitors().get(i).isAlive()){
+                canvas.drawBitmap(DataModel.getCompetitors().get(i).getBitmap(), (int)DataModel.getCompetitors().get(i).getXpos(),
+                        (int)DataModel.getCompetitors().get(i).getYpos(), null);
+            }
         }
 
+        //Draw powerup icon. Needs to iterate over another list; a list of undeployed powerups.
+        for(int i = 0; i < DataModel.getPowerups().size(); i++){
+            canvas.drawBitmap(powerupIcon, DataModel.getPowerups().get(i).getxPos(),
+                    DataModel.getPowerups().get(i).getyPos() - powerupIcon.getHeight(), null);
+        }
+
+        //Draw deployed powerups
+        for(int i = 0; i < DataModel.getPowerups().size(); i++){
+
+        }
+
+        //draw current player, i.e. me-player
         if(DataModel.getCurrplayer().getBitmap() == null){
             DataModel.getCurrplayer().setBitmap(R.drawable.bird);
             DataModel.getCurrplayer().setXpos(canvasWidth/2 - DataModel.getCurrplayer().getBitmap().getWidth()/2);
             DataModel.getCurrplayer().setYpos(canvasHeight/2 - DataModel.getCurrplayer().getBitmap().getHeight()/2);
         }
         //canvas.drawBitmap(players.get(0).getBitmap(), players.get(0).getXpos(), players.get(0).getYpos(), null);
-        canvas.drawBitmap(DataModel.getCurrplayer().getBitmap(), (int)DataModel.getCurrplayer().getXpos(),
-                (int) DataModel.getCurrplayer().getYpos(), null);
-        System.out.println("Xpos" + DataModel.getCurrplayer().getXpos());
-        System.out.println("Ypos" + DataModel.getCurrplayer().getYpos());
+        if(DataModel.getCurrplayer().isAlive()){
+            canvas.drawBitmap(DataModel.getCurrplayer().getBitmap(), (int)DataModel.getCurrplayer().getXpos(),
+                    (int) DataModel.getCurrplayer().getYpos(), null);
+            System.out.println("Xpos" + DataModel.getCurrplayer().getXpos());
+            System.out.println("Ypos" + DataModel.getCurrplayer().getYpos());
+        }
 
+        //Draw buttons
         for(int i = 0; i < buttonBitmaps.size(); i++){
             canvas.drawBitmap(buttonBitmaps.get(i), (int)(canvasWidth - canvasHeight/4), (int) canvasHeight*i/4, null);
         }
