@@ -127,6 +127,13 @@ public class GameView extends SurfaceView {
         nextMap = BitmapFactory.decodeResource(this.getContext().getResources(), resourceId);
         currentMap = BitmapFactory.decodeResource(this.getContext().getResources(), resourceId);
         winMap = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.winbackground);
+
+        currentMap = Bitmap.createScaledBitmap(currentMap, getScreenWidth(),
+                getScreenHeight(), true);
+        nextMap = Bitmap.createScaledBitmap(currentMap, getScreenWidth(),
+                getScreenHeight(), true);
+        winMap = Bitmap.createScaledBitmap(currentMap, getScreenWidth(),
+                getScreenHeight(), true);
     }
 
     @Override
@@ -144,7 +151,7 @@ public class GameView extends SurfaceView {
 
         canvas.drawBitmap(currentMap, (int)currBitMapPos,0,null);
         canvas.drawBitmap(nextMap,(int)nextBitMapPos,0,null);
-        //canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
+        canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
 
 
         for(Object i: DataModel.getCompetitors().keySet()){
