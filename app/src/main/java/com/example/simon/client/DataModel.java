@@ -35,6 +35,7 @@ public class DataModel {
     private static double targetY = -1;
     private static double ratioX;
     private static double ratioY;
+    private static List<Powerup> powerups = new ArrayList<>();
 
     //Map values
 
@@ -337,5 +338,13 @@ public class DataModel {
 
     public static void setCurrentMapName(String currentMapName) {
         DataModel.currentMapName = currentMapName;
+    }
+
+    public static List<Powerup> getPowerups() {
+        return powerups;
+    }
+
+    public static void setPowerups(List<Powerup> powerups) {
+        DataModel.powerups = powerups;
     }
 }

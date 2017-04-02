@@ -3,6 +3,7 @@ package com.example.simon.client;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 /**
  * Created by thoma on 4/2/2017.
@@ -30,14 +31,19 @@ public class Powerup {
             case 0:
                 drawableName = "brickwall";
                 break;
+            case 1:
+                drawableName = "birdpoop";
+                break;
+            default: break;
         }
 
 
 
         Resources resources = context.getResources();
-        int resourceId = resources.getIdentifier(DataModel.getCurrentMapName(), "drawable",context.getPackageName());
+        int resourceId = resources.getIdentifier(drawableName, "drawable",context.getPackageName());
 
+        Bitmap powerup_img = BitmapFactory.decodeResource(context.getResources(), resourceId);
 
-        return null;
+        return powerup_img;
     }
 }
