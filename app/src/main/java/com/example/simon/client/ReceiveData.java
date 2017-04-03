@@ -76,7 +76,7 @@ public class ReceiveData extends Thread {
                     packages = 0;
                     AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                     data.delegate = DataModel.getCreateGame();
-                    data.execute();
+                    data.execute(packages+ "");
 
                 }
                 else{
