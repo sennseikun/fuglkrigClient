@@ -349,7 +349,6 @@ public class ReceiveData extends Thread {
                     int mapXpos = translated.getInt("MapXPos");
                     int nextXpos = translated.getInt("NextMapXPos");
                     int winXpos = translated.getInt("WinMapXPos");
-                    boolean alive = translated.getBoolean("Alive");
 
                     DataModel.setMapXpos(mapXpos);
                     DataModel.setNextMapXpos(nextXpos);
