@@ -365,17 +365,20 @@ public class ReceiveData extends Thread {
 
                         int playerX = compJSON.getInt("PosX");
                         int playerY = compJSON.getInt("PosY");
+                        boolean alive = compJSON.getBoolean("Alive");
 
                         if(id == DataModel.getP_id()){
                             Player me = DataModel.getCurrplayer();
 
                             me.setXpos(playerX*DataModel.getRatioX());
                             me.setYpos(playerY*DataModel.getRatioY());
+                            me.setAlive(alive);
                         }
                         else{
                             Player competitor = playerMap.get(id);
                             competitor.setXpos((playerX *DataModel.getRatioX()));
                             competitor.setYpos((playerY)*DataModel.getRatioY());
+                            competitor.setAlive(alive);
                         }
                     }
 
