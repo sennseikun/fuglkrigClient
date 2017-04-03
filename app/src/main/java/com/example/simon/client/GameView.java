@@ -71,12 +71,21 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
         textpaint.setTextSize(48);
 
-        buttonsInit();
-        powerupIcon = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.powerup);
         canvasHeight = getScreenHeight();
         canvasWidth = getScreenWidth();
 
+        initPowerups();
+        buttonsInit();
+
         UpdateServer.getInstance().start();
+    }
+
+    public void initPowerups(){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+        powerupIcon = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.powerup);
+        powerupIcon = Bitmap.createScaledBitmap(powerupIcon,(int)(powerupIcon.getWidth()*DataModel.getRatioX()),
+                (int)(powerupIcon.getHeight()*DataModel.getRatioY()), true);
     }
 
     public void competitorsInit(HashMap hm){
@@ -114,9 +123,12 @@ public class GameView extends SurfaceView implements AsyncResponse {
         Resources resources = getResources();
         int resourceId = resources.getIdentifier(DataModel.getCurrentMapName(), "drawable",this.getContext().getPackageName());
 
-        nextMap = BitmapFactory.decodeResource(this.getContext().getResources(), resourceId);
-        currentMap = BitmapFactory.decodeResource(this.getContext().getResources(), resourceId);
-        winMap = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.winbackground);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+
+        nextMap = BitmapFactory.decodeResource(this.getContext().getResources(), resourceId,options);
+        currentMap = BitmapFactory.decodeResource(this.getContext().getResources(), resourceId,options);
+        winMap = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.winbackground,options);
 
         currentMap = Bitmap.createScaledBitmap(currentMap,(int)(currentMap.getWidth()*DataModel.getRatioX()),
                 (int)(currentMap.getHeight()*DataModel.getRatioY()), true);
