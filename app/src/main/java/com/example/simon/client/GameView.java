@@ -73,6 +73,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
         buttonsInit();
         powerupIcon = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.powerup);
+        powerupIcon = Bitmap.createScaledBitmap(powerupIcon, 60, 60, true);
         canvasHeight = getScreenHeight();
         canvasWidth = getScreenWidth();
 
