@@ -46,13 +46,7 @@ public class customListAdapter extends BaseAdapter {
     public void updateReceiptsList(List<Lobby> newList) {
 
         data.clear();
-
-        System.out.println("Current data in list: " + data);
-        System.out.println("New data: "+newList);
-
         data.addAll(newList);
-
-        System.out.println("New list after inserting data: "+data);
 
         this.notifyDataSetChanged();
     }

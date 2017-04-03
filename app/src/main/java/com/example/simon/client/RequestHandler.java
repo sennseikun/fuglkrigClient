@@ -34,7 +34,6 @@ public class RequestHandler extends Thread {
         lastSent = "";
         isInit = false;
 
-        Log.d("Called all the time","lol");
     }
 
     public void sendData(JSONObject json){
@@ -45,10 +44,7 @@ public class RequestHandler extends Thread {
         receiver.stopThread();
 
         while(!receiver.isStopped()){
-            Log.d("ReceiveThread","STOPPING");
         }
-
-        Log.d("RequestHandler","STOPPING");
 
         running = false;
     }
@@ -102,14 +98,9 @@ public class RequestHandler extends Thread {
             if(!message.equals(lastSent)){
                 try {
 
-                    Log.d("Message",message);
-                    Log.d("LastMessage",lastSent);
-
                     lastSent = message;
 
                     DataModel.setLastSent(lastSent);
-
-                    Log.d("RequestHandler",message);
 
                     OutputStream outToServer = client.getOutputStream();
                     DataOutputStream out = new DataOutputStream(outToServer);
@@ -121,8 +112,6 @@ public class RequestHandler extends Thread {
                 }
             }
         }
-
-        Log.d("RequestHandler","Jumping out of loop");
 
         try {
 

@@ -60,11 +60,7 @@ public class ReceiveData extends Thread {
     @Override
     public void run(){
 
-        Log.d("ReceiveData","starts running");
-
         while(running) {
-
-            Log.d("ReceiveData","running");
 
             try {
 
@@ -72,7 +68,6 @@ public class ReceiveData extends Thread {
 
                 if(System.currentTimeMillis() > startTime + 1000){
                     startTime = System.currentTimeMillis();
-                    System.out.println("Packages: " + packages);
                     if(DataModel.getGameView() != null){
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                         data.delegate = DataModel.getGameView();
@@ -98,24 +93,18 @@ public class ReceiveData extends Thread {
                     translated = new JSONObject(answer);
                     packet_number = translated.getString("Datatype");
 
-                    System.out.println("DATATYPE_RECEIVED: "+translated.getString("Datatype"));
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     break;
                 }
 
-                System.out.println("Gets here");
-
                 //Setup player on server side, verify name
 
                 if(packet_number.equals("0")){
                     if(translated.getString("userValid").equals("0")){
-                        System.out.println("PLAYER_NAME: ERROR");
                         DataModel.setNick("ERROR");
                     }
                     else{
-                        System.out.println("PLAYER_NAME:" + translated.getString("nick"));
                         DataModel.setNick(translated.getString("nick"));
                         DataModel.setP_id(translated.getInt("pId"));
                     }
@@ -125,8 +114,6 @@ public class ReceiveData extends Thread {
 
                 else if(packet_number.equals("1")){
                     int count = translated.getInt("Count");
-
-                    System.out.println(count);
 
                     for(int i = 1; i < count + 1; i++){
 
@@ -138,12 +125,9 @@ public class ReceiveData extends Thread {
                         Lobby l = new Lobby(name,playerCount,maxPlayerCount,password);
 
                         DataModel.addLobby(l);
-
-                        System.out.println(playerCount);
                     }
 
                     if(DataModel.getLobbyList() != null){
-                        System.out.println("Gets in the right place");
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                         data.delegate = DataModel.getLobbyList();
                         data.execute();
@@ -156,7 +140,6 @@ public class ReceiveData extends Thread {
                     int value = translated.getInt("Valid");
                     DataModel.setGameIsValid(value);
                     DataModel.setHostPlayer(DataModel.getNick());
-                    System.out.println("GameLobby: Launch async");
                     AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                     data.delegate = DataModel.getCreateGame();
                     data.execute();
@@ -175,10 +158,8 @@ public class ReceiveData extends Thread {
 
                     DataModel.updateLobby(lobbyname,playerCount);
 
-                    System.out.println("Removed one player from: "+lobbyname);
 
                     if(DataModel.getGameLobby() != null){
-                        System.out.println("GameLobby: Launch async");
                         DataModel.removePlayerFromLobby(name);
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                         data.delegate = DataModel.getGameLobby();
@@ -186,7 +167,6 @@ public class ReceiveData extends Thread {
                         //If the player is the one leaving
 
                         if(name.equals(DataModel.getNick())){
-                            System.out.println("Leave logic should be called");
                             data.execute();
                         }
 
@@ -209,10 +189,8 @@ public class ReceiveData extends Thread {
                     DataModel.setHostPlayer(hostPlayer);
 
                     DataModel.updateLobby(lobbyname,playerCount);
-                    System.out.println("Added one player too: "+lobbyname);
 
                     if(DataModel.getLobbyList() != null){
-                        System.out.println("Going into game lobby");
 
                         for(int i = 0; i < Integer.parseInt(playerCount); i++){
                             String name = translated.getString("PlayerName"+i);
@@ -228,7 +206,6 @@ public class ReceiveData extends Thread {
 
                     else if(DataModel.getGameLobby() != null){
                         String name = translated.getString("PlayerName");
-                        System.out.println("Updating gamelobby");
                         DataModel.addPlayerToLobby(name);
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                         data.delegate = DataModel.getGameLobby();
@@ -237,19 +214,15 @@ public class ReceiveData extends Thread {
                 }
                 else if(packet_number.equals("5")){
                     if(translated.getString("Status").equals("1")){
-                        System.out.println("Deleted player on server side: Worked out");
                     }
                     else{
-                        System.out.println("Deleted player on server side: Did not work");
                     }
                     if(DataModel.getGameLobby() != null){
-                        System.out.println("Gets in the right place 2");
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                         data.delegate = DataModel.getGameLobby();
                         data.execute();
                     }
                     if(DataModel.getLobbyList() != null){
-                        System.out.println("Gets in the right place 1");
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                         data.delegate = DataModel.getLobbyList();
                         data.execute();
@@ -296,7 +269,6 @@ public class ReceiveData extends Thread {
 
                 else if(packet_number.equals("14")){
 
-                    System.out.println("PACKAGE 14: " +translated);
 
                     int mapType = translated.getInt("MapType");
 
@@ -339,20 +311,11 @@ public class ReceiveData extends Thread {
                     int width = translated.getInt("Width");
                     int height = translated.getInt("Height");
 
-                    System.out.println("Height from server " + height);
-                    System.out.println("Width from server " + width);
-
-                    System.out.println("Screenwidth: " + DataModel.getScreenWidth());
-                    System.out.println("ScreenHeight: " + DataModel.getScreenHeight());
-
                     DataModel.setResolutionX(width);
                     DataModel.setResolutionY(height);
 
                     double ratioX = DataModel.getScreenWidth()/width;
                     double ratioY = DataModel.getScreenHeight()/height;
-
-                    System.out.println("RatioX set: " + ratioX);
-                    System.out.println("RatioY set: "+ ratioY);
 
                     DataModel.setRatioX(ratioX);
                     DataModel.setRatioY(ratioY);
@@ -367,11 +330,9 @@ public class ReceiveData extends Thread {
                         if(pid == DataModel.getP_id()){
                             Player me = new Player();
                             DataModel.setCurrplayer(me);
-                            System.out.println("currplayer added");
                         }
                         else{
                             DataModel.addCompetitor(pid, new Player());
-                            System.out.println("Competitors added");
                         }
                     }
 
@@ -384,8 +345,6 @@ public class ReceiveData extends Thread {
                 //Update game package
 
                 else if(packet_number.equals("15")){
-
-                    System.out.println("PACKAGE 15: " +translated);
 
                     int mapXpos = translated.getInt("MapXPos");
                     int nextXpos = translated.getInt("NextMapXPos");
@@ -408,8 +367,6 @@ public class ReceiveData extends Thread {
 
                         if(id == DataModel.getP_id()){
                             Player me = DataModel.getCurrplayer();
-
-                            System.out.println("RatioX receive: " + DataModel.getRatioX());
 
                             me.setXpos(playerX*DataModel.getRatioX());
                             me.setYpos(playerY*DataModel.getRatioY());
@@ -434,8 +391,6 @@ public class ReceiveData extends Thread {
 
                         Powerup p = new Powerup(xPos,yPos,id,type);
                         powerups.add(p);
-
-                        System.out.println("Added powerup: " + type);
 
                     }
 
@@ -465,13 +420,11 @@ public class ReceiveData extends Thread {
             }
         }
         if(DataModel.getGameLobby() != null){
-            System.out.println("Connection lost: Ending gamelobby");
             AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
             data.delegate = DataModel.getGameLobby();
             data.execute("1");
         }
         if(DataModel.getLobbyList() != null){
-            System.out.println("Connection lost: Ending lobby list");
             AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
             data.delegate = DataModel.getLobbyList();
             data.execute("1");
@@ -485,7 +438,6 @@ public class ReceiveData extends Thread {
 
 
 
-        Log.d("RecieveData","Jumping out of loop");
         isStopped = true;
     }
 }

@@ -107,8 +107,6 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
 
     public void create(){
 
-        System.out.println(players.getText().equals("2"));
-        System.out.println(name.getText().equals(null));
 
         if(!name.getText().equals(null) && (players.getText().toString().equals("2") || players.getText().toString().equals("3") || players.getText().toString().equals("4")) && (password.length() == 4  || password.length() == 0)){
 
