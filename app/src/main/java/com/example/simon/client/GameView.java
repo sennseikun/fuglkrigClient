@@ -118,6 +118,13 @@ public class GameView extends SurfaceView implements AsyncResponse {
         currentMap = BitmapFactory.decodeResource(this.getContext().getResources(), resourceId);
         winMap = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.winbackground);
 
+        currentMap = Bitmap.createScaledBitmap(currentMap,(int)(currentMap.getWidth()*DataModel.getRatioX()),
+                (int)(currentMap.getHeight()*DataModel.getRatioY()), true);
+        nextMap = Bitmap.createScaledBitmap(nextMap,(int)(nextMap.getWidth()*DataModel.getRatioX()),
+                (int)(nextMap.getHeight()*DataModel.getRatioY()), true);
+        winMap = Bitmap.createScaledBitmap(winMap,(int)(winMap.getWidth()*DataModel.getRatioX()),
+                (int)(winMap.getHeight()*DataModel.getRatioY()), true);
+
         currentMap = Bitmap.createScaledBitmap(currentMap, getScreenWidth(),
                 getScreenHeight(), true);
         nextMap = Bitmap.createScaledBitmap(currentMap, getScreenWidth(),
@@ -146,15 +153,15 @@ public class GameView extends SurfaceView implements AsyncResponse {
         //draw competitors
         for(Object i: DataModel.getCompetitors().keySet()){
             if(DataModel.getCompetitors().get(i).isAlive()){
-                canvas.drawBitmap(DataModel.getCompetitors().get(i).getBitmap(), (int)DataModel.getCompetitors().get(i).getXpos(),
-                        (int)DataModel.getCompetitors().get(i).getYpos(), null);
+                canvas.drawBitmap(DataModel.getCompetitors().get(i).getBitmap(), (int)(DataModel.getCompetitors().get(i).getXpos()*DataModel.getRatioX()),
+                        (int)(DataModel.getCompetitors().get(i).getYpos()*DataModel.getRatioY()), null);
             }
         }
 
         //Draw powerup icon. Needs to iterate over another list; a list of undeployed powerups.
         for(int i = 0; i < DataModel.getPowerups().size(); i++){
-            canvas.drawBitmap(powerupIcon, DataModel.getPowerups().get(i).getxPos(),
-                    DataModel.getPowerups().get(i).getyPos() - powerupIcon.getHeight(), null);
+            canvas.drawBitmap(powerupIcon,(int) (DataModel.getPowerups().get(i).getxPos()*DataModel.getRatioX()),
+                    (int)(DataModel.getPowerups().get(i).getyPos() - powerupIcon.getHeight()*DataModel.getRatioY()), null);
         }
 
         //Draw deployed powerups
