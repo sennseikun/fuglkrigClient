@@ -102,6 +102,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
         //Button 1
         buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.bricksleft));
         rects.add(new Rect((int)(canvasWidth - canvasHeight/4), 0, canvasWidth, canvasHeight/4));
+
         //Button 2
         buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.bricksright));
         rects.add(new Rect((int)(canvasWidth - canvasHeight/4), canvasHeight/4, canvasWidth, canvasHeight/2));

@@ -183,6 +183,7 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
         else if(output.equals("3")){
             DataModel.setInGame(null);
+            DataModel.setGameLobby(null);
             startActivity(new Intent(this,GameActivity.class));
             finish();
         }
