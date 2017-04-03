@@ -41,7 +41,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
     public GameView(Context context){
         super(context);
-
+        DataModel.setGameView(this);
         glt = GameLoopThread.getInstance();
         glt.setView(this);
         holder = getHolder();
@@ -180,7 +180,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
         }
 
         //Draw text
-        canvas.drawText(dataInfo, 10, 10, textpaint);
+        canvas.drawText(dataInfo, 100, 100, textpaint);
     }
 
     //@Override
@@ -224,6 +224,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
     @Override
     public void processFinish(String output) {
         dataInfo = output;
+        System.out.println("DATA_INFO: "+ dataInfo);
     }
 
 

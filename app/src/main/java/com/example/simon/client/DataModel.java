@@ -36,6 +36,7 @@ public class DataModel {
     private static double ratioX;
     private static double ratioY;
     private static List<Powerup> powerups = new ArrayList<>();
+    private static GameView gameView = null;
 
     //Map values
 
@@ -346,5 +347,13 @@ public class DataModel {
 
     public static void setPowerups(List<Powerup> powerups) {
         DataModel.powerups = powerups;
+    }
+
+    public static GameView getGameView() {
+        return gameView;
+    }
+
+    public static void setGameView(GameView gameView) {
+        DataModel.gameView = gameView;
     }
 }
