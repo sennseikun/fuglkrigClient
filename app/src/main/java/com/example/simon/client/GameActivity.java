@@ -24,13 +24,14 @@ public class GameActivity extends Activity implements AsyncResponse {
         DataModel.setInGame(this);
         setContentView(new GameView(this));
     }
-    @Override
+    /*@Override
     public void onStop(){
         super.onStop();
         DataModel.setInGame(null);
+        UpdateServer.getInstance().stopRunning();
         startActivity(new Intent(this,MenuActivity.class));
         finish();
-    }
+    }*/
 
     @Override
     public void processFinish(String output) {
