@@ -154,15 +154,18 @@ public class GameView extends SurfaceView implements AsyncResponse {
         //draw competitors
         for(Object i: DataModel.getCompetitors().keySet()){
             if(DataModel.getCompetitors().get(i).isAlive()){
-                canvas.drawBitmap(DataModel.getCompetitors().get(i).getBitmap(), (int)(DataModel.getCompetitors().get(i).getXpos()*DataModel.getRatioX()),
-                        (int)(DataModel.getCompetitors().get(i).getYpos()*DataModel.getRatioY()), null);
+                canvas.drawBitmap(DataModel.getCompetitors().get(i).getBitmap(), (int)DataModel.getCompetitors().get(i).getXpos(),
+                        (int)DataModel.getCompetitors().get(i).getYpos(), null);
             }
         }
 
         //Draw powerup icon. Needs to iterate over another list; a list of undeployed powerups.
         for(int i = 0; i < DataModel.getPowerups().size(); i++){
+
+            powerupIcon = Bitmap.createScaledBitmap(powerupIcon,(int)(powerupIcon.getWidth()*DataModel.getRatioX()),(int)(powerupIcon.getHeight()*DataModel.getRatioY()), true);
+
             canvas.drawBitmap(powerupIcon,(int) (DataModel.getPowerups().get(i).getxPos()*DataModel.getRatioX()),
-                    (int)(DataModel.getPowerups().get(i).getyPos() - powerupIcon.getHeight()*DataModel.getRatioY()), null);
+                    (int)((DataModel.getPowerups().get(i).getyPos() - powerupIcon.getHeight())*DataModel.getRatioY()), null);
         }
 
         //Draw deployed powerups
