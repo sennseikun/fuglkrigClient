@@ -121,7 +121,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
                 getScreenHeight(), true);
         nextMap = Bitmap.createScaledBitmap(currentMap, getScreenWidth(),
                 getScreenHeight(), true);
-        winMap = Bitmap.createScaledBitmap(currentMap, getScreenWidth(),
+        winMap = Bitmap.createScaledBitmap(winMap, getScreenWidth() + 130,
                 getScreenHeight(), true);
     }
 
@@ -137,11 +137,11 @@ public class GameView extends SurfaceView implements AsyncResponse {
         //Update map
         double nextBitMapPos = DataModel.getNextMapXpos()*DataModel.getRatioX();
         double currBitMapPos = DataModel.getMapXpos()*DataModel.getRatioX();
-        double winBitMapPos = DataModel.getWinnerMapXpos()*DataModel.getRatioX();
+        double winBitMapPos = DataModel.getWinnerMapXpos()*DataModel.getRatioX() - 130;
 
+        canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
         canvas.drawBitmap(currentMap, (int)currBitMapPos,0,null);
         canvas.drawBitmap(nextMap,(int)nextBitMapPos,0,null);
-        //canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
 
         //draw competitors
         for(Object i: DataModel.getCompetitors().keySet()){
