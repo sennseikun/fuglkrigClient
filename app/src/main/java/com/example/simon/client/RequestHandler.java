@@ -9,7 +9,10 @@ import org.json.JSONObject;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.URL;
+import java.util.Scanner;
 
 /**
  * Created by Simon on 16.03.2017.
@@ -51,7 +54,23 @@ public class RequestHandler extends Thread {
     }
 
     public void init(){
-        String serverName = "104.199.108.89";
+        String serverName = "";
+
+        URL url = null;
+
+        //gets ip address to server
+        try {
+            url = new URL("http://guttormsen.io/fuglkrig/ip.txt");
+            Scanner s = new Scanner(url.openStream());
+            serverName = s.nextLine();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Log.d("Server IP address", serverName);
+
+
         int port = 5555;
         try {
             System.out.println("Connecting to " + serverName + " on port " + port);
