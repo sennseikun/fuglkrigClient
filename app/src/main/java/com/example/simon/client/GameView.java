@@ -23,7 +23,7 @@ import java.util.List;
  * Created by oskar on 23.03.2017.
  */
 
-public class GameView extends SurfaceView {
+public class GameView extends SurfaceView implements AsyncResponse {
     private SurfaceHolder holder;
     private GameLoopThread glt;
     private int canvasHeight, canvasWidth;
@@ -242,6 +242,11 @@ public class GameView extends SurfaceView {
     }
     private static int getScreenHeight(){
         return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
+
+    @Override
+    public void processFinish(String output) {
+
     }
 
 

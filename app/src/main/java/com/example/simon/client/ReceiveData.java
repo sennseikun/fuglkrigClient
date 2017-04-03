@@ -1,5 +1,6 @@
 package com.example.simon.client;
 
+import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.util.Log;
 
@@ -26,6 +27,8 @@ public class ReceiveData extends Thread {
     DataInputStream in;
     private boolean isStopped;
     private boolean isInit;
+    long startTime = 0;
+    int packages = 0;
    // private static int ratioX = DataModel.getRatioX() / DataModel.getResolutionX();
    // private static int ratioY = DataModel.getRatioY() / DataModel.getResolutionY();
 
@@ -66,6 +69,19 @@ public class ReceiveData extends Thread {
             try {
 
                 String answer = "";
+
+                if(System.currentTimeMillis() > startTime + 1000){
+                    startTime = System.currentTimeMillis();
+                    System.out.println("Packages: " + packages);
+                    packages = 0;
+                    AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                    data.delegate = DataModel.getCreateGame();
+                    data.execute();
+
+                }
+                else{
+                    packages++;
+                }
 
                 InputStream inFromServer = client.getInputStream();
                 in = new DataInputStream(inFromServer);
