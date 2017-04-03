@@ -174,9 +174,8 @@ public class GameView extends SurfaceView implements AsyncResponse {
         }
 
         //Draw powerups
-        for(int i = 0; i < DataModel.getPowerups().size(); i++){
-            canvas.drawBitmap(DataModel.getPowerups().get(i).getBitMap(this.getContext()), DataModel.getPowerups().get(i).getxPos(),
-                    DataModel.getPowerups().get(i).getyPos(), null);
+        for(Powerup p : DataModel.getPowerups()){
+            canvas.drawBitmap(p.getBitMap(this.getContext()), p.getxPos(), p.getyPos(), null);
         }
 
         //draw current player, i.e. me-player
