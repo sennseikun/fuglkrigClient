@@ -322,6 +322,16 @@ public class ReceiveData extends Thread {
                     int nextXpos = translated.getInt("NextMapXPos");
                     int winXpos = translated.getInt("WinMapXPos");
 
+                    double playerScale = translated.getDouble("PlayerScale");
+                    double birdPoopScale = translated.getDouble("BirdPoopScale");
+                    double wallScale = translated.getDouble("WallScale");
+                    double powerupScape = translated.getDouble("PowerupScale");
+
+                    DataModel.setPlayerScale(playerScale);
+                    DataModel.setPowerupScale(powerupScape);
+                    DataModel.setWallScale(wallScale);
+                    DataModel.setBirdPoopScale(birdPoopScale);
+
                     DataModel.setMapXpos(mapXpos);
                     DataModel.setNextMapXpos(nextXpos);
                     DataModel.setWinnerMapXpos(winXpos);
