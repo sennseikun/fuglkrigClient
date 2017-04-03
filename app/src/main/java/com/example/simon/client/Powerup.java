@@ -43,6 +43,7 @@ public class Powerup {
         int resourceId = resources.getIdentifier(drawableName, "drawable",context.getPackageName());
 
         Bitmap powerup_img = BitmapFactory.decodeResource(context.getResources(), resourceId);
+        powerup_img = Bitmap.createScaledBitmap(powerup_img ,(int)(powerup_img.getWidth()*DataModel.getRatioX()),(int)(powerup_img.getHeight()*DataModel.getRatioY()), true);
 
         return powerup_img;
     }
