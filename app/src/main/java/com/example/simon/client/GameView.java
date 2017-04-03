@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -27,8 +28,6 @@ public class GameView extends SurfaceView implements AsyncResponse {
     private SurfaceHolder holder;
     private GameLoopThread glt;
     private int canvasHeight, canvasWidth;
-    private double ratioX, ratioY;
-    private ArrayList<Player> players = new ArrayList<Player>();
     private ArrayList<Bitmap> buttonBitmaps = new ArrayList<Bitmap>();
     private ArrayList<Rect> rects = new ArrayList<Rect>();
     private RequestHandler handler = DataModel.getSocket();
@@ -37,13 +36,12 @@ public class GameView extends SurfaceView implements AsyncResponse {
     private Bitmap nextMap;
     private Bitmap winMap;
     private Bitmap powerupIcon;
-
-    //Player object for testing
-   // private Player testPlayer;
+    private Paint textpaint = new Paint();
+    private String dataInfo = "";
 
     public GameView(Context context){
         super(context);
-
+        DataModel.setGameView(this);
         glt = GameLoopThread.getInstance();
         glt.setView(this);
         holder = getHolder();
@@ -75,25 +73,8 @@ public class GameView extends SurfaceView implements AsyncResponse {
         canvasHeight = getScreenHeight();
         canvasWidth = getScreenWidth();
 
-        //initTestPlayers();
-
         UpdateServer.getInstance().start();
     }
-/*
-    public void initTestPlayers(){
-        //Testplayer
-        testPlayer = new Player();
-        players.add(0,testPlayer);
-        players.get(0).setContext(this.getContext());
-        players.get(0).setBitmap(R.drawable.bird);
-        //Define testPlayer's start position
-        testPlayer.setXpos(canvasWidth/2 - testPlayer.getBitmap().getHeight()/2);
-        testPlayer.setYpos(canvasHeight/2 - testPlayer.getBitmap().getWidth()/2);
-        players.add(1, new Player());
-        players.get(1).setContext(this.getContext());
-        players.get(1).setBitmap(R.drawable.blackbird);
-    }
-*/
 
     public void competitorsInit(HashMap hm){
         //Instantiate the competitors' birds. hm is the competitors hashmap
@@ -176,7 +157,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
         //Draw deployed powerups
         for(int i = 0; i < DataModel.getPowerups().size(); i++){
-
+            //Draw deployed powerups
         }
 
         //draw current player, i.e. me-player
@@ -185,7 +166,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
             DataModel.getCurrplayer().setXpos(canvasWidth/2 - DataModel.getCurrplayer().getBitmap().getWidth()/2);
             DataModel.getCurrplayer().setYpos(canvasHeight/2 - DataModel.getCurrplayer().getBitmap().getHeight()/2);
         }
-        //canvas.drawBitmap(players.get(0).getBitmap(), players.get(0).getXpos(), players.get(0).getYpos(), null);
+
         if(DataModel.getCurrplayer().isAlive()){
             canvas.drawBitmap(DataModel.getCurrplayer().getBitmap(), (int)DataModel.getCurrplayer().getXpos(),
                     (int) DataModel.getCurrplayer().getYpos(), null);
@@ -197,6 +178,9 @@ public class GameView extends SurfaceView implements AsyncResponse {
         for(int i = 0; i < buttonBitmaps.size(); i++){
             canvas.drawBitmap(buttonBitmaps.get(i), (int)(canvasWidth - canvasHeight/4), (int) canvasHeight*i/4, null);
         }
+
+        //Draw text
+        canvas.drawText(dataInfo, 100, 100, textpaint);
     }
 
     //@Override
@@ -204,9 +188,6 @@ public class GameView extends SurfaceView implements AsyncResponse {
         switch(me.getAction()){
             case  MotionEvent.ACTION_DOWN:
                 if(me.getX() < canvasWidth - canvasHeight/4 - DataModel.getCurrplayer().getBitmap().getWidth()/2) {
-                    //players.get(0) is the bird belonging to this client
-                    //players.get(0).setTargetPos(me.getX(), me.getY());
-
                     DataModel.setTargetX((me.getX()));
                     DataModel.setTargetY((me.getY()));
 
@@ -233,10 +214,6 @@ public class GameView extends SurfaceView implements AsyncResponse {
         return false;
     }
 
-    public List<Player> getPlayers(){
-        return players;
-    }
-
     private static int getScreenWidth(){
         return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
@@ -246,7 +223,8 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
     @Override
     public void processFinish(String output) {
-
+        dataInfo = output;
+        System.out.println("DATA_INFO: "+ dataInfo);
     }
 
 
