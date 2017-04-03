@@ -132,8 +132,9 @@ public class Player {
     public double getDy() { return dy; }
 
     public void setBitmap(int pictureId){
-        this.bitmap = BitmapFactory.decodeResource(DataModel.getGameContext().getResources(), pictureId);
-        //this.bitmap = Bitmap.createScaledBitmap(this.bitmap,(int)(this.bitmap.getWidth()*DataModel.getRatioX()),(int)(this.bitmap.getHeight()*DataModel.getRatioY()), true);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+        this.bitmap = BitmapFactory.decodeResource(DataModel.getGameContext().getResources(), pictureId, options);
     }
 
     public Bitmap getBitmap(){
