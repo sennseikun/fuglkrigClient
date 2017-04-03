@@ -35,6 +35,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
     private Bitmap currentMap;
     private Bitmap nextMap;
     private Bitmap winMap;
+    double winBitMapPos = DataModel.getWinnerMapXpos()*DataModel.getRatioX() - 130;
     private Bitmap powerupIcon;
     private Paint textpaint = new Paint();
     private String dataInfo = "";
@@ -137,7 +138,6 @@ public class GameView extends SurfaceView implements AsyncResponse {
         //Update map
         double nextBitMapPos = DataModel.getNextMapXpos()*DataModel.getRatioX();
         double currBitMapPos = DataModel.getMapXpos()*DataModel.getRatioX();
-        double winBitMapPos = DataModel.getWinnerMapXpos()*DataModel.getRatioX() - 130;
 
         canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
         canvas.drawBitmap(currentMap, (int)currBitMapPos,0,null);
