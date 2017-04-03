@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.support.constraint.solver.widgets.Rectangle;
 
 /**
  * Created by oskar on 23.03.2017.
@@ -132,6 +133,7 @@ public class Player {
 
     public void setBitmap(int pictureId){
         this.bitmap = BitmapFactory.decodeResource(DataModel.getGameContext().getResources(), pictureId);
+        this.bitmap = Bitmap.createScaledBitmap(this.bitmap ,(int)(this.bitmap.getWidth()*DataModel.getRatioX()),(int)(this.bitmap.getHeight()*DataModel.getRatioY()), true);
     }
 
     public Bitmap getBitmap(){
