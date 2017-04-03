@@ -28,6 +28,8 @@ public class GameActivity extends Activity implements AsyncResponse {
     public void onStop(){
         super.onStop();
         DataModel.setInGame(null);
+        startActivity(new Intent(this,MenuActivity.class));
+        finish();
     }
 
     @Override
