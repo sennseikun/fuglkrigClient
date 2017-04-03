@@ -29,9 +29,12 @@ public class Powerup {
 
         switch(Id){
             case 0:
-                drawableName = "brickwall";
+                drawableName = "powerup";
                 break;
             case 1:
+                drawableName = "brickwall";
+                break;
+            case 2:
                 drawableName = "birdpoop";
                 break;
             default: break;
