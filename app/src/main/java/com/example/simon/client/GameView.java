@@ -8,7 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.provider.ContactsContract;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -18,7 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by oskar on 23.03.2017.
@@ -37,7 +36,9 @@ public class GameView extends SurfaceView implements AsyncResponse {
     private Bitmap winMap;
     double winBitMapPos = DataModel.getWinnerMapXpos()*DataModel.getRatioX() - 130;
     private Bitmap powerupIcon;
-    private Paint textpaint = new Paint();
+    private Paint packettextPaint = new Paint();
+    private Paint countdownTextPaint = new Paint();
+    private String countdownString = "5";
     private String dataInfo = "";
 
     public GameView(Context context){
@@ -69,7 +70,9 @@ public class GameView extends SurfaceView implements AsyncResponse {
             }
         });
 
-        textpaint.setTextSize(48);
+        packettextPaint.setTextSize(48);
+        countdownTextPaint.setTypeface(Typeface.MONOSPACE);
+        countdownTextPaint.setTextSize(200);
         canvasHeight = getScreenHeight();
         canvasWidth = getScreenWidth();
 
@@ -195,7 +198,8 @@ public class GameView extends SurfaceView implements AsyncResponse {
         }
 
         //Draw text
-        canvas.drawText(dataInfo, 10, 50, textpaint);
+        canvas.drawText(countdownString, canvasWidth/2, canvasHeight/2, countdownTextPaint);
+        canvas.drawText(dataInfo, 10, 50, packettextPaint);
     }
 
     //@Override
