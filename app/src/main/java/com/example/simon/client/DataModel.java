@@ -37,6 +37,10 @@ public class DataModel {
     private static double ratioY;
     private static List<Powerup> powerups = new ArrayList<>();
     private static GameView gameView = null;
+    private static double powerupScale = -1;
+    private static double birdPoopScale = -1;
+    private static double wallScale = -1;
+    private static double playerScale = -1;
 
     //Map values
 
@@ -355,5 +359,37 @@ public class DataModel {
 
     public static void setGameView(GameView gameView) {
         DataModel.gameView = gameView;
+    }
+
+    public static double getPowerupScale() {
+        return powerupScale;
+    }
+
+    public static void setPowerupScale(double powerupScale) {
+        DataModel.powerupScale = powerupScale;
+    }
+
+    public static double getBirdPoopScale() {
+        return birdPoopScale;
+    }
+
+    public static void setBirdPoopScale(double birdPoopScale) {
+        DataModel.birdPoopScale = birdPoopScale;
+    }
+
+    public static double getWallScale() {
+        return wallScale;
+    }
+
+    public static void setWallScale(double wallScale) {
+        DataModel.wallScale = wallScale;
+    }
+
+    public static double getPlayerScale() {
+        return playerScale;
+    }
+
+    public static void setPlayerScale(double playerScale) {
+        DataModel.playerScale = playerScale;
     }
 }

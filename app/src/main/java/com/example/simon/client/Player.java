@@ -135,6 +135,7 @@ public class Player {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
         this.bitmap = BitmapFactory.decodeResource(DataModel.getGameContext().getResources(), pictureId, options);
+        this.bitmap = Bitmap.createScaledBitmap(this.bitmap,(int)(this.bitmap.getWidth()*DataModel.getRatioX()*DataModel.getPlayerScale()),(int)(this.bitmap.getHeight()*DataModel.getRatioY()*DataModel.getPlayerScale()),true);
     }
 
     public Bitmap getBitmap(){
