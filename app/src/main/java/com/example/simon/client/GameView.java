@@ -185,8 +185,6 @@ public class GameView extends SurfaceView implements AsyncResponse {
         if(DataModel.getCurrplayer().isAlive()){
             canvas.drawBitmap(DataModel.getCurrplayer().getBitmap(), (int)DataModel.getCurrplayer().getXpos(),
                     (int) DataModel.getCurrplayer().getYpos(), null);
-            System.out.println("Xpos" + DataModel.getCurrplayer().getXpos());
-            System.out.println("Ypos" + DataModel.getCurrplayer().getYpos());
         }
 
         //Draw buttons
@@ -225,6 +223,34 @@ public class GameView extends SurfaceView implements AsyncResponse {
                     Log.d("BUTTON CLICK: ", "Button 4 (arrow right)");
                 }
                 break;
+
+            case MotionEvent.ACTION_MOVE:
+                Log.d("Touch", "ACTION_MOVE");
+                int count = me.getPointerCount();
+                for (int i = 0; i < count; i++) {
+                    if(me.getX(i) < canvasWidth - canvasHeight/4 - DataModel.getCurrplayer().getBitmap().getWidth()/2) {
+                        DataModel.setTargetX(me.getX(i));
+                        DataModel.setTargetY(me.getY(i));
+
+                        JSONObject inputJson = new JSONObject();
+                        try {
+                            inputJson.put("posX",me.getX(i));
+                            inputJson.put("posY",me.getY(i));
+                            inputJson.put("p_id",DataModel.getP_id());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }else if(rects.get(0).contains((int) me.getX(i),(int) me.getY(i))){
+                        Log.d("BUTTON CLICK: ","Button 1 (arrow left)");
+                    }else if (rects.get(1).contains((int) me.getX(i),(int) me.getY(i))){
+                        Log.d("BUTTON CLICK: ","Button 2 (arrow right)");
+                    }else if(rects.get(2).contains((int) me.getX(i), (int) me.getY(i))){
+                        Log.d("BUTTON CLICK: ", "Button 3 (arrow left)");
+                    }else if (rects.get(3).contains((int) me.getX(i), (int) me.getY(i))){
+                        Log.d("BUTTON CLICK: ", "Button 4 (arrow right)");
+                    }
+                }
         }
         return false;
     }
@@ -239,7 +265,6 @@ public class GameView extends SurfaceView implements AsyncResponse {
     @Override
     public void processFinish(String output) {
         dataInfo = output;
-        System.out.println("DATA_INFO: "+ dataInfo);
     }
 
 

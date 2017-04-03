@@ -137,8 +137,6 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         DataModel.getLobbys().clear();
         String datatype = "1";
 
-        System.out.println("Started loading lobbys");
-
         if(DataModel.getLastSent() != null){
             try {
                 JSONObject lastSent = new JSONObject(DataModel.getLastSent());
@@ -152,7 +150,6 @@ public class LobbyActivity extends Activity implements AsyncResponse {
 
         if(handler != null){
             JSONObject json = new JSONObject();
-            System.out.println("Datatype "+datatype+" sent from LobbyActivity");
             try {
                 json.put("Datatype",datatype);
                 handler.sendData(json);

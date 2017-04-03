@@ -130,7 +130,6 @@ public class DataModel {
     }
 
     public static void setNick(String nick) {
-        System.out.println("Nick set: " + nick);
         DataModel.nick = nick;
     }
 

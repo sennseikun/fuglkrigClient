@@ -109,9 +109,6 @@ public class GameLobby extends Activity implements AsyncResponse  {
     }
 
     public void updateListView(){
-
-        System.out.println("Should update listview");
-
         List<String> newList = new ArrayList<>();
         newList.addAll(DataModel.getPlayersInLobby());
 
