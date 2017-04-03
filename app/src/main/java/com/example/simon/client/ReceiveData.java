@@ -73,13 +73,12 @@ public class ReceiveData extends Thread {
                 if(System.currentTimeMillis() > startTime + 1000){
                     startTime = System.currentTimeMillis();
                     System.out.println("Packages: " + packages);
-                    packages = 0;
                     if(DataModel.getGameView() != null){
                         AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
                         data.delegate = DataModel.getGameView();
                         data.execute(packages+ "");
                     }
-
+                    packages = 0;
                 }
                 else{
                     packages++;

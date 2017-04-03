@@ -68,6 +68,8 @@ public class GameView extends SurfaceView implements AsyncResponse {
             }
         });
 
+        textpaint.setTextSize(48);
+
         buttonsInit();
         powerupIcon = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.powerup);
         canvasHeight = getScreenHeight();
@@ -180,7 +182,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
         }
 
         //Draw text
-        canvas.drawText(dataInfo, 100, 100, textpaint);
+        canvas.drawText(dataInfo, 10, 50, textpaint);
     }
 
     //@Override
