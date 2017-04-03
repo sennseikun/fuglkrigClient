@@ -11,10 +11,10 @@ import android.graphics.BitmapFactory;
 
 public class Powerup {
 
-    int xPos = -1;
-    int yPos = -1;
-    int Id = -1;
-    int type = -1;
+    private int xPos = -1;
+    private int yPos = -1;
+    private int Id = -1;
+    private int type = -1;
 
     public Powerup(int xPos, int yPos, int Id, int type){
         this.xPos = xPos;
@@ -59,5 +59,9 @@ public class Powerup {
 
     public int getId() {
         return Id;
+    }
+
+    public int getType() {
+        return type;
     }
 }
