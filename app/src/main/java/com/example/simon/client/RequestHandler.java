@@ -71,6 +71,7 @@ public class RequestHandler extends Thread {
         Log.d("Server IP address", serverName);
 
 
+>>>>>>> e80fb0af60d2c824f37b5d1baccd69a26ec64b50
         int port = 5555;
         try {
             System.out.println("Connecting to " + serverName + " on port " + port);

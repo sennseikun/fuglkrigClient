@@ -35,6 +35,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
     private Bitmap currentMap;
     private Bitmap nextMap;
     private Bitmap winMap;
+    double winBitMapPos = DataModel.getWinnerMapXpos()*DataModel.getRatioX() - 130;
     private Bitmap powerupIcon;
     private Paint textpaint = new Paint();
     private String dataInfo = "";
@@ -67,6 +68,8 @@ public class GameView extends SurfaceView implements AsyncResponse {
                 }
             }
         });
+
+        textpaint.setTextSize(48);
 
         buttonsInit();
         powerupIcon = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.powerup);
@@ -119,7 +122,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
                 getScreenHeight(), true);
         nextMap = Bitmap.createScaledBitmap(currentMap, getScreenWidth(),
                 getScreenHeight(), true);
-        winMap = Bitmap.createScaledBitmap(currentMap, getScreenWidth(),
+        winMap = Bitmap.createScaledBitmap(winMap, getScreenWidth() + 130,
                 getScreenHeight(), true);
     }
 
@@ -135,11 +138,10 @@ public class GameView extends SurfaceView implements AsyncResponse {
         //Update map
         double nextBitMapPos = DataModel.getNextMapXpos()*DataModel.getRatioX();
         double currBitMapPos = DataModel.getMapXpos()*DataModel.getRatioX();
-        double winBitMapPos = DataModel.getWinnerMapXpos()*DataModel.getRatioX();
 
+        canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
         canvas.drawBitmap(currentMap, (int)currBitMapPos,0,null);
         canvas.drawBitmap(nextMap,(int)nextBitMapPos,0,null);
-        //canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
 
         //draw competitors
         for(Object i: DataModel.getCompetitors().keySet()){
@@ -180,7 +182,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
         }
 
         //Draw text
-        canvas.drawText(dataInfo, 100, 100, textpaint);
+        canvas.drawText(dataInfo, 10, 50, textpaint);
     }
 
     //@Override
