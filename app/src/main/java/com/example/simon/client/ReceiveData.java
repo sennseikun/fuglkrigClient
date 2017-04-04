@@ -416,7 +416,9 @@ public class ReceiveData extends Thread {
                 //You died
 
                 else if(packet_number.equals("16")){
+                    boolean victory = translated.getBoolean("Victory");
                     DataModel.setIsOver(true);
+                    DataModel.setIsVictory(victory);
                     System.out.println("Got package 16");
                 }
 

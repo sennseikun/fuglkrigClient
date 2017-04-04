@@ -43,6 +43,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
     double winBitMapPos = DataModel.getWinnerMapXpos()*DataModel.getRatioX() - 130;
     private Bitmap powerupIcon;
     private Paint packettextPaint = new Paint();
+    private Paint gameoverPaint = new Paint();
     private Paint countdownTextPaint = new Paint();
     private String countdownString = "5";
     private String dataInfo = "";
@@ -78,6 +79,8 @@ public class GameView extends SurfaceView implements AsyncResponse {
         });
 
         packettextPaint.setTextSize(48);
+        gameoverPaint.setTextSize(75);
+
         countdownTextPaint.setTypeface(Typeface.MONOSPACE);
         countdownTextPaint.setTextSize(200);
         canvasHeight = getScreenHeight();
@@ -156,21 +159,32 @@ public class GameView extends SurfaceView implements AsyncResponse {
     }
 
     public void initGameOverScreens(){
+        String resource = "skinsbutton";
+        int scaler = 2;
+
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
-        winBackground = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.winbackground,options);
-        winBackground = Bitmap.createScaledBitmap(winBackground,(int)(winBackground.getWidth()*DataModel.getRatioX()),
-                (int)(winBackground.getHeight()*DataModel.getRatioY()), true);
-        winBackground = Bitmap.createScaledBitmap(winBackground, getScreenWidth(),
-                getScreenHeight(), true);
+
+        if(DataModel.isVictory()){
+            resource = "createbutton";
+        }
+
+        Resources resources = getResources();
+        int resourceId = resources.getIdentifier(resource, "drawable",this.getContext().getPackageName());
+
+        winBackground = BitmapFactory.decodeResource(this.getContext().getResources(), resourceId,options);
+        winBackground = Bitmap.createScaledBitmap(winBackground,(int)(winBackground.getWidth()*DataModel.getRatioX()*scaler),
+                (int)(winBackground.getHeight()*DataModel.getRatioY()*scaler), true);
     }
 
     @Override
     public void onDraw(Canvas canvas){
+        super.onDraw(canvas);
         canvas.drawColor(Color.BLUE);
 
         if(DataModel.isOver()){
-            canvas.drawBitmap(winBackground,0,0,null);
+            canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
+            canvas.drawBitmap(winBackground,canvasWidth/2 - winBackground.getWidth(),canvasHeight/2 - winBackground.getHeight(),null);
         }
 
         else{
@@ -218,8 +232,6 @@ public class GameView extends SurfaceView implements AsyncResponse {
             }
 
             //Draw text
-
-
             canvas.drawText(DataModel.getTextOnScreen(), canvasWidth/2 - 100, canvasHeight/2, countdownTextPaint);
             canvas.drawText(dataInfo, 10, 50, packettextPaint);
 

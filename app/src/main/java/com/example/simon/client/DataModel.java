@@ -43,6 +43,7 @@ public class DataModel {
     private static double playerScale = -1;
     private static String textOnScreen = "";
     private static boolean isOver = false;
+    private static boolean isVictory = false;
 
     //Map values
 
@@ -408,5 +409,13 @@ public class DataModel {
 
     public static void setIsOver(boolean isOver) {
         DataModel.isOver = isOver;
+    }
+
+    public static boolean isVictory() {
+        return isVictory;
+    }
+
+    public static void setIsVictory(boolean isVictory) {
+        DataModel.isVictory = isVictory;
     }
 }
