@@ -22,7 +22,7 @@ public class GameActivity extends Activity implements AsyncResponse {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         DataModel.setInGame(this);
-        
+
         setContentView(new GameView(this));
     }
     /*@Override
