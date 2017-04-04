@@ -119,7 +119,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
         buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.bricksright));
         rects.add(new Rect((int)(canvasWidth - canvasHeight/4), canvasHeight/4, canvasWidth, canvasHeight/2));
         //Button 3
-        buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.birdpoop));
+        buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.birdpoop_btn));
         rects.add(new Rect((int)(canvasWidth - canvasHeight/4), canvasHeight/2, canvasWidth, 3*canvasHeight/4));
         //Button 4
         buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.arrow_right));
@@ -184,7 +184,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
         if(DataModel.isOver()){
             canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
-            canvas.drawBitmap(winBackground,canvasWidth/2 - winBackground.getWidth(),canvasHeight/2 - winBackground.getHeight(),null);
+            canvas.drawBitmap(winBackground,canvasWidth/2 - winBackground.getWidth()/2,canvasHeight/2 - winBackground.getHeight()/2,null);
         }
 
         else{
