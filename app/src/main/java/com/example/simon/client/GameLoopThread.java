@@ -21,6 +21,7 @@ public class GameLoopThread extends Thread {
     @SuppressLint("WrongCall")
     @Override
     public void run() {
+
         long ticksPS = 1000 / FPS;
         long startTime, sleepTime;
         while (running) {
