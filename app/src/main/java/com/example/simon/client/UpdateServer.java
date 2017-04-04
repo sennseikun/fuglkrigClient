@@ -16,18 +16,18 @@ public class UpdateServer extends Thread {
     //public static double ratioX = DataModel.getResolutionX()/ DataModel.getRatioX();
     //public static double ratioY = DataModel.getResolutionY()/ DataModel.getRatioY();
 
-    public static UpdateServer getInstance(){
-        if(updater == null){
+    public static UpdateServer getInstance() {
+        if (updater == null) {
             updater = new UpdateServer();
         }
         return updater;
     }
 
-    public static boolean getRunning(){
+    public static boolean getRunning() {
         return running;
     }
 
-    public static void stopRunning(){
+    public static void stopRunning() {
         running = false;
     }
 
@@ -58,21 +58,21 @@ public class UpdateServer extends Thread {
     }
 
     @Override
-    public void run(){
+    public void run() {
 
         JSONObject lastSent = null;
 
-        while(running){
+        while (running) {
 
             RequestHandler handler = DataModel.getSocket();
             JSONObject sendData = new JSONObject();
             try {
-                sendData.put("Datatype",12);
-                sendData.put("TargetX",DataModel.getTargetX()/DataModel.getRatioX());
+                sendData.put("Datatype", 12);
+                sendData.put("TargetX", DataModel.getTargetX() / DataModel.getRatioX());
 
-                sendData.put("TargetY",DataModel.getTargetY()/DataModel.getRatioY());
+                sendData.put("TargetY", DataModel.getTargetY() / DataModel.getRatioY());
 
-                if(compareJson(lastSent, sendData)){
+                if (compareJson(lastSent, sendData)) {
                     handler.sendData(sendData);
                     lastSent = sendData;
                     //System.out.println("Sent X: "+DataModel.getTargetX());
@@ -86,12 +86,25 @@ public class UpdateServer extends Thread {
             //TODO: Change input to come from server
 
             try {
-                this.sleep(1000/30);
+                this.sleep(1000 / 30);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
 
+        }
     }
 
+    //Send powerup to deploy
+    public void sendPowerup(int type){
+        RequestHandler handler = DataModel.getSocket();
+        JSONObject powerupData = new JSONObject();
+        try {
+            powerupData.put("Datatype", 13);
+            powerupData.put("Type", type);
+            handler.sendData(powerupData);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -45,7 +45,6 @@ public class GameView extends SurfaceView implements AsyncResponse {
     private Paint packettextPaint = new Paint();
     private Paint gameoverPaint = new Paint();
     private Paint countdownTextPaint = new Paint();
-    private String countdownString = "5";
     private String dataInfo = "";
     private boolean WinScreen = false;
 
@@ -85,6 +84,9 @@ public class GameView extends SurfaceView implements AsyncResponse {
         countdownTextPaint.setTextSize(200);
         canvasHeight = getScreenHeight();
         canvasWidth = getScreenWidth();
+        packettextPaint.setTextSize(48);
+        countdownTextPaint.setTypeface(Typeface.MONOSPACE);
+        countdownTextPaint.setTextSize(canvasHeight/5);
 
         buttonsInit();
         initGameOverScreens();
@@ -132,7 +134,6 @@ public class GameView extends SurfaceView implements AsyncResponse {
     }
 
     public void initMaps(){
-
         Resources resources = getResources();
         int resourceId = resources.getIdentifier(DataModel.getCurrentMapName(), "drawable",this.getContext().getPackageName());
 
@@ -256,13 +257,17 @@ public class GameView extends SurfaceView implements AsyncResponse {
                     }
 
                 }else if(rects.get(0).contains((int) me.getX(),(int) me.getY())){
-                    Log.d("BUTTON CLICK: ","Button 1 (arrow left)");
+                    Log.d("BUTTON CLICK: ","Button 1 (wall left)");
+                    UpdateServer.getInstance().sendPowerup(1);
                 }else if (rects.get(1).contains((int) me.getX(),(int) me.getY())){
-                    Log.d("BUTTON CLICK: ","Button 2 (arrow right)");
+                    Log.d("BUTTON CLICK: ","Button 2 (wall right)");
+                    UpdateServer.getInstance().sendPowerup(2);
                 }else if(rects.get(2).contains((int) me.getX(), (int) me.getY())){
-                    Log.d("BUTTON CLICK: ", "Button 3 (arrow left)");
+                    Log.d("BUTTON CLICK: ", "Button 3 (birdpoop)");
+                    UpdateServer.getInstance().sendPowerup(3);
                 }else if (rects.get(3).contains((int) me.getX(), (int) me.getY())){
                     Log.d("BUTTON CLICK: ", "Button 4 (arrow right)");
+                    //UpdateServer.getInstance().sendPowerup(4);
                 }
                 break;
 
@@ -285,10 +290,14 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
                     }else if(rects.get(0).contains((int) me.getX(i),(int) me.getY(i))){
                         Log.d("BUTTON CLICK: ","Button 1 (arrow left)");
+
+
                     }else if (rects.get(1).contains((int) me.getX(i),(int) me.getY(i))){
                         Log.d("BUTTON CLICK: ","Button 2 (arrow right)");
+
                     }else if(rects.get(2).contains((int) me.getX(i), (int) me.getY(i))){
                         Log.d("BUTTON CLICK: ", "Button 3 (arrow left)");
+
                     }else if (rects.get(3).contains((int) me.getX(i), (int) me.getY(i))){
                         Log.d("BUTTON CLICK: ", "Button 4 (arrow right)");
                     }
