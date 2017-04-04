@@ -14,6 +14,8 @@ public class GameLoopThread extends Thread {
     private static GameLoopThread glt = new GameLoopThread();
     private boolean running = false;
     static final long FPS = 60;
+    private int currentFPS = 0;
+    private long startTimeFPS = System.currentTimeMillis();
 
     public GameLoopThread() {
     }
@@ -25,6 +27,13 @@ public class GameLoopThread extends Thread {
         long ticksPS = 1000 / FPS;
         long startTime, sleepTime;
         while (running) {
+            currentFPS++;
+
+            if(System.currentTimeMillis() > startTimeFPS + 1000){
+                DataModel.setFps(currentFPS);
+                currentFPS = 0;
+                startTimeFPS = System.currentTimeMillis();
+            }
             Canvas c = null;
             startTime = System.currentTimeMillis();
             try {

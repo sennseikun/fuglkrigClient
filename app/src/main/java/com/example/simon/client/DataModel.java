@@ -44,6 +44,11 @@ public class DataModel {
     private static String textOnScreen = "";
     private static boolean isOver = false;
     private static boolean isVictory = false;
+    private static int fWallCount = 0;
+    private static int bWallCount = 0;
+    private static int birdPoopCount = 0;
+    private static int fps = 0;
+    private static int server_sent_packets = 0;
 
     //Map values
 
@@ -417,5 +422,45 @@ public class DataModel {
 
     public static void setIsVictory(boolean isVictory) {
         DataModel.isVictory = isVictory;
+    }
+
+    public static int getBirdPoopCount() {
+        return birdPoopCount;
+    }
+
+    public static void setBirdPoopCount(int birdPoopCount) {
+        DataModel.birdPoopCount = birdPoopCount;
+    }
+
+    public static int getbWallCount() {
+        return bWallCount;
+    }
+
+    public static void setbWallCount(int bWallCount) {
+        DataModel.bWallCount = bWallCount;
+    }
+
+    public static int getfWallCount() {
+        return fWallCount;
+    }
+
+    public static void setfWallCount(int fWallCount) {
+        DataModel.fWallCount = fWallCount;
+    }
+
+    public static int getFps() {
+        return fps;
+    }
+
+    public static void setFps(int fps) {
+        DataModel.fps = fps;
+    }
+
+    public static int getServer_sent_packets() {
+        return server_sent_packets;
+    }
+
+    public static void setServer_sent_packets(int server_sent_packets) {
+        DataModel.server_sent_packets = server_sent_packets;
     }
 }

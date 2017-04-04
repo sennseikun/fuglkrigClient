@@ -13,16 +13,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.LinearLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by oskar on 23.03.2017.
@@ -89,8 +84,9 @@ public class GameView extends SurfaceView implements AsyncResponse {
         countdownTextPaint.setTypeface(Typeface.MONOSPACE);
         countdownTextPaint.setTextSize(canvasHeight/5);
 
-        buttonsInit();
         UpdateServer.getInstance().start();
+        buttonsInit();
+
     }
 
     public void competitorsInit(HashMap hm){
@@ -105,14 +101,35 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
     public void buttonsInit(){
         //Button 1
-        buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.bricksleft));
+
+        if(DataModel.getfWallCount() > 0){
+            buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.bricksleft));
+        }
+        else{
+            buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.grayedoutbricksleft));
+        }
+
         rects.add(new Rect((int)(canvasWidth - canvasHeight/4), 0, canvasWidth, canvasHeight/4));
 
         //Button 2
-        buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.bricksright));
+
+        if(DataModel.getbWallCount() > 0){
+            buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.bricksright));
+        }
+        else{
+            buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.grayedoutbricksright));
+        }
+
         rects.add(new Rect((int)(canvasWidth - canvasHeight/4), canvasHeight/4, canvasWidth, canvasHeight/2));
         //Button 3
-        buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.birdpoop_btn));
+
+        if(DataModel.getBirdPoopCount() > 0){
+            buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.birdpoop_btn));
+        }
+        else{
+            buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.grayedoutbirdpoop_btn));
+        }
+
         rects.add(new Rect((int)(canvasWidth - canvasHeight/4), canvasHeight/2, canvasWidth, 3*canvasHeight/4));
         //Button 4
         buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.arrow_right));
@@ -230,7 +247,9 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
             //Draw text
             canvas.drawText(DataModel.getTextOnScreen(), canvasWidth/2 - 100, canvasHeight/2, countdownTextPaint);
-            canvas.drawText(dataInfo, 10, 50, packettextPaint);
+            canvas.drawText("Received packets: " + dataInfo, 10, 50, packettextPaint);
+            canvas.drawText("FPS: "+DataModel.getFps(), 10, 150, packettextPaint);
+            canvas.drawText("Server data: " + DataModel.getServer_sent_packets(), 10, 250, packettextPaint);
 
         }
     }

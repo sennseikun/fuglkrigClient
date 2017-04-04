@@ -41,6 +41,10 @@ public class Powerup {
                 drawableName = "brickwall";
                 scale = DataModel.getWallScale();
                 break;
+            case 3:
+                drawableName ="birdpoop";
+                scale = DataModel.getBirdPoopScale();
+                break;
             default: break;
         }
 

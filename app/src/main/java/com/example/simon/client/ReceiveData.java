@@ -354,6 +354,9 @@ public class ReceiveData extends Thread {
                     int nextXpos = translated.getInt("NextMapXPos");
                     int winXpos = translated.getInt("WinMapXPos");
 
+                    int server_sent_packets = translated.getInt("ServerSendPackets");
+
+                    DataModel.setServer_sent_packets(server_sent_packets);
                     DataModel.setMapXpos(mapXpos);
                     DataModel.setNextMapXpos(nextXpos);
                     DataModel.setWinnerMapXpos(winXpos);
@@ -373,10 +376,37 @@ public class ReceiveData extends Thread {
                         System.out.println("Alive: " + alive);
 
                         if(id == DataModel.getP_id()){
+
                             Player me = DataModel.getCurrplayer();
                             System.out.println("Player id: " + me.getPlayerId());
                             System.out.println("RatioX: " + DataModel.getRatioX());
                             System.out.println("PosX: " + playerX);
+
+                            JSONArray powerups_inventory  = compJSON.getJSONArray("Powerups");
+
+                            int fWallCount = 0;
+                            int bWallCount = 0;
+                            int birdPoops = 0;
+
+                            for(int j = 0; j < powerups_inventory.length(); j++){
+                                int powerup = powerups_inventory.getInt(j);
+
+                                switch(powerup){
+                                    case 1:
+                                        bWallCount++;
+                                        break;
+                                    case 2:
+                                        fWallCount++;
+                                        break;
+                                    case 3:
+                                        birdPoops++;
+                                        break;
+                                }
+
+                            }
+                            DataModel.setBirdPoopCount(birdPoops);
+                            DataModel.setbWallCount(bWallCount);
+                            DataModel.setfWallCount(fWallCount);
 
                             me.setXpos(playerX*DataModel.getRatioX());
                             me.setYpos(playerY*DataModel.getRatioY());
