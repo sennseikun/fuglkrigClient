@@ -346,6 +346,15 @@ public class ReceiveData extends Thread {
 
                 else if(packet_number.equals("15")){
 
+                    String countDown = translated.getString("PrintToPlayer");
+
+                    if(countDown.equals("")){
+                        DataModel.setCountdown(-1);
+                    }
+                    else{
+                        DataModel.setCountdown(Integer.parseInt(countDown));
+                    }
+
                     int mapXpos = translated.getInt("MapXPos");
                     int nextXpos = translated.getInt("NextMapXPos");
                     int winXpos = translated.getInt("WinMapXPos");
@@ -365,6 +374,8 @@ public class ReceiveData extends Thread {
                         int playerX = compJSON.getInt("PosX");
                         int playerY = compJSON.getInt("PosY");
                         boolean alive = compJSON.getBoolean("Alive");
+
+                        System.out.println("Alive: " + alive);
 
                         if(id == DataModel.getP_id()){
                             Player me = DataModel.getCurrplayer();

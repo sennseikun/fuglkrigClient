@@ -41,6 +41,7 @@ public class DataModel {
     private static double birdPoopScale = -1;
     private static double wallScale = -1;
     private static double playerScale = -1;
+    private static int countdown = 6;
 
     //Map values
 
@@ -390,5 +391,13 @@ public class DataModel {
 
     public static void setPlayerScale(double playerScale) {
         DataModel.playerScale = playerScale;
+    }
+
+    public static int getCountdown() {
+        return countdown;
+    }
+
+    public static void setCountdown(int countdown) {
+        DataModel.countdown = countdown;
     }
 }
