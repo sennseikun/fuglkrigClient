@@ -26,16 +26,20 @@ public class Powerup {
     public Bitmap getBitMap(Context context){
 
         String drawableName = "";
+        double scale = 1;
 
         switch(Id){
             case 0:
                 drawableName = "powerup";
+                scale = DataModel.getPowerupScale();
                 break;
             case 1:
                 drawableName = "brickwall";
+                scale = DataModel.getWallScale();
                 break;
             case 2:
                 drawableName = "birdpoop";
+                scale = DataModel.getBirdPoopScale();
                 break;
             default: break;
         }
@@ -46,7 +50,7 @@ public class Powerup {
         int resourceId = resources.getIdentifier(drawableName, "drawable",context.getPackageName());
 
         Bitmap powerup_img = BitmapFactory.decodeResource(context.getResources(), resourceId);
-        powerup_img = Bitmap.createScaledBitmap(powerup_img ,(int)(powerup_img.getWidth()*DataModel.getRatioX()),(int)(powerup_img.getHeight()*DataModel.getRatioY()), true);
+        powerup_img = Bitmap.createScaledBitmap(powerup_img ,(int)(powerup_img.getWidth()*DataModel.getRatioX()*scale),(int)(powerup_img.getHeight()*DataModel.getRatioY()*scale), true);
 
         return powerup_img;
     }

@@ -76,7 +76,6 @@ public class GameView extends SurfaceView implements AsyncResponse {
         canvasHeight = getScreenHeight();
         canvasWidth = getScreenWidth();
 
-        initPowerups();
         buttonsInit();
 
         UpdateServer.getInstance().start();
@@ -196,8 +195,11 @@ public class GameView extends SurfaceView implements AsyncResponse {
         }
 
         //Draw text
-        canvas.drawText(countdownString, canvasWidth/2 - 100, canvasHeight/2, countdownTextPaint);
-        canvas.drawText(dataInfo, 10, 50, packettextPaint);
+
+        if(DataModel.getCountdown() != -1){
+            canvas.drawText(DataModel.getCountdown() + "", canvasWidth/2 - 100, canvasHeight/2, countdownTextPaint);
+            canvas.drawText(dataInfo, 10, 50, packettextPaint);
+        }
     }
 
     //@Override
