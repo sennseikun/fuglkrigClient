@@ -20,7 +20,6 @@ public class GameLoopThread extends Thread {
     public GameLoopThread() {
     }
 
-    @SuppressLint("WrongCall")
     @Override
     public void run() {
 
@@ -35,12 +34,12 @@ public class GameLoopThread extends Thread {
                 startTimeFPS = System.currentTimeMillis();
             }
             Canvas c = null;
-            startTime = System.currentTimeMillis();
+            //startTime = System.currentTimeMillis();
             try {
                 c = view.getHolder().lockCanvas();
                 synchronized (view.getHolder()) {
                     DataModel.getCurrplayer().nextTick();
-                    view.onDraw(c);
+                    view.draw(c);
                 }
 
             } finally {
@@ -48,15 +47,15 @@ public class GameLoopThread extends Thread {
                     view.getHolder().unlockCanvasAndPost(c);
                 }
             }
-            sleepTime = ticksPS -(System.currentTimeMillis() - startTime);
-            try {
-                if (sleepTime > 0) {
+            //sleepTime = ticksPS -(System.currentTimeMillis() - startTime);
+            /*try {
+                /*if (sleepTime > 0) {
                     sleep(sleepTime);
                 }
             }
             catch (Exception e) {
 
-            }
+            }*/
         }
     }
 

@@ -187,9 +187,10 @@ public class GameView extends SurfaceView implements AsyncResponse {
     }
 
     @Override
-    public void onDraw(Canvas canvas){
-        super.onDraw(canvas);
+    public void draw(Canvas canvas){
+        super.draw(canvas);
         canvas.drawColor(Color.BLUE);
+        System.out.println("Hardware accelerated: " + canvas.isHardwareAccelerated());
 
         if(DataModel.isOver()){
 
