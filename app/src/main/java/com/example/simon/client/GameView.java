@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,7 +28,10 @@ public class GameView extends SurfaceView implements AsyncResponse {
     private SurfaceHolder holder;
     private GameLoopThread glt;
     private int canvasHeight, canvasWidth;
-    private ArrayList<Bitmap> buttonBitmaps = new ArrayList<Bitmap>();
+    private ArrayList<Bitmap> buttonBitmaps = new ArrayList<Bitmap>(4);
+    private ArrayList<Bitmap> greyButtonBitMaps = new ArrayList<Bitmap>();
+    private ArrayList<Bitmap> regularButtonBitMaps = new ArrayList<Bitmap>();
+
     private ArrayList<Rect> rects = new ArrayList<Rect>();
     private RequestHandler handler = DataModel.getSocket();
     private boolean isInit = false;
@@ -43,6 +47,12 @@ public class GameView extends SurfaceView implements AsyncResponse {
     private String dataInfo = "";
     private boolean WinScreen = false;
     private boolean gameIsInited = false;
+    private Bitmap fBrickBtn;
+    private Bitmap greyFBrickBtn;
+    private Bitmap rBrickBtn;
+    private Bitmap greyRBrickBtn;
+    private Bitmap birdpoopBtn;
+    private Bitmap greyBirdpoopBtn;
 
     public GameView(Context context){
         super(context);
@@ -102,42 +112,75 @@ public class GameView extends SurfaceView implements AsyncResponse {
     public void buttonsInit(){
         //Button 1
 
-        if(DataModel.getfWallCount() > 0){
-            buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.bricksleft));
-        }
-        else{
-            buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.grayedoutbricksleft));
-        }
+
+        rBrickBtn = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.bricksright);
+        rBrickBtn = Bitmap.createScaledBitmap(rBrickBtn, getScreenHeight()/4, getScreenHeight()/4, true);
+
+        regularButtonBitMaps.add(rBrickBtn);
+
+        greyRBrickBtn = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.grayedoutbricksright);
+        greyRBrickBtn = Bitmap.createScaledBitmap(greyRBrickBtn, getScreenHeight()/4, getScreenHeight()/4, true);
+
+        greyButtonBitMaps.add(greyRBrickBtn);
+
+        fBrickBtn = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.bricksleft);
+        fBrickBtn = Bitmap.createScaledBitmap(fBrickBtn, getScreenHeight()/4, getScreenHeight()/4, true);
+
+        regularButtonBitMaps.add(fBrickBtn);
+
+        greyFBrickBtn = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.grayedoutbricksleft);
+        greyFBrickBtn = Bitmap.createScaledBitmap(greyFBrickBtn, getScreenHeight()/4, getScreenHeight()/4, true);
+
+        greyButtonBitMaps.add(greyFBrickBtn);
+
+        birdpoopBtn = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.birdpoop_btn);
+        birdpoopBtn = Bitmap.createScaledBitmap(birdpoopBtn, getScreenHeight()/4, getScreenHeight()/4, true);
+
+        regularButtonBitMaps.add(birdpoopBtn);
+
+        greyBirdpoopBtn = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.grayedoutbirdpoop_btn);
+        greyBirdpoopBtn = Bitmap.createScaledBitmap(greyBirdpoopBtn, getScreenHeight()/4, getScreenHeight()/4, true);
+
+        greyButtonBitMaps.add(greyBirdpoopBtn);
 
         rects.add(new Rect((int)(canvasWidth - canvasHeight/4), 0, canvasWidth, canvasHeight/4));
-
-        //Button 2
-
-        if(DataModel.getbWallCount() > 0){
-            buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.bricksright));
-        }
-        else{
-            buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.grayedoutbricksright));
-        }
-
         rects.add(new Rect((int)(canvasWidth - canvasHeight/4), canvasHeight/4, canvasWidth, canvasHeight/2));
-        //Button 3
-
-        if(DataModel.getBirdPoopCount() > 0){
-            buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.birdpoop_btn));
-        }
-        else{
-            buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.grayedoutbirdpoop_btn));
-        }
-
         rects.add(new Rect((int)(canvasWidth - canvasHeight/4), canvasHeight/2, canvasWidth, 3*canvasHeight/4));
-        //Button 4
-        buttonBitmaps.add(BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.arrow_right));
-        rects.add(new Rect((int)(canvasWidth - canvasHeight/4), 3*canvasHeight/4, canvasWidth, canvasHeight));
 
-        for(int i = 0; i < buttonBitmaps.size(); i++){
-            Bitmap scaledBitmap = Bitmap.createScaledBitmap(buttonBitmaps.get(i), getScreenHeight()/4, getScreenHeight()/4, true);
-            buttonBitmaps.set(i, scaledBitmap);
+    }
+
+    private void updateButtonBitmaps(){
+
+        buttonBitmaps.clear();
+
+        for(int i = 0 ; i < regularButtonBitMaps.size(); i++){
+            if(i == 0){
+                if(DataModel.getfWallCount() > 0){
+                    buttonBitmaps.add(regularButtonBitMaps.get(i));
+                }
+                else{
+                    buttonBitmaps.add(greyButtonBitMaps.get(i));
+                }
+            }
+            else if(i == 1){
+                if(DataModel.getbWallCount() > 0){
+                    buttonBitmaps.add(regularButtonBitMaps.get(i));
+                }
+                else{
+                    buttonBitmaps.add(greyButtonBitMaps.get(i));
+                }
+            }
+            else if(i == 2){
+                if(DataModel.getBirdPoopCount() > 0){
+                    buttonBitmaps.add(regularButtonBitMaps.get(i));
+                }
+                else{
+                    buttonBitmaps.add(greyButtonBitMaps.get(i));
+                }
+            }
+            else{
+                System.out.println("Error with buttons");
+            }
         }
     }
 
@@ -242,6 +285,9 @@ public class GameView extends SurfaceView implements AsyncResponse {
             }
 
             //Draw buttons
+
+            updateButtonBitmaps();
+
             for(int i = 0; i < buttonBitmaps.size(); i++){
                 canvas.drawBitmap(buttonBitmaps.get(i), (int)(canvasWidth - canvasHeight/4), (int) canvasHeight*i/4, null);
             }
@@ -272,10 +318,10 @@ public class GameView extends SurfaceView implements AsyncResponse {
                         e.printStackTrace();
                     }
 
-                }else if(rects.get(0).contains((int) me.getX(),(int) me.getY())){
+                }else if(rects.get(1).contains((int) me.getX(),(int) me.getY())){
                     Log.d("BUTTON CLICK: ","Button 1 (wall left)");
                     UpdateServer.getInstance().sendPowerup(1);
-                }else if (rects.get(1).contains((int) me.getX(),(int) me.getY())){
+                }else if (rects.get(0).contains((int) me.getX(),(int) me.getY())){
                     Log.d("BUTTON CLICK: ","Button 2 (wall right)");
                     UpdateServer.getInstance().sendPowerup(2);
                 }else if(rects.get(2).contains((int) me.getX(), (int) me.getY())){
