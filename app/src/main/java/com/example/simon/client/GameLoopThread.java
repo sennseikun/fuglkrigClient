@@ -1,5 +1,6 @@
 package com.example.simon.client;
 
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -17,6 +18,7 @@ public class GameLoopThread extends Thread {
     public GameLoopThread() {
     }
 
+    @SuppressLint("WrongCall")
     @Override
     public void run() {
         long ticksPS = 1000 / FPS;
@@ -30,6 +32,7 @@ public class GameLoopThread extends Thread {
                     DataModel.getCurrplayer().nextTick();
                     view.onDraw(c);
                 }
+
             } finally {
                 if (c != null) {
                     view.getHolder().unlockCanvasAndPost(c);

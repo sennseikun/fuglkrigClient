@@ -374,6 +374,9 @@ public class ReceiveData extends Thread {
 
                         if(id == DataModel.getP_id()){
                             Player me = DataModel.getCurrplayer();
+                            System.out.println("Player id: " + me.getPlayerId());
+                            System.out.println("RatioX: " + DataModel.getRatioX());
+                            System.out.println("PosX: " + playerX);
 
                             me.setXpos(playerX*DataModel.getRatioX());
                             me.setYpos(playerY*DataModel.getRatioY());
@@ -381,6 +384,9 @@ public class ReceiveData extends Thread {
                         }
                         else{
                             Player competitor = playerMap.get(id);
+                            System.out.println("Player id: " + competitor.getPlayerId());
+                            System.out.println("RatioX: " + DataModel.getRatioX());
+                            System.out.println("PosX: " + playerX);
                             competitor.setXpos((playerX *DataModel.getRatioX()));
                             competitor.setYpos((playerY)*DataModel.getRatioY());
                             competitor.setAlive(alive);
@@ -410,7 +416,7 @@ public class ReceiveData extends Thread {
                 //You died
 
                 else if(packet_number.equals("16")){
-                    //
+                    DataModel.setIsOver(true);
                 }
 
                 //You won

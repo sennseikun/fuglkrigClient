@@ -42,6 +42,7 @@ public class DataModel {
     private static double wallScale = -1;
     private static double playerScale = -1;
     private static String textOnScreen = "";
+    private static boolean isOver = false;
 
     //Map values
 
@@ -399,5 +400,13 @@ public class DataModel {
 
     public static void setTextOnScreen(String textOnScreen) {
         DataModel.textOnScreen = textOnScreen;
+    }
+
+    public static boolean isOver() {
+        return isOver;
+    }
+
+    public static void setIsOver(boolean isOver) {
+        DataModel.isOver = isOver;
     }
 }
