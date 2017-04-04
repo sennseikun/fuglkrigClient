@@ -39,12 +39,14 @@ public class GameView extends SurfaceView implements AsyncResponse {
     private Bitmap currentMap;
     private Bitmap nextMap;
     private Bitmap winMap;
+    private Bitmap winBackground;
     double winBitMapPos = DataModel.getWinnerMapXpos()*DataModel.getRatioX() - 130;
     private Bitmap powerupIcon;
     private Paint packettextPaint = new Paint();
     private Paint countdownTextPaint = new Paint();
     private String countdownString = "5";
     private String dataInfo = "";
+    private boolean WinScreen = false;
 
     public GameView(Context context){
         super(context);
@@ -82,20 +84,13 @@ public class GameView extends SurfaceView implements AsyncResponse {
         canvasWidth = getScreenWidth();
 
         buttonsInit();
+        initGameOverScreens();
 
         UpdateServer.getInstance().start();
     }
 
-    public void showLayout(){
-        GameActivity g = DataModel.getInGame();
-        if(g != null){
-
-            g.findViewById(R.id.gameview).setVisibility(View.GONE);
-            g.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            g.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            g.setContentView(R.layout.activity_game);
-        }
+    public void setWinScreen(boolean value){
+        WinScreen = value;
     }
 
     public void initPowerups(){
@@ -164,59 +159,75 @@ public class GameView extends SurfaceView implements AsyncResponse {
                 getScreenHeight(), true);
     }
 
+    public void initGameOverScreens(){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+        winBackground = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.winbackground,options);
+        winBackground = Bitmap.createScaledBitmap(winBackground,(int)(winBackground.getWidth()*DataModel.getRatioX()),
+                (int)(winBackground.getHeight()*DataModel.getRatioY()), true);
+        winBackground = Bitmap.createScaledBitmap(winBackground, getScreenWidth(),
+                getScreenHeight(), true);
+    }
+
     @Override
     public void onDraw(Canvas canvas){
         canvas.drawColor(Color.BLUE);
 
-        if(!isInit){
-            competitorsInit(DataModel.getCompetitors());
-            initMaps();
+        if(WinScreen){
+            canvas.drawBitmap(winBackground,0,0,null);
         }
 
-        //Update map
-        double nextBitMapPos = DataModel.getNextMapXpos()*DataModel.getRatioX();
-        double currBitMapPos = DataModel.getMapXpos()*DataModel.getRatioX();
-
-        canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
-        canvas.drawBitmap(currentMap, (int)currBitMapPos,0,null);
-        canvas.drawBitmap(nextMap,(int)nextBitMapPos,0,null);
-
-        //draw competitors
-        for(Object i: DataModel.getCompetitors().keySet()){
-            if(DataModel.getCompetitors().get(i).isAlive()){
-                canvas.drawBitmap(DataModel.getCompetitors().get(i).getBitmap(), (int)DataModel.getCompetitors().get(i).getXpos(),
-                        (int)DataModel.getCompetitors().get(i).getYpos(), null);
+        else{
+            if(!isInit){
+                competitorsInit(DataModel.getCompetitors());
+                initMaps();
             }
+
+            //Update map
+            double nextBitMapPos = DataModel.getNextMapXpos()*DataModel.getRatioX();
+            double currBitMapPos = DataModel.getMapXpos()*DataModel.getRatioX();
+
+            canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
+            canvas.drawBitmap(currentMap, (int)currBitMapPos,0,null);
+            canvas.drawBitmap(nextMap,(int)nextBitMapPos,0,null);
+
+            //draw competitors
+            for(Object i: DataModel.getCompetitors().keySet()){
+                if(DataModel.getCompetitors().get(i).isAlive()){
+                    canvas.drawBitmap(DataModel.getCompetitors().get(i).getBitmap(), (int)DataModel.getCompetitors().get(i).getXpos(),
+                            (int)DataModel.getCompetitors().get(i).getYpos(), null);
+                }
+            }
+
+            //Draw powerups
+            for(Powerup p : DataModel.getPowerups()){
+                canvas.drawBitmap(p.getBitMap(this.getContext()), p.getxPos(), p.getyPos(), null);
+            }
+
+            //draw current player, i.e. me-player
+            if(DataModel.getCurrplayer().getBitmap() == null){
+                DataModel.getCurrplayer().setBitmap(R.drawable.bird);
+                DataModel.getCurrplayer().setXpos(canvasWidth/2 - DataModel.getCurrplayer().getBitmap().getWidth()/2);
+                DataModel.getCurrplayer().setYpos(canvasHeight/2 - DataModel.getCurrplayer().getBitmap().getHeight()/2);
+            }
+
+            if(DataModel.getCurrplayer().isAlive()){
+                canvas.drawBitmap(DataModel.getCurrplayer().getBitmap(), (int)DataModel.getCurrplayer().getXpos(),
+                        (int) DataModel.getCurrplayer().getYpos(), null);
+            }
+
+            //Draw buttons
+            for(int i = 0; i < buttonBitmaps.size(); i++){
+                canvas.drawBitmap(buttonBitmaps.get(i), (int)(canvasWidth - canvasHeight/4), (int) canvasHeight*i/4, null);
+            }
+
+            //Draw text
+
+
+            canvas.drawText(DataModel.getTextOnScreen(), canvasWidth/2 - 100, canvasHeight/2, countdownTextPaint);
+            canvas.drawText(dataInfo, 10, 50, packettextPaint);
+
         }
-
-        //Draw powerups
-        for(Powerup p : DataModel.getPowerups()){
-            canvas.drawBitmap(p.getBitMap(this.getContext()), p.getxPos(), p.getyPos(), null);
-        }
-
-        //draw current player, i.e. me-player
-        if(DataModel.getCurrplayer().getBitmap() == null){
-            DataModel.getCurrplayer().setBitmap(R.drawable.bird);
-            DataModel.getCurrplayer().setXpos(canvasWidth/2 - DataModel.getCurrplayer().getBitmap().getWidth()/2);
-            DataModel.getCurrplayer().setYpos(canvasHeight/2 - DataModel.getCurrplayer().getBitmap().getHeight()/2);
-        }
-
-        if(DataModel.getCurrplayer().isAlive()){
-            canvas.drawBitmap(DataModel.getCurrplayer().getBitmap(), (int)DataModel.getCurrplayer().getXpos(),
-                    (int) DataModel.getCurrplayer().getYpos(), null);
-        }
-
-        //Draw buttons
-        for(int i = 0; i < buttonBitmaps.size(); i++){
-            canvas.drawBitmap(buttonBitmaps.get(i), (int)(canvasWidth - canvasHeight/4), (int) canvasHeight*i/4, null);
-        }
-
-        //Draw text
-
-
-        canvas.drawText(DataModel.getTextOnScreen(), canvasWidth/2 - 100, canvasHeight/2, countdownTextPaint);
-        canvas.drawText(dataInfo, 10, 50, packettextPaint);
-
     }
 
     //@Override
