@@ -47,6 +47,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
     private Paint countdownTextPaint = new Paint();
     private String dataInfo = "";
     private boolean WinScreen = false;
+    private boolean gameIsInited = false;
 
     public GameView(Context context){
         super(context);
@@ -89,17 +90,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
         countdownTextPaint.setTextSize(canvasHeight/5);
 
         buttonsInit();
-        initGameOverScreens();
-
         UpdateServer.getInstance().start();
-    }
-
-    public void initPowerups(){
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inScaled = false;
-        powerupIcon = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.powerup,options);
-        powerupIcon = Bitmap.createScaledBitmap(powerupIcon,(int)(powerupIcon.getWidth()*DataModel.getRatioX()*DataModel.getPowerupScale()),
-                (int)(powerupIcon.getHeight()*DataModel.getRatioY()*DataModel.getPowerupScale()), true);
     }
 
     public void competitorsInit(HashMap hm){
@@ -184,6 +175,11 @@ public class GameView extends SurfaceView implements AsyncResponse {
         canvas.drawColor(Color.BLUE);
 
         if(DataModel.isOver()){
+
+            if(!gameIsInited){
+                initGameOverScreens();
+                gameIsInited = true;
+            }
             canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
             canvas.drawBitmap(winBackground,canvasWidth/2 - winBackground.getWidth()/2,canvasHeight/2 - winBackground.getHeight()/2,null);
         }
