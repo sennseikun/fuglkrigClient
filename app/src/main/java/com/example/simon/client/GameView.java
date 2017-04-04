@@ -89,10 +89,6 @@ public class GameView extends SurfaceView implements AsyncResponse {
         UpdateServer.getInstance().start();
     }
 
-    public void setWinScreen(boolean value){
-        WinScreen = value;
-    }
-
     public void initPowerups(){
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
@@ -173,7 +169,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
     public void onDraw(Canvas canvas){
         canvas.drawColor(Color.BLUE);
 
-        if(WinScreen){
+        if(DataModel.isOver()){
             canvas.drawBitmap(winBackground,0,0,null);
         }
 
