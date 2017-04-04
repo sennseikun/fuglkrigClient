@@ -44,12 +44,13 @@ public class Powerup {
             default: break;
         }
 
-
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
 
         Resources resources = context.getResources();
         int resourceId = resources.getIdentifier(drawableName, "drawable",context.getPackageName());
 
-        Bitmap powerup_img = BitmapFactory.decodeResource(context.getResources(), resourceId);
+        Bitmap powerup_img = BitmapFactory.decodeResource(context.getResources(), resourceId, options);
         powerup_img = Bitmap.createScaledBitmap(powerup_img ,(int)(powerup_img.getWidth()*DataModel.getRatioX()*scale),(int)(powerup_img.getHeight()*DataModel.getRatioY()*scale), true);
 
         return powerup_img;
