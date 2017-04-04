@@ -197,7 +197,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
         //Draw text
 
 
-        canvas.drawText(DataModel.getCountdown() + "", canvasWidth/2 - 100, canvasHeight/2, countdownTextPaint);
+        canvas.drawText(DataModel.getTextOnScreen(), canvasWidth/2 - 100, canvasHeight/2, countdownTextPaint);
         canvas.drawText(dataInfo, 10, 50, packettextPaint);
 
     }
