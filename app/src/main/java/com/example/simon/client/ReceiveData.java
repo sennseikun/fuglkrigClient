@@ -346,14 +346,9 @@ public class ReceiveData extends Thread {
 
                 else if(packet_number.equals("15")){
 
-                    String countDown = translated.getString("PrintToPlayer");
+                    String textOnScreen = translated.getString("PrintToPlayer");
 
-                    if(countDown.equals("")){
-                        DataModel.setCountdown(-1);
-                    }
-                    else{
-                        DataModel.setCountdown(Integer.parseInt(countDown));
-                    }
+                    DataModel.setTextOnScreen(textOnScreen);
 
                     int mapXpos = translated.getInt("MapXPos");
                     int nextXpos = translated.getInt("NextMapXPos");
