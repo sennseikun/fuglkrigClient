@@ -175,6 +175,10 @@ public class GameLobby extends Activity implements AsyncResponse  {
                 btn_start.setBackgroundResource(R.drawable.startgamebutton);
                 btn_start.setEnabled(true);
             }
+            else{
+                btn_start.setBackgroundResource(R.drawable.disabledstartgamebutton);
+                btn_start.setEnabled(false);
+            }
             updateListView();
         }
 
