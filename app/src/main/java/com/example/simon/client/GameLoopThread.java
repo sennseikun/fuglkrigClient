@@ -43,9 +43,6 @@ public class GameLoopThread extends Thread {
                 if (sleepTime > 0) {
                     sleep(sleepTime);
                 }
-                if(DataModel.isOver()){
-                    view.setWinScreen(true);
-                }
             }
             catch (Exception e) {
 
