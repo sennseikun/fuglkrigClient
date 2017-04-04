@@ -28,7 +28,7 @@ public class Powerup {
         String drawableName = "";
         double scale = 1;
 
-        switch(Id){
+        switch(type){
             case 0:
                 drawableName = "powerup";
                 scale = DataModel.getPowerupScale();
