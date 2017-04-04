@@ -13,11 +13,16 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by oskar on 23.03.2017.
@@ -79,6 +84,18 @@ public class GameView extends SurfaceView implements AsyncResponse {
         buttonsInit();
 
         UpdateServer.getInstance().start();
+    }
+
+    public void showLayout(){
+        GameActivity g = DataModel.getInGame();
+        if(g != null){
+
+            g.findViewById(R.id.gameview).setVisibility(View.GONE);
+            g.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            g.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            g.setContentView(R.layout.activity_game);
+        }
     }
 
     public void initPowerups(){

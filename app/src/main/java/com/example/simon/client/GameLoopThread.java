@@ -30,6 +30,7 @@ public class GameLoopThread extends Thread {
                     DataModel.getCurrplayer().nextTick();
                     view.onDraw(c);
                 }
+
             } finally {
                 if (c != null) {
                     view.getHolder().unlockCanvasAndPost(c);
@@ -39,6 +40,9 @@ public class GameLoopThread extends Thread {
             try {
                 if (sleepTime > 0) {
                     sleep(sleepTime);
+                }
+                if(DataModel.isOver()){
+                    view.showLayout();
                 }
             }
             catch (Exception e) {
