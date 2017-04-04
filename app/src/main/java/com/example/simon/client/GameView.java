@@ -185,7 +185,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
         if(DataModel.isOver()){
             canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
-            canvas.drawBitmap(winBackground,canvasWidth/2 - winBackground.getWidth(),canvasHeight/2 - winBackground.getHeight(),null);
+            canvas.drawBitmap(winBackground,canvasWidth/2 - winBackground.getWidth()/2,canvasHeight/2 - winBackground.getHeight()/2,null);
         }
 
         else{
