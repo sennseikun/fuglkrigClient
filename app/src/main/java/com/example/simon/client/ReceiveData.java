@@ -417,6 +417,7 @@ public class ReceiveData extends Thread {
 
                 else if(packet_number.equals("16")){
                     DataModel.setIsOver(true);
+                    System.out.println("Got package 16");
                 }
 
                 //You won
