@@ -25,14 +25,34 @@ public class GameActivity extends Activity implements AsyncResponse {
 
         setContentView(new GameView(this));
     }
-    /*@Override
+    @Override
     public void onStop(){
         super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        System.out.println("On stop called in game");
         DataModel.setInGame(null);
         UpdateServer.getInstance().stopRunning();
-        startActivity(new Intent(this,MenuActivity.class));
+        GameLoopThread.getInstance().stopRunning();
+        DataModel.setIsOver(false);
+        DataModel.setIsVictory(false);
         finish();
-    }*/
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        System.out.println("On stop called in game");
+        DataModel.setInGame(null);
+        UpdateServer.getInstance().stopRunning();
+        GameLoopThread.getInstance().stopRunning();
+        DataModel.setIsOver(false);
+        DataModel.setIsVictory(false);
+        finish();
+    }
 
     @Override
     public void processFinish(String output) {

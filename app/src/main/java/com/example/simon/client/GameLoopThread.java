@@ -11,13 +11,17 @@ import android.view.MotionEvent;
 
 public class GameLoopThread extends Thread {
     private GameView view;
-    private static GameLoopThread glt = new GameLoopThread();
+    private static GameLoopThread glt;
     private boolean running = false;
     static final long FPS = 60;
     private int currentFPS = 0;
     private long startTimeFPS = System.currentTimeMillis();
 
-    public GameLoopThread() {
+    public static GameLoopThread getInstance() {
+        if(glt == null){
+            glt = new GameLoopThread();
+        }
+        return glt;
     }
 
     @Override
@@ -57,18 +61,19 @@ public class GameLoopThread extends Thread {
 
             }*/
         }
+        System.out.println("GameLoop is stopped");
     }
 
     public void setView(GameView view){
         this.view = view;
     }
 
-    public static GameLoopThread getInstance() {
-        return glt;
-    }
-
     public void setRunning(boolean run){
         running = run;
+    }
+    public void stopRunning(){
+        running = false;
+        glt = null;
     }
 
 }

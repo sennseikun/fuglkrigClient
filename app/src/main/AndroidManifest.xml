@@ -28,7 +28,8 @@
         <activity android:name=".GameActivity"
             android:screenOrientation="landscape"/>
         <activity android:name=".SendingActivity" />
-        <activity android:name=".CreateGameActivity" />
+        <activity android:name=".CreateGameActivity"
+            />
         <activity android:name=".GameLobby"
             android:screenOrientation="portrait">
         </activity>

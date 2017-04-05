@@ -373,14 +373,10 @@ public class ReceiveData extends Thread {
                         int playerY = compJSON.getInt("PosY");
                         boolean alive = compJSON.getBoolean("Alive");
 
-                        System.out.println("Alive: " + alive);
 
                         if(id == DataModel.getP_id()){
 
                             Player me = DataModel.getCurrplayer();
-                            System.out.println("Player id: " + me.getPlayerId());
-                            System.out.println("RatioX: " + DataModel.getRatioX());
-                            System.out.println("PosX: " + playerX);
 
                             JSONArray powerups_inventory  = compJSON.getJSONArray("Powerups");
 
@@ -414,9 +410,6 @@ public class ReceiveData extends Thread {
                         }
                         else{
                             Player competitor = playerMap.get(id);
-                            System.out.println("Player id: " + competitor.getPlayerId());
-                            System.out.println("RatioX: " + DataModel.getRatioX());
-                            System.out.println("PosX: " + playerX);
                             competitor.setXpos((playerX *DataModel.getRatioX()));
                             competitor.setYpos((playerY)*DataModel.getRatioY());
                             competitor.setAlive(alive);

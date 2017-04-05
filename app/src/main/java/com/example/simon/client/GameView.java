@@ -1,6 +1,7 @@
 package com.example.simon.client;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,10 +32,11 @@ public class GameView extends SurfaceView implements AsyncResponse {
     private ArrayList<Bitmap> buttonBitmaps = new ArrayList<Bitmap>(4);
     private ArrayList<Bitmap> greyButtonBitMaps = new ArrayList<Bitmap>();
     private ArrayList<Bitmap> regularButtonBitMaps = new ArrayList<Bitmap>();
+    private boolean gameOver;
 
     private ArrayList<Rect> rects = new ArrayList<Rect>();
     private RequestHandler handler = DataModel.getSocket();
-    private boolean isInit = false;
+    private boolean isInit;
     private Bitmap currentMap;
     private Bitmap nextMap;
     private Bitmap winMap;
@@ -45,8 +47,8 @@ public class GameView extends SurfaceView implements AsyncResponse {
     private Paint gameoverPaint = new Paint();
     private Paint countdownTextPaint = new Paint();
     private String dataInfo = "";
-    private boolean WinScreen = false;
-    private boolean gameIsInited = false;
+    private boolean WinScreen;
+    private boolean gameIsInited;
     private Bitmap fBrickBtn;
     private Bitmap greyFBrickBtn;
     private Bitmap rBrickBtn;
@@ -56,6 +58,11 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
     public GameView(Context context){
         super(context);
+        gameOver = false;
+        gameIsInited = false;
+        isInit = false;
+        WinScreen = false;
+        System.out.println("Constructor called");
         DataModel.setGameView(this);
         glt = GameLoopThread.getInstance();
         glt.setView(this);
@@ -100,6 +107,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
     }
 
     public void competitorsInit(HashMap hm){
+
         //Instantiate the competitors' birds. hm is the competitors hashmap
         for(Object id: hm.keySet()){
             DataModel.getCompetitors().get(id).setBitmap(R.drawable.blackbird);
@@ -111,6 +119,8 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
     public void buttonsInit(){
         //Button 1
+
+        System.out.println("Init buttons");
 
 
         rBrickBtn = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.bricksright);
@@ -149,6 +159,41 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
     }
 
+    public void recycleBitmaps(){
+        for(Bitmap b: greyButtonBitMaps){
+            b.recycle();
+            b = null;
+        }
+        for(Bitmap t: regularButtonBitMaps){
+            t.recycle();
+            t = null;
+        }
+        for(Bitmap x: buttonBitmaps){
+            x.recycle();
+            x = null;
+        }
+
+        greyButtonBitMaps.clear();
+        regularButtonBitMaps.clear();
+        buttonBitmaps.clear();
+
+        winBackground.recycle();
+
+        winBackground = null;
+
+        winMap.recycle();
+
+        winMap = null;
+
+        nextMap.recycle();
+
+        nextMap = null;
+
+        currentMap.recycle();
+
+        currentMap = null;
+    }
+
     private void updateButtonBitmaps(){
 
         buttonBitmaps.clear();
@@ -184,7 +229,14 @@ public class GameView extends SurfaceView implements AsyncResponse {
         }
     }
 
+    public void setGameOver(){
+        gameOver = true;
+    }
+
     public void initMaps(){
+
+        System.out.println("Init maps");
+
         Resources resources = getResources();
         int resourceId = resources.getIdentifier(DataModel.getCurrentMapName(), "drawable",this.getContext().getPackageName());
 
@@ -218,7 +270,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
         options.inScaled = false;
 
         if(DataModel.isVictory()){
-            resource = "createbutton";
+            resource = "wintext";
         }
 
         Resources resources = getResources();
@@ -233,7 +285,6 @@ public class GameView extends SurfaceView implements AsyncResponse {
     public void draw(Canvas canvas){
         super.draw(canvas);
         canvas.drawColor(Color.BLUE);
-        System.out.println("Hardware accelerated: " + canvas.isHardwareAccelerated());
 
         if(DataModel.isOver()){
 
@@ -241,8 +292,12 @@ public class GameView extends SurfaceView implements AsyncResponse {
                 initGameOverScreens();
                 gameIsInited = true;
             }
+            glt.setRunning(false);
+            setGameOver();
             canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
             canvas.drawBitmap(winBackground,canvasWidth/2 - winBackground.getWidth()/2,canvasHeight/2 - winBackground.getHeight()/2,null);
+            UpdateServer.getInstance().stopRunning();
+            GameLoopThread.getInstance().stopRunning();
         }
 
         else{
@@ -303,67 +358,97 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
     //@Override
     public boolean onTouchEvent(MotionEvent me) {
-        switch(me.getAction()){
-            case  MotionEvent.ACTION_DOWN:
-                if(me.getX() < canvasWidth - canvasHeight/4 - DataModel.getCurrplayer().getBitmap().getWidth()/2) {
-                    DataModel.setTargetX((me.getX()));
-                    DataModel.setTargetY((me.getY()));
 
-                    JSONObject inputJson = new JSONObject();
-                    try {
-                        inputJson.put("posX",me.getX());
-                        inputJson.put("posY",me.getY());
-                        inputJson.put("p_id",DataModel.getP_id());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+            if(gameOver){
 
-                }else if(rects.get(1).contains((int) me.getX(),(int) me.getY())){
-                    Log.d("BUTTON CLICK: ","Button 1 (wall left)");
-                    UpdateServer.getInstance().sendPowerup(1);
-                }else if (rects.get(0).contains((int) me.getX(),(int) me.getY())){
-                    Log.d("BUTTON CLICK: ","Button 2 (wall right)");
-                    UpdateServer.getInstance().sendPowerup(2);
-                }else if(rects.get(2).contains((int) me.getX(), (int) me.getY())){
-                    Log.d("BUTTON CLICK: ", "Button 3 (birdpoop)");
-                    UpdateServer.getInstance().sendPowerup(3);
-                }else if (rects.get(3).contains((int) me.getX(), (int) me.getY())){
-                    Log.d("BUTTON CLICK: ", "Button 4 (arrow right)");
-                    //UpdateServer.getInstance().sendPowerup(4);
-                }
-                break;
+                switch(me.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        UpdateServer.getInstance().stopRunning();
+                        GameLoopThread.getInstance().stopRunning();
+                        recycleBitmaps();
+                        DataModel.setIsOver(false);
+                        DataModel.setInGame(null);
+                        DataModel.setIsVictory(false);
 
-            case MotionEvent.ACTION_MOVE:
-                Log.d("Touch", "ACTION_MOVE");
-                int count = me.getPointerCount();
-                for (int i = 0; i < count; i++) {
-                    if(me.getX(i) < canvasWidth - canvasHeight/4 - DataModel.getCurrplayer().getBitmap().getWidth()/2) {
-                        DataModel.setTargetX(me.getX(i));
-                        DataModel.setTargetY(me.getY(i));
+                        JSONObject sendJson = new JSONObject();
 
-                        JSONObject inputJson = new JSONObject();
                         try {
-                            inputJson.put("posX",me.getX(i));
-                            inputJson.put("posY",me.getY(i));
-                            inputJson.put("p_id",DataModel.getP_id());
+                            sendJson.put("Datatype",14);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-                    }else if(rects.get(0).contains((int) me.getX(i),(int) me.getY(i))){
-                        Log.d("BUTTON CLICK: ","Button 1 (arrow left)");
-
-
-                    }else if (rects.get(1).contains((int) me.getX(i),(int) me.getY(i))){
-                        Log.d("BUTTON CLICK: ","Button 2 (arrow right)");
-
-                    }else if(rects.get(2).contains((int) me.getX(i), (int) me.getY(i))){
-                        Log.d("BUTTON CLICK: ", "Button 3 (arrow left)");
-
-                    }else if (rects.get(3).contains((int) me.getX(i), (int) me.getY(i))){
-                        Log.d("BUTTON CLICK: ", "Button 4 (arrow right)");
-                    }
+                        handler.sendData(sendJson);
+                        this.getContext().startActivity(new Intent(getContext(),LobbyActivity.class));
+                        break;
                 }
+            }
+
+            else {
+
+                switch(me.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+
+                    if (me.getX() < canvasWidth - canvasHeight / 4 - DataModel.getCurrplayer().getBitmap().getWidth() / 2) {
+                        DataModel.setTargetX((me.getX()));
+                        DataModel.setTargetY((me.getY()));
+
+                        JSONObject inputJson = new JSONObject();
+                        try {
+                            inputJson.put("posX", me.getX());
+                            inputJson.put("posY", me.getY());
+                            inputJson.put("p_id", DataModel.getP_id());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else if (rects.get(1).contains((int) me.getX(), (int) me.getY())) {
+                        Log.d("BUTTON CLICK: ", "Button 1 (wall left)");
+                        UpdateServer.getInstance().sendPowerup(1);
+                    } else if (rects.get(0).contains((int) me.getX(), (int) me.getY())) {
+                        Log.d("BUTTON CLICK: ", "Button 2 (wall right)");
+                        UpdateServer.getInstance().sendPowerup(2);
+                    } else if (rects.get(2).contains((int) me.getX(), (int) me.getY())) {
+                        Log.d("BUTTON CLICK: ", "Button 3 (birdpoop)");
+                        UpdateServer.getInstance().sendPowerup(3);
+                    } /*else if (rects.get(3).contains((int) me.getX(), (int) me.getY())) {
+                        Log.d("BUTTON CLICK: ", "Button 4 (arrow right)");
+                        //UpdateServer.getInstance().sendPowerup(4);
+                    }*/
+                    break;
+
+                case MotionEvent.ACTION_MOVE:
+                    Log.d("Touch", "ACTION_MOVE");
+                    int count = me.getPointerCount();
+                    for (int i = 0; i < count; i++) {
+                        if (me.getX(i) < canvasWidth - canvasHeight / 4 - DataModel.getCurrplayer().getBitmap().getWidth() / 2) {
+                            DataModel.setTargetX(me.getX(i));
+                            DataModel.setTargetY(me.getY(i));
+
+                            JSONObject inputJson = new JSONObject();
+                            try {
+                                inputJson.put("posX", me.getX(i));
+                                inputJson.put("posY", me.getY(i));
+                                inputJson.put("p_id", DataModel.getP_id());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else if (rects.get(0).contains((int) me.getX(i), (int) me.getY(i))) {
+                            Log.d("BUTTON CLICK: ", "Button 1 (arrow left)");
+
+
+                        } else if (rects.get(1).contains((int) me.getX(i), (int) me.getY(i))) {
+                            Log.d("BUTTON CLICK: ", "Button 2 (arrow right)");
+
+                        } else if (rects.get(2).contains((int) me.getX(i), (int) me.getY(i))) {
+                            Log.d("BUTTON CLICK: ", "Button 3 (arrow left)");
+
+                        } else if (rects.get(3).contains((int) me.getX(i), (int) me.getY(i))) {
+                            Log.d("BUTTON CLICK: ", "Button 4 (arrow right)");
+                        }
+                    }
+            }
         }
         return false;
     }

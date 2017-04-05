@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 public class UpdateServer extends Thread {
 
-    private static boolean running = true;
+    private boolean running = true;
     public static UpdateServer updater;
     //public static double ratioX = DataModel.getResolutionX()/ DataModel.getRatioX();
     //public static double ratioY = DataModel.getResolutionY()/ DataModel.getRatioY();
@@ -23,12 +23,13 @@ public class UpdateServer extends Thread {
         return updater;
     }
 
-    public static boolean getRunning() {
+    public boolean getRunning() {
         return running;
     }
 
-    public static void stopRunning() {
+    public void stopRunning() {
         running = false;
+        updater = null;
     }
 
     public boolean compareJson(JSONObject obj1, JSONObject obj2) {
@@ -92,6 +93,7 @@ public class UpdateServer extends Thread {
             }
 
         }
+        System.out.println("Update loop is stopped");
     }
 
     //Send powerup to deploy
