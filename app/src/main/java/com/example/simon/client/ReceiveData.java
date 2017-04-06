@@ -363,7 +363,7 @@ public class ReceiveData extends Thread {
                     DataModel.setNextMapXpos(nextXpos);
                     DataModel.setWinnerMapXpos(winXpos);
 
-                    //System.out.println("WINMAP xpos: " + winXpos);
+                    System.out.println("WINMAP xpos: " + winXpos);
 
                     HashMap<Integer,Player> playerMap = DataModel.getCompetitors();
                     JSONArray jsonArray = translated.getJSONArray("Players");

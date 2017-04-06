@@ -11,6 +11,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import static android.graphics.Color.BLUE;
 
 public class GameActivity extends Activity implements AsyncResponse {
@@ -73,6 +76,16 @@ public class GameActivity extends Activity implements AsyncResponse {
                 .setMessage("You can't get back in if you leave. Are you sure you want to quit the game?")
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        RequestHandler handler = DataModel.getSocket();
+
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("Datatype",14);
+                            handler.sendData(jsonObject);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         startActivity(new Intent(getBaseContext(),LobbyActivity.class));
                         finish();
                     }

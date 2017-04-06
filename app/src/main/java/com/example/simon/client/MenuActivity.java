@@ -103,7 +103,7 @@ public class MenuActivity extends Activity {
 
         while(DataModel.getNick().equals("") && run){
 
-            if((System.currentTimeMillis()- startTime) > 3000){
+            if((System.currentTimeMillis()- startTime) > 10000){
                 System.out.println("Quit from timer");
                 JSONObject removeReq = new JSONObject();
                 try {

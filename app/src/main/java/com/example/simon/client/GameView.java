@@ -91,7 +91,8 @@ public class GameView extends SurfaceView implements AsyncResponse {
         });
 
         packettextPaint.setTextSize(48);
-        gameoverPaint.setTextSize(75);
+        gameoverPaint.setTextSize(48);
+        gameoverPaint.setColor(Color.WHITE);
 
         countdownTextPaint.setTypeface(Typeface.MONOSPACE);
         countdownTextPaint.setTextSize(200);
@@ -293,10 +294,12 @@ public class GameView extends SurfaceView implements AsyncResponse {
                 initGameOverScreens();
                 gameIsInited = true;
             }
+
             glt.setRunning(false);
             setGameOver();
             canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
             canvas.drawBitmap(winBackground,canvasWidth/2 - winBackground.getWidth()/2,canvasHeight/2 - winBackground.getHeight()/2,null);
+            canvas.drawText("Click on screen to return to lobbys", canvasWidth/2 - winBackground.getWidth()/2 - 100, canvasHeight/2 + 250, gameoverPaint);
             UpdateServer.getInstance().stopRunning();
             GameLoopThread.getInstance().stopRunning();
         }
@@ -310,8 +313,12 @@ public class GameView extends SurfaceView implements AsyncResponse {
             //Update map
             double nextBitMapPos = DataModel.getNextMapXpos()*DataModel.getRatioX();
             double currBitMapPos = DataModel.getMapXpos()*DataModel.getRatioX();
+            double winBitMapPos = DataModel.getWinnerMapXpos()*DataModel.getRatioX();
 
-            canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
+
+            //Commented out until it starts working
+
+            //canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
             canvas.drawBitmap(currentMap, (int)currBitMapPos,0,null);
             canvas.drawBitmap(nextMap,(int)nextBitMapPos,0,null);
 
