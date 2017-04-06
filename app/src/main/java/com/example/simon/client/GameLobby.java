@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -102,6 +103,23 @@ public class GameLobby extends Activity implements AsyncResponse  {
         try {
             json.put("Datatype", 11);
             handler.sendData(json);
+
+            btn_start.setEnabled(false);
+
+            CountDownTimer timer = new CountDownTimer(1000,1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                @Override
+                public void onFinish() {
+                    btn_start.setEnabled(true);
+                }
+            };
+
+            timer.start();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -14,6 +15,7 @@ import android.text.InputType;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -26,6 +28,9 @@ public class MenuActivity extends Activity {
     private DataModel player;
     Context context = this;
     String PrefName;
+    Button startButton;
+    Button settingsButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,12 @@ public class MenuActivity extends Activity {
 
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.birds);
         mediaPlayer.start();
+
+        startButton = (Button)findViewById(R.id.button3);
+        settingsButton = (Button)findViewById(R.id.button4);
+
+        settingsButton.setEnabled(true);
+        startButton.setEnabled(true);
 
         if(DataModel.getSocket() != null){
             RequestHandler s = DataModel.getSocket();
@@ -63,14 +74,58 @@ public class MenuActivity extends Activity {
         editor.commit();
     }
 
+    public void disableButton(){
+        startButton.setEnabled(false);
+        settingsButton.setEnabled(false);
+    }
+
+    public void enableButton(){
+        startButton.setEnabled(true);
+        settingsButton.setEnabled(true);
+    }
+
     public String getPrefName(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context).getString(PrefName, "");
     }
 
 
     public void onClick(View v){startActivity(new Intent(this, GameActivity.class));}
-    public void onClick2(View v){ launchNick();}
+    public void onClick2(View v){
+        disableButton();
+        CountDownTimer timer = new CountDownTimer(1000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                enableButton();
+            }
+        };
+
+        timer.start();
+
+        launchNick();
+    }
     public void onClick3(View v){
+
+        disableButton();
+
+        CountDownTimer timer = new CountDownTimer(1000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                enableButton();
+            }
+        };
+
+        timer.start();
+
         if(getPrefName(context).isEmpty()) {
             launchNick();
         }

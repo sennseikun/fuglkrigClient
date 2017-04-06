@@ -6,12 +6,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -37,7 +39,7 @@ public class LobbyActivity extends Activity implements AsyncResponse {
     private boolean firstLoad;
     private List<Lobby> list = new ArrayList<>();
     private boolean wasPaused = false;
-
+    private Button createGame;
 
 
 
@@ -51,6 +53,10 @@ public class LobbyActivity extends Activity implements AsyncResponse {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_lobby);
         firstLoad = false;
+
+        createGame = (Button)findViewById(R.id.btn_create);
+        createGame.setEnabled(true);
+
         lv = (ListView) findViewById(R.id.lobbylist);
         loadingLayout = (RelativeLayout)findViewById(R.id.loadingScreenLayout);
         lobbyHeader = (TextView) findViewById(R.id.item_class);
@@ -132,6 +138,26 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                lv.setEnabled(false);
+
+
+                CountDownTimer timer = new CountDownTimer(1000,1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        lv.setEnabled(true);
+                        System.out.println("Listview can be clicked again");
+                    }
+                };
+
+                timer.start();
+
                 item = (Lobby)parent.getItemAtPosition(position);
                 if (!item.getPassword().equals("")){
                     launchPasswordCheck();
@@ -220,6 +246,22 @@ public class LobbyActivity extends Activity implements AsyncResponse {
     //Go to create game, make sure to reset lobbylist
 
     public void goToCreate(View v){
+        createGame.setEnabled(false);
+
+        CountDownTimer timer = new CountDownTimer(1000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                createGame.setEnabled(true);
+            }
+        };
+
+        timer.start();
+
         DataModel.setLobbyList(null);
         startActivityForResult(new Intent(this,CreateGameActivity.class),AFTER_CREATE);
         finish();
