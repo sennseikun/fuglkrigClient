@@ -1,6 +1,8 @@
 package com.example.simon.client;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,6 +54,37 @@ public class GameActivity extends Activity implements AsyncResponse {
         DataModel.setIsOver(false);
         DataModel.setIsVictory(false);
         finish();
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(DataModel.isOver()){
+            startActivity(new Intent(this,LobbyActivity.class));
+            finish();
+        }
+        else{
+            launchWarning();
+        }
+    }
+
+    public void launchWarning(){
+        new AlertDialog.Builder(this)
+                .setTitle("Warning")
+                .setMessage("You can't get back in if you leave. Are you sure you want to quit the game?")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(getBaseContext(),LobbyActivity.class));
+                        finish();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     @Override

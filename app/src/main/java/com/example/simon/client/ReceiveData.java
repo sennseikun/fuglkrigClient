@@ -294,6 +294,8 @@ public class ReceiveData extends Thread {
                     int nextXpos = translated.getInt("NextMapXPos");
                     int winXpos = translated.getInt("WinMapXPos");
 
+                    System.out.println("WINMAP xpos: " + winXpos);
+
                     double playerScale = translated.getDouble("PlayerScale");
                     double birdPoopScale = translated.getDouble("BirdPoopScale");
                     double wallScale = translated.getDouble("WallScale");
@@ -360,6 +362,8 @@ public class ReceiveData extends Thread {
                     DataModel.setMapXpos(mapXpos);
                     DataModel.setNextMapXpos(nextXpos);
                     DataModel.setWinnerMapXpos(winXpos);
+
+                    //System.out.println("WINMAP xpos: " + winXpos);
 
                     HashMap<Integer,Player> playerMap = DataModel.getCompetitors();
                     JSONArray jsonArray = translated.getJSONArray("Players");
@@ -441,6 +445,8 @@ public class ReceiveData extends Thread {
                 else if(packet_number.equals("16")){
                     boolean victory = translated.getBoolean("Victory");
                     DataModel.setIsOver(true);
+                    DataModel.setPlacement(translated.getInt("Placement"));
+                    System.out.println("Placement: "+translated.getInt("Placement"));
                     DataModel.setIsVictory(victory);
                     System.out.println("Got package 16");
                 }

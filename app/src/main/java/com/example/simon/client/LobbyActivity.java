@@ -36,6 +36,7 @@ public class LobbyActivity extends Activity implements AsyncResponse {
     Typeface font;
     private boolean firstLoad;
     private List<Lobby> list = new ArrayList<>();
+    private boolean wasPaused = false;
 
 
 
@@ -67,6 +68,28 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         Log.d("LobbyActivity","Starting to load lobbies");
 
         LoadLobbys();
+    }
+
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        wasPaused = true;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(wasPaused && handler.isAlive()){
+            LoadLobbys();
+            wasPaused = false;
+        }
+        else if(wasPaused){
+            wasPaused = false;
+            LaunchAlert("Connection error","Lost connection, please log in again");
+            startActivity(new Intent(this,MenuActivity.class));
+            finish();
+        }
     }
 
     //This method updates the listview from DataModel's lobbylist

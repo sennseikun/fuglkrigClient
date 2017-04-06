@@ -49,6 +49,7 @@ public class DataModel {
     private static int birdPoopCount = 0;
     private static int fps = 0;
     private static int server_sent_packets = 0;
+    private static int placement = -1;
 
     //Map values
 
@@ -462,5 +463,13 @@ public class DataModel {
 
     public static void setServer_sent_packets(int server_sent_packets) {
         DataModel.server_sent_packets = server_sent_packets;
+    }
+
+    public static int getPlacement() {
+        return placement;
+    }
+
+    public static void setPlacement(int placement) {
+        DataModel.placement = placement;
     }
 }

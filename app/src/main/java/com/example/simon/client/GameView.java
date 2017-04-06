@@ -110,6 +110,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
         //Instantiate the competitors' birds. hm is the competitors hashmap
         for(Object id: hm.keySet()){
+            System.out.println("Added competitor: " + id);
             DataModel.getCompetitors().get(id).setBitmap(R.drawable.blackbird);
             DataModel.getCompetitors().get(id).setXpos(canvasWidth/3 - DataModel.getCompetitors().get(id).getBitmap().getWidth()/2);
             DataModel.getCompetitors().get(id).setXpos(canvasHeight/3 - DataModel.getCompetitors().get(id).getBitmap().getHeight()/2);
