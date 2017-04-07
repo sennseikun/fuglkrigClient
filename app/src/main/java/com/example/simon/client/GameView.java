@@ -321,6 +321,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
             //canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
             canvas.drawBitmap(currentMap, (int)currBitMapPos,0,null);
             canvas.drawBitmap(nextMap,(int)nextBitMapPos,0,null);
+            canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
 
             //draw competitors
             for(Object i: DataModel.getCompetitors().keySet()){
