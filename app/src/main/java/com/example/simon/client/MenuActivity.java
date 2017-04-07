@@ -1,7 +1,9 @@
 package com.example.simon.client;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,14 +24,16 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class MenuActivity extends Activity {
 
     private RequestHandler handler;
-    private DataModel player;
     Context context = this;
     String PrefName;
     Button startButton;
     Button settingsButton;
+    MediaPlayer mediaPlayer;
 
 
     @Override
@@ -44,7 +48,7 @@ public class MenuActivity extends Activity {
         DataModel.setLobbyList(null);
         DataModel.setGameLobby(null);
 
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.birds);
+        mediaPlayer = MediaPlayer.create(this, R.raw.birds);
         mediaPlayer.start();
 
         startButton = (Button)findViewById(R.id.button3);
@@ -65,6 +69,23 @@ public class MenuActivity extends Activity {
             s.stopSending();
         }
 
+    }
+
+    @Override
+    protected void onPause(){
+        if(this.isFinishing()){
+            mediaPlayer.pause();
+        }
+        Context context = getApplicationContext();
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+        if (!taskInfo.isEmpty()) {
+            ComponentName topActivity = taskInfo.get(0).topActivity;
+            if (!topActivity.getPackageName().equals(context.getPackageName())) {
+                mediaPlayer.stop();
+            }
+        }
+        super.onPause();
     }
 
     public void setPrefName(String prefName, Context context){
