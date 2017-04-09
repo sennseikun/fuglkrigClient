@@ -44,12 +44,10 @@ public class DataModel {
     private static String textOnScreen = "";
     private static boolean isOver = false;
     private static boolean isVictory = false;
-    private static int fWallCount = 0;
-    private static int bWallCount = 0;
-    private static int birdPoopCount = 0;
     private static int fps = 0;
     private static int server_sent_packets = 0;
     private static int placement = -1;
+    private static int powerup_type = -1;
 
     //Map values
 
@@ -425,30 +423,6 @@ public class DataModel {
         DataModel.isVictory = isVictory;
     }
 
-    public static int getBirdPoopCount() {
-        return birdPoopCount;
-    }
-
-    public static void setBirdPoopCount(int birdPoopCount) {
-        DataModel.birdPoopCount = birdPoopCount;
-    }
-
-    public static int getbWallCount() {
-        return bWallCount;
-    }
-
-    public static void setbWallCount(int bWallCount) {
-        DataModel.bWallCount = bWallCount;
-    }
-
-    public static int getfWallCount() {
-        return fWallCount;
-    }
-
-    public static void setfWallCount(int fWallCount) {
-        DataModel.fWallCount = fWallCount;
-    }
-
     public static int getFps() {
         return fps;
     }
@@ -471,5 +445,13 @@ public class DataModel {
 
     public static void setPlacement(int placement) {
         DataModel.placement = placement;
+    }
+
+    public static int getPowerup_type() {
+        return powerup_type;
+    }
+
+    public static void setPowerup_type(int powerup_type) {
+        DataModel.powerup_type = powerup_type;
     }
 }

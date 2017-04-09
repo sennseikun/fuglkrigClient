@@ -97,12 +97,12 @@ public class UpdateServer extends Thread {
     }
 
     //Send powerup to deploy
-    public void sendPowerup(int type){
+    public void sendPowerup(){
         RequestHandler handler = DataModel.getSocket();
         JSONObject powerupData = new JSONObject();
         try {
             powerupData.put("Datatype", 13);
-            powerupData.put("Type", type);
+            powerupData.put("Type", DataModel.getPowerup_type());
             handler.sendData(powerupData);
 
         } catch (JSONException e) {

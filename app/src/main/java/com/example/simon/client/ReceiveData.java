@@ -384,29 +384,16 @@ public class ReceiveData extends Thread {
 
                             JSONArray powerups_inventory  = compJSON.getJSONArray("Powerups");
 
-                            int fWallCount = 0;
-                            int bWallCount = 0;
-                            int birdPoops = 0;
-
-                            for(int j = 0; j < powerups_inventory.length(); j++){
-                                int powerup = powerups_inventory.getInt(j);
-
-                                switch(powerup){
-                                    case 1:
-                                        bWallCount++;
-                                        break;
-                                    case 2:
-                                        fWallCount++;
-                                        break;
-                                    case 3:
-                                        birdPoops++;
-                                        break;
-                                }
-
+                            if(powerups_inventory.length() == 0){
+                                DataModel.setPowerup_type(-1);
                             }
-                            DataModel.setBirdPoopCount(birdPoops);
-                            DataModel.setbWallCount(bWallCount);
-                            DataModel.setfWallCount(fWallCount);
+
+                            else{
+                                for(int j = 0; j < powerups_inventory.length(); j++){
+                                    int powerup = powerups_inventory.getInt(j);
+                                    DataModel.setPowerup_type(powerup);
+                                }
+                            }
 
                             me.setXpos(playerX*DataModel.getRatioX());
                             me.setYpos(playerY*DataModel.getRatioY());

@@ -10,11 +10,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +41,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
     private Bitmap nextMap;
     private Bitmap winMap;
     private Bitmap winBackground;
+    private Bitmap defeatBackground;
     double winBitMapPos = DataModel.getWinnerMapXpos()*DataModel.getRatioX() - 130;
     private Bitmap powerupIcon;
     private Paint packettextPaint = new Paint();
@@ -55,6 +56,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
     private Bitmap greyRBrickBtn;
     private Bitmap birdpoopBtn;
     private Bitmap greyBirdpoopBtn;
+    private Paint alphaPaint;
 
     public GameView(Context context){
         super(context);
@@ -156,8 +158,8 @@ public class GameView extends SurfaceView implements AsyncResponse {
         greyButtonBitMaps.add(greyBirdpoopBtn);
 
         rects.add(new Rect((int)(canvasWidth - canvasHeight/4), 0, canvasWidth, canvasHeight/4));
-        rects.add(new Rect((int)(canvasWidth - canvasHeight/4), canvasHeight/4, canvasWidth, canvasHeight/2));
-        rects.add(new Rect((int)(canvasWidth - canvasHeight/4), canvasHeight/2, canvasWidth, 3*canvasHeight/4));
+        rects.add(new Rect((int)(canvasWidth - canvasHeight/4), canvasHeight/4, canvasWidth, canvasHeight/2 + canvasHeight/8));
+        rects.add(new Rect((int)(canvasWidth - canvasHeight/4), canvasHeight/2 - canvasHeight/4, canvasWidth, 3*canvasHeight/4));
 
     }
 
@@ -196,39 +198,16 @@ public class GameView extends SurfaceView implements AsyncResponse {
         currentMap = null;
     }
 
-    private void updateButtonBitmaps(){
-
-        buttonBitmaps.clear();
-
-        for(int i = 0 ; i < regularButtonBitMaps.size(); i++){
-            if(i == 0){
-                if(DataModel.getfWallCount() > 0){
-                    buttonBitmaps.add(regularButtonBitMaps.get(i));
-                }
-                else{
-                    buttonBitmaps.add(greyButtonBitMaps.get(i));
-                }
-            }
-            else if(i == 1){
-                if(DataModel.getbWallCount() > 0){
-                    buttonBitmaps.add(regularButtonBitMaps.get(i));
-                }
-                else{
-                    buttonBitmaps.add(greyButtonBitMaps.get(i));
-                }
-            }
-            else if(i == 2){
-                if(DataModel.getBirdPoopCount() > 0){
-                    buttonBitmaps.add(regularButtonBitMaps.get(i));
-                }
-                else{
-                    buttonBitmaps.add(greyButtonBitMaps.get(i));
-                }
-            }
-            else{
-                System.out.println("Error with buttons");
-            }
+    private Bitmap getButtonBitmap(){
+        switch(DataModel.getPowerup_type()){
+            case 1:
+                return fBrickBtn;
+            case 2:
+                return rBrickBtn;
+            case 3:
+                return birdpoopBtn;
         }
+        return greyBirdpoopBtn;
     }
 
     public void setGameOver(){
@@ -262,10 +241,14 @@ public class GameView extends SurfaceView implements AsyncResponse {
                 getScreenHeight(), true);
         winMap = Bitmap.createScaledBitmap(winMap, getScreenWidth() + 130,
                 getScreenHeight(), true);
+
+        defeatBackground = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
+        alphaPaint = new Paint();
+        alphaPaint.setAlpha(42);
     }
 
     public void initGameOverScreens(){
-        String resource = "skinsbutton";
+        String resource = "defeattext";
         int scaler = 2;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -321,7 +304,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
             //canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
             canvas.drawBitmap(currentMap, (int)currBitMapPos,0,null);
             canvas.drawBitmap(nextMap,(int)nextBitMapPos,0,null);
-            canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
+            //canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
 
             //draw competitors
             for(Object i: DataModel.getCompetitors().keySet()){
@@ -346,15 +329,20 @@ public class GameView extends SurfaceView implements AsyncResponse {
             if(DataModel.getCurrplayer().isAlive()){
                 canvas.drawBitmap(DataModel.getCurrplayer().getBitmap(), (int)DataModel.getCurrplayer().getXpos(),
                         (int) DataModel.getCurrplayer().getYpos(), null);
+                Bitmap button = getButtonBitmap();
+
+
+
+                canvas.drawBitmap(button, (int)(canvasWidth - canvasHeight/4), (int) canvasHeight/2 - canvasHeight/8, null);
+            }
+            else{
+                canvas.drawARGB(125,200,200,200);
             }
 
             //Draw buttons
 
-            updateButtonBitmaps();
 
-            for(int i = 0; i < buttonBitmaps.size(); i++){
-                canvas.drawBitmap(buttonBitmaps.get(i), (int)(canvasWidth - canvasHeight/4), (int) canvasHeight*i/4, null);
-            }
+
 
             //Draw text
             canvas.drawText(DataModel.getTextOnScreen(), canvasWidth/2 - 100, canvasHeight/2, countdownTextPaint);
@@ -411,19 +399,11 @@ public class GameView extends SurfaceView implements AsyncResponse {
                             e.printStackTrace();
                         }
 
-                    } else if (rects.get(1).contains((int) me.getX(), (int) me.getY())) {
-                        Log.d("BUTTON CLICK: ", "Button 1 (wall left)");
-                        UpdateServer.getInstance().sendPowerup(1);
-                    } else if (rects.get(0).contains((int) me.getX(), (int) me.getY())) {
-                        Log.d("BUTTON CLICK: ", "Button 2 (wall right)");
-                        UpdateServer.getInstance().sendPowerup(2);
+
                     } else if (rects.get(2).contains((int) me.getX(), (int) me.getY())) {
-                        Log.d("BUTTON CLICK: ", "Button 3 (birdpoop)");
-                        UpdateServer.getInstance().sendPowerup(3);
-                    } /*else if (rects.get(3).contains((int) me.getX(), (int) me.getY())) {
-                        Log.d("BUTTON CLICK: ", "Button 4 (arrow right)");
-                        //UpdateServer.getInstance().sendPowerup(4);
-                    }*/
+                        Log.d("BUTTON CLICK: ", "Sendpowerup");
+                        UpdateServer.getInstance().sendPowerup();
+                    }
                     break;
 
                 case MotionEvent.ACTION_MOVE:
@@ -443,18 +423,9 @@ public class GameView extends SurfaceView implements AsyncResponse {
                                 e.printStackTrace();
                             }
 
-                        } else if (rects.get(0).contains((int) me.getX(i), (int) me.getY(i))) {
-                            Log.d("BUTTON CLICK: ", "Button 1 (arrow left)");
-
-
-                        } else if (rects.get(1).contains((int) me.getX(i), (int) me.getY(i))) {
-                            Log.d("BUTTON CLICK: ", "Button 2 (arrow right)");
-
                         } else if (rects.get(2).contains((int) me.getX(i), (int) me.getY(i))) {
                             Log.d("BUTTON CLICK: ", "Button 3 (arrow left)");
 
-                        } else if (rects.get(3).contains((int) me.getX(i), (int) me.getY(i))) {
-                            Log.d("BUTTON CLICK: ", "Button 4 (arrow right)");
                         }
                     }
             }
