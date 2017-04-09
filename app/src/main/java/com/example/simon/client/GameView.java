@@ -104,7 +104,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
         countdownTextPaint.setTypeface(Typeface.MONOSPACE);
         countdownTextPaint.setTextSize(canvasHeight/5);
 
-        powerupIcon = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.powerup);
+        powerupIcon = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.grey_powerup);
         powerupIcon = Bitmap.createScaledBitmap(powerupIcon, getScreenHeight()/4, getScreenHeight()/4, true);
 
         UpdateServer.getInstance().start();

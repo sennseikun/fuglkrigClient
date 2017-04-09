@@ -420,7 +420,7 @@ public class ReceiveData extends Thread {
                         int xPos = powerup.getInt("XPos");
                         int yPos = powerup.getInt("YPos");
 
-                        Powerup p = new Powerup(xPos,yPos,id,type);
+                        Powerup p = new Powerup((int)(xPos*DataModel.getRatioX()),(int)(yPos*DataModel.getRatioY()),id,type);
                         powerups.add(p);
 
                     }
