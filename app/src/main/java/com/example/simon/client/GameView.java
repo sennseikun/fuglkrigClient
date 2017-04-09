@@ -104,6 +104,9 @@ public class GameView extends SurfaceView implements AsyncResponse {
         countdownTextPaint.setTypeface(Typeface.MONOSPACE);
         countdownTextPaint.setTextSize(canvasHeight/5);
 
+        powerupIcon = BitmapFactory.decodeResource(this.getContext().getResources(), R.drawable.powerup);
+        powerupIcon = Bitmap.createScaledBitmap(powerupIcon, getScreenHeight()/4, getScreenHeight()/4, true);
+
         UpdateServer.getInstance().start();
         buttonsInit();
 
@@ -207,7 +210,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
             case 3:
                 return birdpoopBtn;
         }
-        return greyBirdpoopBtn;
+        return powerupIcon;
     }
 
     public void setGameOver(){
@@ -304,7 +307,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
             //canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
             canvas.drawBitmap(currentMap, (int)currBitMapPos,0,null);
             canvas.drawBitmap(nextMap,(int)nextBitMapPos,0,null);
-            canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
+            //canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
 
             //draw competitors
             for(Object i: DataModel.getCompetitors().keySet()){
@@ -330,9 +333,6 @@ public class GameView extends SurfaceView implements AsyncResponse {
                 canvas.drawBitmap(DataModel.getCurrplayer().getBitmap(), (int)DataModel.getCurrplayer().getXpos(),
                         (int) DataModel.getCurrplayer().getYpos(), null);
                 Bitmap button = getButtonBitmap();
-
-
-
                 canvas.drawBitmap(button, (int)(canvasWidth - canvasHeight/4), (int) canvasHeight/2 - canvasHeight/8, null);
             }
             else{

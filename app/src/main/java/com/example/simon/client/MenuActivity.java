@@ -130,6 +130,11 @@ public class MenuActivity extends Activity {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(PrefName, "");
     }
 
+    @Override
+    public void onBackPressed(){
+        //Do nothing when in menu
+    }
+
 
     public void onClick(View v){startActivity(new Intent(this, GameActivity.class));}
     public void onClick2(View v){
@@ -186,6 +191,9 @@ public class MenuActivity extends Activity {
     public void initializeConnection(String name){
         JSONObject initValue = new JSONObject();
         try {
+
+            System.out.println("Sent unique ID: " + getPrefID(this));
+
             initValue.put("Datatype","0");
             initValue.put("nick",name);
             initValue.put("UniqueID",getPrefID(this));

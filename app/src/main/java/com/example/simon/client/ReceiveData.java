@@ -356,6 +356,8 @@ public class ReceiveData extends Thread {
                     int nextXpos = translated.getInt("NextMapXPos");
                     int winXpos = translated.getInt("WinMapXPos");
 
+                    System.out.println("Winmap pos: " + winXpos);
+
                     int server_sent_packets = translated.getInt("ServerSendPackets");
 
                     DataModel.setServer_sent_packets(server_sent_packets);
