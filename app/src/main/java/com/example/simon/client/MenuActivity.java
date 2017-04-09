@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.UUID;
 
 public class MenuActivity extends Activity {
 
@@ -34,6 +35,7 @@ public class MenuActivity extends Activity {
     Button startButton;
     Button settingsButton;
     MediaPlayer mediaPlayer;
+    String uniqueID;
 
 
     @Override
@@ -47,6 +49,15 @@ public class MenuActivity extends Activity {
         DataModel.setNick("");
         DataModel.setLobbyList(null);
         DataModel.setGameLobby(null);
+
+
+        if(getPrefID(this).equals("")){
+            uniqueID = UUID.randomUUID().toString();
+            setPrefID(uniqueID,this);
+        }
+
+        System.out.println("Unique ID: " + getPrefID(this));
+
 
         mediaPlayer = MediaPlayer.create(this, R.raw.birds);
         mediaPlayer.start();
@@ -93,6 +104,16 @@ public class MenuActivity extends Activity {
         SharedPreferences.Editor editor = SPname.edit();
         editor.putString(PrefName, prefName);
         editor.commit();
+    }
+
+    public void setPrefID(String prefID, Context context){
+        SharedPreferences SPID = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = SPID.edit();
+        editor.putString("GUID", prefID);
+        editor.commit();
+    }
+    public String getPrefID(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context).getString("GUID", "");
     }
 
     public void disableButton(){
@@ -167,6 +188,7 @@ public class MenuActivity extends Activity {
         try {
             initValue.put("Datatype","0");
             initValue.put("nick",name);
+            initValue.put("UniqueID",getPrefID(this));
         } catch (JSONException e) {
             e.printStackTrace();
         }

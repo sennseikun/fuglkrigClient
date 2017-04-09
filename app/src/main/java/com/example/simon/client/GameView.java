@@ -304,7 +304,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
             //canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
             canvas.drawBitmap(currentMap, (int)currBitMapPos,0,null);
             canvas.drawBitmap(nextMap,(int)nextBitMapPos,0,null);
-            //canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
+            canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
 
             //draw competitors
             for(Object i: DataModel.getCompetitors().keySet()){
@@ -336,6 +336,8 @@ public class GameView extends SurfaceView implements AsyncResponse {
                 canvas.drawBitmap(button, (int)(canvasWidth - canvasHeight/4), (int) canvasHeight/2 - canvasHeight/8, null);
             }
             else{
+
+                //Fade out screen on death
                 canvas.drawARGB(125,200,200,200);
             }
 
