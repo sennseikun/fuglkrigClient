@@ -132,7 +132,7 @@ public class MenuActivity extends Activity {
 
     @Override
     public void onBackPressed(){
-        //Do nothing when in menu
+        finish();
     }
 
 
