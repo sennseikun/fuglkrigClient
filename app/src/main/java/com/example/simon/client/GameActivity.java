@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -111,7 +112,16 @@ public class GameActivity extends Activity implements AsyncResponse {
     public void processFinish(String output) {
 
         if(output.equals("1")){
+
+            Toast t = new Toast(this);
+
+            t.setText("Connection lost, kicked out from game");
+            t.setDuration(Toast.LENGTH_LONG);
+
+            t.show();
+
             UpdateServer.getInstance().stopRunning();
+            GameLoopThread.getInstance().stopRunning();
             startActivity(new Intent(this,MenuActivity.class));
             finish();
         }
