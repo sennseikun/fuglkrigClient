@@ -32,7 +32,6 @@ public class GameLobby extends Activity implements AsyncResponse  {
     private PlayerListAdapter adapter;
     private Typeface font;
     private Button btn_start;
-    private MediaPlayer mediaplayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +59,8 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
         //Intentionally switching between width and height here
 
-        mediaplayer = DataModel.getLobbyMediaplayer();
-        mediaplayer.seekTo(DataModel.getLobbyMediaplayerLength());
-        mediaplayer.start();
+        DataModel.getLobbyMediaplayer().seekTo(DataModel.getLobbyMediaplayerLength());
+        DataModel.getLobbyMediaplayer().start();
 
 
         DataModel.setScreenHeight(canvasWidth);
