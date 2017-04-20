@@ -251,11 +251,11 @@ public class MenuActivity extends Activity {
                     dialog.dismiss();
                     String name = input.getText().toString();
                     initializeConnection(name);
-                    setPrefName(input.getText().toString(), context);
                     if(DataModel.getNick().equals("ERROR")){
                         launchToast();
                     }
                     else if(!DataModel.getNick().equals("")){
+                        setPrefName(input.getText().toString(), context);
                         launchLobby();
                     }
                     else{
