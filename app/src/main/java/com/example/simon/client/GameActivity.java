@@ -40,11 +40,13 @@ public class GameActivity extends Activity implements AsyncResponse {
     }
     @Override
     public void onStop(){
+        mediaPlayer.stop();
         super.onStop();
     }
 
     @Override
     public void onDestroy(){
+        mediaPlayer.stop();
         super.onDestroy();
         System.out.println("On stop called in game");
         DataModel.setInGame(null);
@@ -57,6 +59,7 @@ public class GameActivity extends Activity implements AsyncResponse {
 
     @Override
     public void onPause(){
+        mediaPlayer.stop();
         super.onPause();
         System.out.println("On stop called in game");
         DataModel.setInGame(null);
@@ -70,6 +73,7 @@ public class GameActivity extends Activity implements AsyncResponse {
     @Override
     public void onBackPressed(){
         if(DataModel.isOver()){
+            mediaPlayer.stop();
             startActivity(new Intent(this,LobbyActivity.class));
             finish();
         }
@@ -95,6 +99,7 @@ public class GameActivity extends Activity implements AsyncResponse {
                             e.printStackTrace();
                         }
                         startActivity(new Intent(getBaseContext(),LobbyActivity.class));
+                        mediaPlayer.stop();
                         finish();
                     }
                 })
@@ -123,6 +128,7 @@ public class GameActivity extends Activity implements AsyncResponse {
             UpdateServer.getInstance().stopRunning();
             GameLoopThread.getInstance().stopRunning();
             startActivity(new Intent(this,MenuActivity.class));
+            mediaPlayer.stop();
             finish();
         }
     }

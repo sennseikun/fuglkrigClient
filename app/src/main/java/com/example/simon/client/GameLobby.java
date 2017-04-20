@@ -106,6 +106,9 @@ public class GameLobby extends Activity implements AsyncResponse  {
     }
 
     public void StartGame(View view) {
+
+        DataModel.getLobbyMediaplayer().stop();
+
         JSONObject json = new JSONObject();
         try {
             json.put("Datatype", 11);

@@ -55,8 +55,9 @@ public class LobbyActivity extends Activity implements AsyncResponse {
 
         createGame = (Button)findViewById(R.id.btn_create);
         createGame.setEnabled(true);
-
-        DataModel.setLobbyMediaplayer(MediaPlayer.create(this, R.raw.elevatormusic));
+        if (DataModel.getLobbyMediaplayerLength() == 0){
+            DataModel.setLobbyMediaplayer(MediaPlayer.create(this, R.raw.elevatormusic));
+        }
         DataModel.getLobbyMediaplayer().seekTo(DataModel.getLobbyMediaplayerLength());
         DataModel.getLobbyMediaplayer().start();
 

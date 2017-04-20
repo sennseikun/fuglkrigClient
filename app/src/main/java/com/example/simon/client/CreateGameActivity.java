@@ -34,7 +34,7 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
     private LinearLayout regularScreen;
 
     private Typeface font;
-    private MediaPlayer mediaPlayer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,13 +78,13 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
             }
         });
 
-        mediaPlayer = DataModel.getLobbyMediaplayer();
-        mediaPlayer.seekTo(DataModel.getLobbyMediaplayerLength());
-        mediaPlayer.start();
+        DataModel.getLobbyMediaplayer().seekTo(DataModel.getLobbyMediaplayerLength());
+        DataModel.getLobbyMediaplayer().start();
 
     }
 
     public void LaunchAlert(){
+
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
@@ -145,16 +145,16 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
     }
 
     public void cancel(){
-        mediaPlayer.pause();
-        mediaPlayer.seekTo(DataModel.getLobbyMediaplayerLength());
+        DataModel.getLobbyMediaplayer().pause();
+        DataModel.getLobbyMediaplayer().seekTo(DataModel.getLobbyMediaplayerLength());
         Intent intent = new Intent(this,LobbyActivity.class);
         startActivity(intent);
     }
     @Override
     public void onBackPressed(){
         Log.d("jeifj", "huedjie");
-        mediaPlayer.pause();
-        mediaPlayer.seekTo(DataModel.getLobbyMediaplayerLength());
+        DataModel.getLobbyMediaplayer().pause();
+        DataModel.getLobbyMediaplayer().seekTo(DataModel.getLobbyMediaplayerLength());
         startActivity(new Intent(this,LobbyActivity.class));
 
         finish();
