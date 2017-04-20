@@ -179,7 +179,10 @@ public class MenuActivity extends Activity {
         else {
             String nick = getPrefName(context);
             initializeConnection(nick);
-            if(DataModel.getNick().equals("")){
+            if(DataModel.getNick().equals("ERROR")){
+                launchToast();
+            }
+            else if(DataModel.getNick().equals("")){
                 launchServerError();
             }
             else{
@@ -189,6 +192,9 @@ public class MenuActivity extends Activity {
     }
 
     public void initializeConnection(String name){
+        if(DataModel.getNick().equals("ERROR")){
+            DataModel.setNick("");
+        }
         JSONObject initValue = new JSONObject();
         try {
 
