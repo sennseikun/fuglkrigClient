@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,9 +19,12 @@ import static android.graphics.Color.BLUE;
 
 public class GameActivity extends Activity implements AsyncResponse {
 
+    private MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         DataModel.setGameContext(this);
         //remove title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -29,6 +33,9 @@ public class GameActivity extends Activity implements AsyncResponse {
         DataModel.setInGame(this);
 
         setContentView(new GameView(this));
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.fuglkrigcombat);
+        mediaPlayer.start();
     }
     @Override
     public void onStop(){

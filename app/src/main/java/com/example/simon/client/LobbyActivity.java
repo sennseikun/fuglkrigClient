@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.InputType;
@@ -42,8 +43,6 @@ public class LobbyActivity extends Activity implements AsyncResponse {
     private Button createGame;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +55,11 @@ public class LobbyActivity extends Activity implements AsyncResponse {
 
         createGame = (Button)findViewById(R.id.btn_create);
         createGame.setEnabled(true);
+
+        DataModel.setLobbyMediaplayer(MediaPlayer.create(this, R.raw.elevatormusic));
+        DataModel.getLobbyMediaplayer().seekTo(DataModel.getLobbyMediaplayerLength());
+        DataModel.getLobbyMediaplayer().start();
+
 
         lv = (ListView) findViewById(R.id.lobbylist);
         loadingLayout = (RelativeLayout)findViewById(R.id.loadingScreenLayout);
@@ -80,6 +84,7 @@ public class LobbyActivity extends Activity implements AsyncResponse {
     @Override
     public void onPause(){
         super.onPause();
+        DataModel.getLobbyMediaplayer().pause();
         wasPaused = true;
     }
 
@@ -87,6 +92,7 @@ public class LobbyActivity extends Activity implements AsyncResponse {
     public void onResume(){
         super.onResume();
         if(wasPaused && handler.isAlive()){
+            DataModel.getLobbyMediaplayer().start();
             LoadLobbys();
             wasPaused = false;
         }
@@ -223,7 +229,6 @@ public class LobbyActivity extends Activity implements AsyncResponse {
     //Launches a game lobby, reset game lobby data on phone and lobby list data
 
     public void launchGame(String name, int player){
-
         DataModel.setGameLobby(null);
 
         JSONObject json = new JSONObject();

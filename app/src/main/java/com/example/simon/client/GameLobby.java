@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public class GameLobby extends Activity implements AsyncResponse  {
     private PlayerListAdapter adapter;
     private Typeface font;
     private Button btn_start;
+    private MediaPlayer mediaplayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,11 @@ public class GameLobby extends Activity implements AsyncResponse  {
         int canvasWidth = getScreenWidth();
 
         //Intentionally switching between width and height here
+
+        mediaplayer = DataModel.getLobbyMediaplayer();
+        mediaplayer.seekTo(DataModel.getLobbyMediaplayerLength());
+        mediaplayer.start();
+
 
         DataModel.setScreenHeight(canvasWidth);
         DataModel.setScreenWidth(canvasHeight);
@@ -156,7 +163,7 @@ public class GameLobby extends Activity implements AsyncResponse  {
     //This method sends updated info to server
 
     private void cancel(){
-
+        DataModel.getLobbyMediaplayer().pause();
         JSONObject json = new JSONObject();
 
         String nick = DataModel.getNick();

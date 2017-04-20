@@ -1,6 +1,7 @@
 package com.example.simon.client;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +49,8 @@ public class DataModel {
     private static int server_sent_packets = 0;
     private static int placement = -1;
     private static int powerup_type = -1;
-
+    private static MediaPlayer lobbyMediaplayer;
+    private static int length;
     //Map values
 
     private static int mapXpos = -1;
@@ -74,6 +76,19 @@ public class DataModel {
     public static void setRatioY(double ratioY) {
         DataModel.ratioY = ratioY;
     }
+
+    public static MediaPlayer getLobbyMediaplayer(){
+        length=lobbyMediaplayer.getCurrentPosition();
+        return lobbyMediaplayer;
+    };
+
+    public static void setLobbyMediaplayer(MediaPlayer mediaplayer){
+        lobbyMediaplayer = mediaplayer;
+    };
+
+    public static int getLobbyMediaplayerLength(){
+        return length;
+    };
 
     public DataModel(){
 

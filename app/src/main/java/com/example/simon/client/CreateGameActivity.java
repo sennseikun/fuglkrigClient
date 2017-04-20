@@ -5,7 +5,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +34,7 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
     private LinearLayout regularScreen;
 
     private Typeface font;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,11 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
                 cancel();
             }
         });
+
+        mediaPlayer = DataModel.getLobbyMediaplayer();
+        mediaPlayer.seekTo(DataModel.getLobbyMediaplayerLength());
+        mediaPlayer.start();
+
     }
 
     public void LaunchAlert(){
@@ -137,13 +145,18 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
     }
 
     public void cancel(){
-
+        mediaPlayer.pause();
+        mediaPlayer.seekTo(DataModel.getLobbyMediaplayerLength());
         Intent intent = new Intent(this,LobbyActivity.class);
         startActivity(intent);
     }
     @Override
     public void onBackPressed(){
+        Log.d("jeifj", "huedjie");
+        mediaPlayer.pause();
+        mediaPlayer.seekTo(DataModel.getLobbyMediaplayerLength());
         startActivity(new Intent(this,LobbyActivity.class));
+
         finish();
     }
 
