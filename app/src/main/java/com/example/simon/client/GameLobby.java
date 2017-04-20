@@ -105,7 +105,8 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
     public void StartGame(View view) {
 
-        DataModel.getLobbyMediaplayer().stop();
+        DataModel.getLobbyMediaplayer().pause();
+        DataModel.setLobbyMediaplayerLength(0);
 
         JSONObject json = new JSONObject();
         try {

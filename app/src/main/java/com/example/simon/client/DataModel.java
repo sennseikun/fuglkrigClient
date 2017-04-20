@@ -90,6 +90,10 @@ public class DataModel {
         return length;
     };
 
+    public static void setLobbyMediaplayerLength(int len){
+        length = len;
+    };
+
     public DataModel(){
 
     }
