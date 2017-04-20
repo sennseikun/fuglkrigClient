@@ -240,6 +240,7 @@ public class MenuActivity extends Activity {
 
     public void launchNick(String currname){
 
+        DataModel.setNick(currname);
 
         if(currname.equals("")){
             final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
