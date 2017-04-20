@@ -103,6 +103,7 @@ public class ReceiveData extends Thread {
                 if(packet_number.equals("0")){
                     if(translated.getString("userValid").equals("0")){
                         DataModel.setNick("ERROR");
+                        DataModel.setP_id(translated.getInt("pId"));
                     }
                     else{
                         DataModel.setNick(translated.getString("nick"));

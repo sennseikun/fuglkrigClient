@@ -156,7 +156,6 @@ public class MenuActivity extends Activity {
         launchNick();
     }
     public void onClick3(View v){
-
         disableButton();
 
         CountDownTimer timer = new CountDownTimer(1000,1000) {
@@ -181,6 +180,7 @@ public class MenuActivity extends Activity {
             initializeConnection(nick);
             if(DataModel.getNick().equals("ERROR")){
                 launchToast();
+                restart();
             }
             else if(DataModel.getNick().equals("")){
                 launchServerError();
@@ -192,9 +192,6 @@ public class MenuActivity extends Activity {
     }
 
     public void initializeConnection(String name){
-        if(DataModel.getNick().equals("ERROR")){
-            DataModel.setNick("");
-        }
         JSONObject initValue = new JSONObject();
         try {
 
@@ -250,6 +247,13 @@ public class MenuActivity extends Activity {
                 .show();
     }
 
+    public void restart(){
+        DataModel.setNick("");
+        setPrefName("",getBaseContext());
+        startActivity(new Intent(this,MenuActivity.class));
+        finish();
+    }
+
     public void launchNick(){
 
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -264,6 +268,7 @@ public class MenuActivity extends Activity {
                 setPrefName(input.getText().toString(), context);
                 if(DataModel.getNick().equals("ERROR")){
                     launchToast();
+                    restart();
                 }
                 else if(!DataModel.getNick().equals("")){
                     launchLobby();
