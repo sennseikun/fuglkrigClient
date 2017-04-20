@@ -170,7 +170,7 @@ public class MenuActivity extends Activity {
 
         timer.start();
 
-        launchNick("");
+        launchNick();
     }
     public void onClick3(View v){
 
@@ -191,11 +191,17 @@ public class MenuActivity extends Activity {
         timer.start();
 
         if(getPrefName(context).isEmpty()) {
-            launchNick("");
+            launchNick();
         }
         else {
             String nick = getPrefName(context);
-            launchNick(nick);
+            initializeConnection(nick);
+            if(DataModel.getNick().equals("")){
+                launchServerError();
+            }
+            else{
+                launchLobby();
+            }
         }
     }
 
@@ -257,58 +263,44 @@ public class MenuActivity extends Activity {
                 .show();
     }
 
-    public void launchNick(String currname){
+    public void launchNick(){
 
-
-        if(currname.equals("")){
-            final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            final EditText input = new EditText(this);
-            input.setInputType(InputType.TYPE_CLASS_TEXT);
-            alertDialogBuilder.setPositiveButton("Move on", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    String name = input.getText().toString();
-                    initializeConnection(name);
-                    if(DataModel.getNick().equals("ERROR")){
-                        launchToast();
-                    }
-                    else if(!DataModel.getNick().equals("")){
-                        setPrefName(input.getText().toString(), context);
-                        launchLobby();
-                    }
-                    else{
-                        dialog.dismiss();
-                        launchServerError();
-                    }
-
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        alertDialogBuilder.setPositiveButton("Move on", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                String name = input.getText().toString();
+                initializeConnection(name);
+                setPrefName(input.getText().toString(), context);
+                if(DataModel.getNick().equals("ERROR")){
+                    launchToast();
                 }
-            });
-            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+                else if(!DataModel.getNick().equals("")){
+                    launchLobby();
                 }
-            });
-            alertDialogBuilder.setTitle("Choose name");
-            alertDialogBuilder.setMessage("Choose a name for your character");
-            alertDialogBuilder.setView(input);
+                else{
+                    dialog.dismiss();
+                    launchServerError();
+                }
 
-            alertDialogBuilder.create();
-            alertDialogBuilder.show();
-        }
-        else{
-            initializeConnection(currname);
-            if(DataModel.getNick().equals("ERROR")){
-                launchToast();
             }
-            else if(!DataModel.getNick().equals("")){
-                launchLobby();
+        });
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
-            else{
-                launchServerError();
-            }
-        }
+        });
+        alertDialogBuilder.setTitle("Choose name");
+        alertDialogBuilder.setMessage("Choose a name for your character");
+        alertDialogBuilder.setView(input);
+
+        alertDialogBuilder.create();
+        alertDialogBuilder.show();
+
     }
 
 }
