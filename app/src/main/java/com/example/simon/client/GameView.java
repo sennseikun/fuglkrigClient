@@ -59,8 +59,18 @@ public class GameView extends SurfaceView implements AsyncResponse {
     private Bitmap greyBirdpoopBtn;
     private Paint alphaPaint;
 
+    //used to get animated birds
+    private int currentBird;
+    private boolean increaseBirdAnimation;
+    private int framesBetweenImages;
+    private int currentFrameCount;
+
     public GameView(Context context){
         super(context);
+        currentBird = 0;
+        increaseBirdAnimation = true;
+        framesBetweenImages = 10;
+        currentFrameCount = 0;
         gameOver = false;
         gameIsInited = false;
         isInit = false;
@@ -116,6 +126,7 @@ public class GameView extends SurfaceView implements AsyncResponse {
     }
 
     public void competitorsInit(HashMap hm){
+
 
         //Instantiate the competitors' birds. hm is the competitors hashmap
         for(Object id: hm.keySet()){
@@ -283,6 +294,29 @@ public class GameView extends SurfaceView implements AsyncResponse {
         super.draw(canvas);
         canvas.drawColor(Color.BLUE);
 
+        //increase bird animation
+        if (currentFrameCount >= framesBetweenImages) {
+            if (increaseBirdAnimation) {
+                currentBird++;
+                if(currentBird == 5) {
+                    increaseBirdAnimation = false;
+                }
+            }
+            else {
+                currentBird--;
+                if(currentBird == 0) {
+                    increaseBirdAnimation = true;
+                }
+            }
+            //resets the counter
+            currentFrameCount = 0;
+        }
+        else {
+            currentFrameCount++;
+        }
+
+
+
         if(DataModel.isOver()){
 
             if(!gameIsInited){
@@ -292,6 +326,8 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
             glt.setRunning(false);
             setGameOver();
+            DataModel.setCompetitors(null);
+            DataModel.setHostPlayer(null);
             canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
             canvas.drawBitmap(winBackground,canvasWidth/2 - winBackground.getWidth()/2,canvasHeight/2 - winBackground.getHeight()/2,null);
             canvas.drawText("Click on screen to return to lobbys", canvasWidth/2 - winBackground.getWidth()/2 - 100, canvasHeight/2 + 250, gameoverPaint);
@@ -321,6 +357,27 @@ public class GameView extends SurfaceView implements AsyncResponse {
             //draw competitors
             for(Object i: DataModel.getCompetitors().keySet()){
                 if(DataModel.getCompetitors().get(i).isAlive()){
+
+                    //sets new bitmap to player
+                    if (currentBird == 0) {
+                        DataModel.getCompetitors().get(i).setBitmap(R.drawable.blackbird);
+                    }
+                    else if (currentBird == 1) {
+                        DataModel.getCompetitors().get(i).setBitmap(R.drawable.blackbird1);
+                    }
+                    else if (currentBird == 2) {
+                        DataModel.getCompetitors().get(i).setBitmap(R.drawable.blackbird2);
+                    }
+                    else if (currentBird == 3) {
+                        DataModel.getCompetitors().get(i).setBitmap(R.drawable.blackbird3);
+                    }
+                    else if (currentBird == 4) {
+                        DataModel.getCompetitors().get(i).setBitmap(R.drawable.blackbird4);
+                    }
+                    else if (currentBird == 5) {
+                        DataModel.getCompetitors().get(i).setBitmap(R.drawable.blackbird5);
+                    }
+
                     canvas.drawBitmap(DataModel.getCompetitors().get(i).getBitmap(), (int)DataModel.getCompetitors().get(i).getXpos(),
                             (int)DataModel.getCompetitors().get(i).getYpos(), null);
                 }
@@ -329,6 +386,27 @@ public class GameView extends SurfaceView implements AsyncResponse {
             //Draw powerups
             for(Powerup p : DataModel.getPowerups()){
                 canvas.drawBitmap(p.getBitMap(this.getContext()), (int)(p.getxPos()), (int)(p.getyPos()), null);
+            }
+
+
+            //sets new bitmap to player
+            if (currentBird == 0) {
+                DataModel.getCurrplayer().setBitmap(R.drawable.bird);
+            }
+            else if (currentBird == 1) {
+                DataModel.getCurrplayer().setBitmap(R.drawable.bird1);
+            }
+            else if (currentBird == 2) {
+                DataModel.getCurrplayer().setBitmap(R.drawable.bird2);
+            }
+            else if (currentBird == 3) {
+                DataModel.getCurrplayer().setBitmap(R.drawable.bird3);
+            }
+            else if (currentBird == 4) {
+                DataModel.getCurrplayer().setBitmap(R.drawable.bird4);
+            }
+            else if (currentBird == 5) {
+                DataModel.getCurrplayer().setBitmap(R.drawable.bird5);
             }
 
             //draw current player, i.e. me-player
