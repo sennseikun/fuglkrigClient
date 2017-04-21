@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,9 +20,12 @@ import static android.graphics.Color.BLUE;
 
 public class GameActivity extends Activity implements AsyncResponse {
 
+    private MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         DataModel.setGameContext(this);
         //remove title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -30,14 +34,19 @@ public class GameActivity extends Activity implements AsyncResponse {
         DataModel.setInGame(this);
 
         setContentView(new GameView(this));
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.fuglkrigcombat);
+        mediaPlayer.start();
     }
     @Override
     public void onStop(){
+        mediaPlayer.stop();
         super.onStop();
     }
 
     @Override
     public void onDestroy(){
+        mediaPlayer.stop();
         super.onDestroy();
         System.out.println("On stop called in game");
         DataModel.setInGame(null);
@@ -50,6 +59,7 @@ public class GameActivity extends Activity implements AsyncResponse {
 
     @Override
     public void onPause(){
+        mediaPlayer.stop();
         super.onPause();
         System.out.println("On stop called in game");
         DataModel.setInGame(null);
@@ -63,6 +73,7 @@ public class GameActivity extends Activity implements AsyncResponse {
     @Override
     public void onBackPressed(){
         if(DataModel.isOver()){
+            mediaPlayer.stop();
             startActivity(new Intent(this,LobbyActivity.class));
             finish();
         }
@@ -88,6 +99,7 @@ public class GameActivity extends Activity implements AsyncResponse {
                             e.printStackTrace();
                         }
                         startActivity(new Intent(getBaseContext(),LobbyActivity.class));
+                        mediaPlayer.stop();
                         finish();
                     }
                 })
@@ -116,6 +128,7 @@ public class GameActivity extends Activity implements AsyncResponse {
             UpdateServer.getInstance().stopRunning();
             GameLoopThread.getInstance().stopRunning();
             startActivity(new Intent(this,MenuActivity.class));
+            mediaPlayer.stop();
             finish();
         }
     }

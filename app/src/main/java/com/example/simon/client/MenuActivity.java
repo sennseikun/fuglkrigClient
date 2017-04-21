@@ -36,6 +36,7 @@ public class MenuActivity extends Activity {
     Button settingsButton;
     MediaPlayer mediaPlayer;
     String uniqueID;
+    boolean ispaused;
 
 
     @Override
@@ -61,6 +62,7 @@ public class MenuActivity extends Activity {
 
         mediaPlayer = MediaPlayer.create(this, R.raw.birds);
         mediaPlayer.start();
+        ispaused = false;
 
         startButton = (Button)findViewById(R.id.button3);
         settingsButton = (Button)findViewById(R.id.button4);
@@ -84,19 +86,30 @@ public class MenuActivity extends Activity {
 
     @Override
     protected void onPause(){
-        if(this.isFinishing()){
-            mediaPlayer.pause();
-        }
-        Context context = getApplicationContext();
-        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-        if (!taskInfo.isEmpty()) {
-            ComponentName topActivity = taskInfo.get(0).topActivity;
-            if (!topActivity.getPackageName().equals(context.getPackageName())) {
-                mediaPlayer.stop();
-            }
-        }
         super.onPause();
+//        if(this.isFinishing()){
+//            mediaPlayer.pause();
+//        }
+//        Context context = getApplicationContext();
+//        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+//        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+//        if (!taskInfo.isEmpty()) {
+//            ComponentName topActivity = taskInfo.get(0).topActivity;
+//            if (!topActivity.getPackageName().equals(context.getPackageName())) {
+//                mediaPlayer.stop();
+//            }
+//        }
+        mediaPlayer.pause();
+        ispaused = true;
+
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(ispaused) {
+            mediaPlayer.start();
+        }
     }
 
     public void setPrefName(String prefName, Context context){
@@ -136,7 +149,11 @@ public class MenuActivity extends Activity {
     }
 
 
-    public void onClick(View v){startActivity(new Intent(this, GameActivity.class));}
+    public void onClick(View v){
+        mediaPlayer.stop();
+        startActivity(new Intent(this, GameActivity.class));
+
+    }
     public void onClick2(View v){
         disableButton();
         CountDownTimer timer = new CountDownTimer(1000,1000) {
@@ -228,6 +245,8 @@ public class MenuActivity extends Activity {
     }
 
     public void launchLobby(){
+
+        mediaPlayer.stop();
         startActivity(new Intent(this,LobbyActivity.class));
     }
 
