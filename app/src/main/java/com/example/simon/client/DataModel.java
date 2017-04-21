@@ -50,6 +50,10 @@ public class DataModel {
     private static int placement = -1;
     private static int powerup_type = -1;
     private static MediaPlayer lobbyMediaplayer;
+    private static MediaPlayer diesound;
+    private static MediaPlayer defeatmusic;
+    private static MediaPlayer victorymusic;
+    private static MediaPlayer gamemusic;
     private static int length;
     //Map values
 
@@ -93,6 +97,38 @@ public class DataModel {
     public static void setLobbyMediaplayerLength(int len){
         length = len;
     };
+
+    public static void setDiesound(MediaPlayer mediaPlayer) {
+        diesound = mediaPlayer;
+    }
+
+    public static MediaPlayer getDiesound() {
+        return diesound;
+    }
+
+    public static void setDefeatmusic(MediaPlayer defeatmusic) {
+        DataModel.defeatmusic = defeatmusic;
+    }
+
+    public static MediaPlayer getDefeatmusic() {
+        return defeatmusic;
+    }
+
+    public static void setVictorymusic(MediaPlayer victorymusic) {
+        DataModel.victorymusic = victorymusic;
+    }
+
+    public static MediaPlayer getVictorymusic() {
+        return victorymusic;
+    }
+
+    public static void setGamemusic(MediaPlayer gamemusic) {
+        DataModel.gamemusic = gamemusic;
+    }
+
+    public static MediaPlayer getGamemusic() {
+        return gamemusic;
+    }
 
     public DataModel(){
 

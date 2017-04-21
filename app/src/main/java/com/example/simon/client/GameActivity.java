@@ -20,7 +20,6 @@ import static android.graphics.Color.BLUE;
 
 public class GameActivity extends Activity implements AsyncResponse {
 
-    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,18 +34,21 @@ public class GameActivity extends Activity implements AsyncResponse {
 
         setContentView(new GameView(this));
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.fuglkrigcombat);
-        mediaPlayer.start();
+        DataModel.setGamemusic(MediaPlayer.create(this, R.raw.fuglkrigcombat));
+        DataModel.getGamemusic().start();
+        DataModel.setDiesound(MediaPlayer.create(this, R.raw.hitsound));
+        DataModel.setDefeatmusic(MediaPlayer.create(this, R.raw.defeatmusic));
+        DataModel.setVictorymusic(MediaPlayer.create(this, R.raw.defeatmusic));
     }
     @Override
     public void onStop(){
-        mediaPlayer.stop();
+        DataModel.getGamemusic().stop();
         super.onStop();
     }
 
     @Override
     public void onDestroy(){
-        mediaPlayer.stop();
+        DataModel.getGamemusic().stop();
         super.onDestroy();
         System.out.println("On stop called in game");
         DataModel.setInGame(null);
@@ -59,7 +61,7 @@ public class GameActivity extends Activity implements AsyncResponse {
 
     @Override
     public void onPause(){
-        mediaPlayer.stop();
+        DataModel.getGamemusic().stop();
         super.onPause();
         System.out.println("On stop called in game");
         DataModel.setInGame(null);
@@ -73,7 +75,7 @@ public class GameActivity extends Activity implements AsyncResponse {
     @Override
     public void onBackPressed(){
         if(DataModel.isOver()){
-            mediaPlayer.stop();
+            DataModel.getGamemusic().stop();
             startActivity(new Intent(this,LobbyActivity.class));
             finish();
         }
@@ -99,7 +101,7 @@ public class GameActivity extends Activity implements AsyncResponse {
                             e.printStackTrace();
                         }
                         startActivity(new Intent(getBaseContext(),LobbyActivity.class));
-                        mediaPlayer.stop();
+                        DataModel.getGamemusic().stop();
                         finish();
                     }
                 })
@@ -128,7 +130,7 @@ public class GameActivity extends Activity implements AsyncResponse {
             UpdateServer.getInstance().stopRunning();
             GameLoopThread.getInstance().stopRunning();
             startActivity(new Intent(this,MenuActivity.class));
-            mediaPlayer.stop();
+            DataModel.getGamemusic().stop();
             finish();
         }
     }

@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -66,6 +67,8 @@ public class GameView extends SurfaceView implements AsyncResponse {
         WinScreen = false;
         System.out.println("Constructor called");
         DataModel.setGameView(this);
+
+
         glt = GameLoopThread.getInstance();
         glt.setView(this);
         holder = getHolder();
@@ -257,8 +260,14 @@ public class GameView extends SurfaceView implements AsyncResponse {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
 
+        DataModel.getGamemusic().stop();
+
         if(DataModel.isVictory()){
+            DataModel.getVictorymusic().start();
             resource = "wintext";
+        }
+        else{
+            DataModel.getDefeatmusic().start();
         }
 
         Resources resources = getResources();
