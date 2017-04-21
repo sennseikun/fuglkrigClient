@@ -468,6 +468,7 @@ public class ReceiveData extends Thread {
                         powerups.add(p);
 
                     }
+                    DataModel.setPowerups(powerups);
                 }
 
                 //You died
