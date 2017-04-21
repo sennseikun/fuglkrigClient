@@ -25,7 +25,7 @@ public class Powerup {
 
     @Override
     public String toString(){
-        return this.Id + "";
+        return this.type + "";
     }
 
     public Bitmap getBitMap(Context context){
