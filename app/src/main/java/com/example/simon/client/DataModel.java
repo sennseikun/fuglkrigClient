@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +56,7 @@ public class DataModel {
     private static int placement = -1;
     private static int powerup_type = -1;
     private static MediaPlayer lobbyMediaplayer;
+    private static JSONArray powerupsOnMap = new JSONArray();
     private static int length;
     //Map values
 
@@ -518,5 +521,13 @@ public class DataModel {
 
     public static boolean isMusicOn(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("Music", false);
+    }
+
+    public static JSONArray getPowerupsOnMap() {
+        return powerupsOnMap;
+    }
+
+    public static void setPowerupsOnMap(JSONArray powerupsOnMap) {
+        DataModel.powerupsOnMap = powerupsOnMap;
     }
 }
