@@ -155,6 +155,7 @@ public class ReceiveData extends Thread {
                     String name = translated.getString("PlayerName");
 
                     String hostPlayer = translated.getString("hostPlayer");
+                    System.out.println("Host player: " + hostPlayer);
                     DataModel.setHostPlayer(hostPlayer);
 
                     DataModel.updateLobby(lobbyname,playerCount);

@@ -283,6 +283,8 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
             glt.setRunning(false);
             setGameOver();
+            DataModel.setCompetitors(null);
+            DataModel.setHostPlayer(null);
             canvas.drawBitmap(winMap,(int)winBitMapPos,0,null);
             canvas.drawBitmap(winBackground,canvasWidth/2 - winBackground.getWidth()/2,canvasHeight/2 - winBackground.getHeight()/2,null);
             canvas.drawText("Click on screen to return to lobbys", canvasWidth/2 - winBackground.getWidth()/2 - 100, canvasHeight/2 + 250, gameoverPaint);
