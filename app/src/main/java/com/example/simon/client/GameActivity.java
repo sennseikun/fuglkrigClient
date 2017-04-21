@@ -35,8 +35,9 @@ public class GameActivity extends Activity implements AsyncResponse {
         setContentView(new GameView(this));
 
         DataModel.setGamemusic(MediaPlayer.create(this, R.raw.fuglkrigcombat));
+        DataModel.getGamemusic().setLooping(true);
         DataModel.getGamemusic().start();
-        DataModel.setDiesound(MediaPlayer.create(this, R.raw.hitsound));
+
         DataModel.setDefeatmusic(MediaPlayer.create(this, R.raw.defeatmusic));
         DataModel.setVictorymusic(MediaPlayer.create(this, R.raw.defeatmusic));
     }
@@ -119,7 +120,7 @@ public class GameActivity extends Activity implements AsyncResponse {
     public void processFinish(String output) {
 
         if(output.equals("1")){
-
+            DataModel.getGamemusic().stop();
             Toast t = new Toast(this);
 
             t.setText("Connection lost, kicked out from game");

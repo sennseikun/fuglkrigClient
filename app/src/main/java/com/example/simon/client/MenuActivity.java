@@ -59,8 +59,10 @@ public class MenuActivity extends Activity {
 
         System.out.println("Unique ID: " + getPrefID(this));
 
+        DataModel.setDiesound(MediaPlayer.create(this, R.raw.hitsound));
 
         mediaPlayer = MediaPlayer.create(this, R.raw.birds);
+        mediaPlayer.setLooping(true);
         mediaPlayer.start();
         ispaused = false;
 

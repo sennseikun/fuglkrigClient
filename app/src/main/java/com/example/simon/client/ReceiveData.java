@@ -1,5 +1,6 @@
 package com.example.simon.client;
 
+import android.media.MediaPlayer;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -449,6 +450,8 @@ public class ReceiveData extends Thread {
                         System.out.println("Player died editing alive player count");
 
                         //Play player died sound
+                        DataModel.getDiesound().start();
+
                         DataModel.setPlayerCount(alivePlayerCount);
 
                     }
@@ -459,6 +462,9 @@ public class ReceiveData extends Thread {
 
                     if(powerupCount != DataModel.getPowerupCountOnMap()){
                         //Play powerup shot count/spawned
+                        DataModel.getDiesound().start();
+
+
                         DataModel.setPowerupCountOnMap(powerupCount);
                     }
 

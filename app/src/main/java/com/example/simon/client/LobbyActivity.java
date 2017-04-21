@@ -58,6 +58,7 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         if (DataModel.getLobbyMediaplayerLength() == 0){
             DataModel.setLobbyMediaplayer(MediaPlayer.create(this, R.raw.elevatormusic));
         }
+        DataModel.getLobbyMediaplayer().setLooping(true);
         DataModel.getLobbyMediaplayer().seekTo(DataModel.getLobbyMediaplayerLength());
         DataModel.getLobbyMediaplayer().start();
 

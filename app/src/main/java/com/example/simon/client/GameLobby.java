@@ -105,9 +105,6 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
     public void StartGame(View view) {
 
-        DataModel.getLobbyMediaplayer().pause();
-        DataModel.setLobbyMediaplayerLength(0);
-
         JSONObject json = new JSONObject();
         try {
             json.put("Datatype", 11);
@@ -192,6 +189,9 @@ public class GameLobby extends Activity implements AsyncResponse  {
     public void processFinish(String output) {
         //updatePlayers(Integer.parseInt(DataModel.getPlayerCount(name)));
         if(output.equals("1")){
+            //stop music
+            DataModel.getLobbyMediaplayer().stop();
+
             startActivity(new Intent(this,MenuActivity.class));
             finish();
         }
@@ -210,6 +210,10 @@ public class GameLobby extends Activity implements AsyncResponse  {
         }
 
         else if(output.equals("3")){
+            //stop music
+            DataModel.getLobbyMediaplayer().stop();
+            DataModel.setLobbyMediaplayerLength(0);
+
             DataModel.setInGame(null);
             DataModel.setGameLobby(null);
             startActivity(new Intent(this,GameActivity.class));
