@@ -372,6 +372,35 @@ public class ReceiveData extends Thread {
                     HashMap<Integer,Player> playerMap = DataModel.getCompetitors();
                     JSONArray jsonArray = translated.getJSONArray("Players");
 
+                    int playerCount = jsonArray.length();
+
+                    //Failcheck for drawing to many competitors
+
+                    if(playerCount != DataModel.getCompetitors().size() + 1){
+
+                        System.out.println("Difference between client state and server data");
+
+                        for(Integer key: DataModel.getCompetitors().keySet()){
+
+                            boolean exist = false;
+                            Integer removeKey = key;
+
+                            for(Integer i = 0; i < jsonArray.length(); i++){
+
+                                if(key == jsonArray.getJSONObject(i).getInt("PlayerId")){
+                                    exist = true;
+                                    removeKey = -1;
+                                    break;
+                                }
+                            }
+                            if(!exist && removeKey != -1){
+                                DataModel.getCompetitors().remove(removeKey);
+                            }
+                        }
+                    }
+
+                    int alivePlayerCount = 0;
+
                     for(int i = 0; i < jsonArray.length(); i++){
 
                         JSONObject compJSON = jsonArray.getJSONObject(i);
@@ -380,6 +409,10 @@ public class ReceiveData extends Thread {
                         int playerX = compJSON.getInt("PosX");
                         int playerY = compJSON.getInt("PosY");
                         boolean alive = compJSON.getBoolean("Alive");
+
+                        if(alive){
+                            alivePlayerCount++;
+                        }
 
 
                         if(id == DataModel.getP_id()){
@@ -411,7 +444,25 @@ public class ReceiveData extends Thread {
                         }
                     }
 
+                    if(alivePlayerCount != DataModel.getPlayerCount()){
+
+                        System.out.println("Player died editing alive player count");
+
+                        //Play player died sound
+                        DataModel.setPlayerCount(alivePlayerCount);
+
+                    }
+
                     JSONArray powerupArray = translated.getJSONArray("PowerupData");
+
+                    int powerupCount = powerupArray.length();
+
+                    if(powerupCount != DataModel.getPowerupCountOnMap()){
+                        //Play powerup shot count/spawned
+                        DataModel.setPowerupCountOnMap(powerupCount);
+                    }
+
+
                     List<Powerup> powerups = new ArrayList<>();
 
                     for(int i = 0; i < powerupArray.length(); i++){

@@ -47,6 +47,8 @@ public class DataModel {
     private static boolean isVictory = false;
     private static int fps = 0;
     private static int server_sent_packets = 0;
+    private static int powerupCountOnMap = 0;
+    private static int playerCount = 0;
     private static int placement = -1;
     private static int powerup_type = -1;
     private static MediaPlayer lobbyMediaplayer;
@@ -472,5 +474,21 @@ public class DataModel {
 
     public static void setPowerup_type(int powerup_type) {
         DataModel.powerup_type = powerup_type;
+    }
+
+    public static int getPowerupCountOnMap() {
+        return powerupCountOnMap;
+    }
+
+    public static void setPowerupCountOnMap(int powerupCountOnMap) {
+        DataModel.powerupCountOnMap = powerupCountOnMap;
+    }
+
+    public static int getPlayerCount() {
+        return playerCount;
+    }
+
+    public static void setPlayerCount(int playerCount) {
+        DataModel.playerCount = playerCount;
     }
 }
