@@ -250,8 +250,9 @@ public class MenuActivity extends Activity {
     public void restart(){
         DataModel.setNick("");
         setPrefName("",getBaseContext());
-        startActivity(new Intent(this,MenuActivity.class));
-        finish();
+        //startActivity(new Intent(this,MenuActivity.class));
+        //finish();
+        handler.stopSending();
     }
 
     public void launchNick(){
