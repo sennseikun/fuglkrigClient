@@ -23,6 +23,11 @@ public class Powerup {
         this.type = type;
     }
 
+    @Override
+    public String toString(){
+        return this.Id + "";
+    }
+
     public Bitmap getBitMap(Context context){
 
         String drawableName = "";

@@ -121,12 +121,6 @@ public class GameActivity extends Activity implements AsyncResponse {
 
         if(output.equals("1")){
             DataModel.getGamemusic().stop();
-            Toast t = new Toast(this);
-
-            t.setText("Connection lost, kicked out from game");
-            t.setDuration(Toast.LENGTH_LONG);
-
-            t.show();
 
             UpdateServer.getInstance().stopRunning();
             GameLoopThread.getInstance().stopRunning();

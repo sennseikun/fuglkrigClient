@@ -7,13 +7,14 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
-        android:hardwareAccelerated="true"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/fuglkrigicon"
         android:label="Fuglkrig"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MenuActivity"
+        <activity
+            android:name=".MenuActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
@@ -25,12 +26,16 @@
         <activity
             android:name=".LobbyActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".GameActivity"
-            android:screenOrientation="landscape"/>
-        <activity android:name=".CreateGameActivity"
-            />
-        <activity android:name=".GameLobby"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".GameActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".CreateGameActivity" />
+        <activity
+            android:name=".GameLobby"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".SettingsActivity"
+            android:theme="@android:style/Theme.NoTitleBar">
+
         </activity>
     </application>
 

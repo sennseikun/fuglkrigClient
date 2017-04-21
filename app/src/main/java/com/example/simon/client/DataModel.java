@@ -1,7 +1,11 @@
 package com.example.simon.client;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.preference.PreferenceManager;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,6 +60,8 @@ public class DataModel {
     private static MediaPlayer defeatmusic;
     private static MediaPlayer victorymusic;
     private static MediaPlayer gamemusic;
+
+    private static JSONArray powerupsOnMap = new JSONArray();
     private static int length;
     //Map values
 
@@ -526,5 +532,39 @@ public class DataModel {
 
     public static void setPlayerCount(int playerCount) {
         DataModel.playerCount = playerCount;
+    }
+
+    //Sound methods
+
+    public static void setSound(boolean on, Context context){
+        SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = SPname.edit();
+        editor.putBoolean("Sound", on);
+        editor.commit();
+    }
+
+    public static boolean isSoundOn(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("Sound", false);
+    }
+
+    //Music methods
+
+    public static void setMusic(boolean on, Context context){
+        SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = SPname.edit();
+        editor.putBoolean("Music", on);
+        editor.commit();
+    }
+
+    public static boolean isMusicOn(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("Music", false);
+    }
+
+    public static JSONArray getPowerupsOnMap() {
+        return powerupsOnMap;
+    }
+
+    public static void setPowerupsOnMap(JSONArray powerupsOnMap) {
+        DataModel.powerupsOnMap = powerupsOnMap;
     }
 }

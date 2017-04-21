@@ -297,8 +297,6 @@ public class ReceiveData extends Thread {
                     int nextXpos = translated.getInt("NextMapXPos");
                     int winXpos = translated.getInt("WinMapXPos");
 
-                    System.out.println("WINMAP xpos: " + winXpos);
-
                     double playerScale = translated.getDouble("PlayerScale");
                     double birdPoopScale = translated.getDouble("BirdPoopScale");
                     double wallScale = translated.getDouble("WallScale");
@@ -359,7 +357,6 @@ public class ReceiveData extends Thread {
                     int nextXpos = translated.getInt("NextMapXPos");
                     int winXpos = translated.getInt("WinMapXPos");
 
-                    System.out.println("Winmap pos: " + winXpos);
 
                     int server_sent_packets = translated.getInt("ServerSendPackets");
 
@@ -368,7 +365,6 @@ public class ReceiveData extends Thread {
                     DataModel.setNextMapXpos(nextXpos);
                     DataModel.setWinnerMapXpos(winXpos);
 
-                    System.out.println("WINMAP xpos: " + winXpos);
 
                     HashMap<Integer,Player> playerMap = DataModel.getCompetitors();
                     JSONArray jsonArray = translated.getJSONArray("Players");
@@ -377,7 +373,7 @@ public class ReceiveData extends Thread {
 
                     //Failcheck for drawing to many competitors
 
-                    if(playerCount != DataModel.getCompetitors().size() + 1){
+                    if(playerCount != DataModel.getCompetitors().size() + 1 && !DataModel.getCompetitors().isEmpty() && jsonArray.length() > 1){
 
                         System.out.println("Difference between client state and server data");
 
@@ -457,18 +453,7 @@ public class ReceiveData extends Thread {
                     }
 
                     JSONArray powerupArray = translated.getJSONArray("PowerupData");
-
-                    int powerupCount = powerupArray.length();
-
-                    if(powerupCount != DataModel.getPowerupCountOnMap()){
-                        //Play powerup shot count/spawned
-                        DataModel.getDiesound().start();
-
-
-                        DataModel.setPowerupCountOnMap(powerupCount);
-                    }
-
-
+                    
                     List<Powerup> powerups = new ArrayList<>();
 
                     for(int i = 0; i < powerupArray.length(); i++){
@@ -483,9 +468,6 @@ public class ReceiveData extends Thread {
                         powerups.add(p);
 
                     }
-
-                    DataModel.setPowerups(powerups);
-
                 }
 
                 //You died
