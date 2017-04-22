@@ -41,7 +41,7 @@ public class GameActivity extends Activity implements AsyncResponse {
         }
 
         DataModel.setDefeatmusic(MediaPlayer.create(this, R.raw.defeatmusic));
-        DataModel.setVictorymusic(MediaPlayer.create(this, R.raw.defeatmusic));
+        DataModel.setVictorymusic(MediaPlayer.create(this, R.raw.victorymusic));
     }
     @Override
     public void onStop(){
