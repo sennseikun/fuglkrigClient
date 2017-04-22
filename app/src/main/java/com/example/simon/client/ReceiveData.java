@@ -469,7 +469,6 @@ public class ReceiveData extends Thread {
 
                     }
 
-
                     DataModel.setPowerups(powerups);
                 }
 
