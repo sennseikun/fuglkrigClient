@@ -36,7 +36,9 @@ public class GameActivity extends Activity implements AsyncResponse {
 
         DataModel.setGamemusic(MediaPlayer.create(this, R.raw.fuglkrigcombat));
         DataModel.getGamemusic().setLooping(true);
-        DataModel.getGamemusic().start();
+        if(DataModel.isMusicOn()) {
+            DataModel.getGamemusic().start();
+        }
 
         DataModel.setDefeatmusic(MediaPlayer.create(this, R.raw.defeatmusic));
         DataModel.setVictorymusic(MediaPlayer.create(this, R.raw.defeatmusic));

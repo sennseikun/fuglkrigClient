@@ -1,6 +1,8 @@
 package com.example.simon.client;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -32,6 +34,7 @@ public class GameLobby extends Activity implements AsyncResponse  {
     private PlayerListAdapter adapter;
     private Typeface font;
     private Button btn_start;
+    private boolean wasPaused;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,9 @@ public class GameLobby extends Activity implements AsyncResponse  {
         //Intentionally switching between width and height here
 
         DataModel.getLobbyMediaplayer().seekTo(DataModel.getLobbyMediaplayerLength());
-        DataModel.getLobbyMediaplayer().start();
+        if(DataModel.isMusicOn()) {
+            DataModel.getLobbyMediaplayer().start();
+        }
 
 
         DataModel.setScreenHeight(canvasWidth);
@@ -148,6 +153,21 @@ public class GameLobby extends Activity implements AsyncResponse  {
         lv.setAdapter(adapter);
     }
 
+    public void LaunchAlert(String title, String message){
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setMessage(message);
+        alertDialogBuilder.create();
+        alertDialogBuilder.show();
+
+    }
+
     @Override
     public void onDestroy(){
         super.onDestroy();
@@ -225,5 +245,27 @@ public class GameLobby extends Activity implements AsyncResponse  {
             finish();
         }
 
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        DataModel.getLobbyMediaplayer().pause();
+        wasPaused = true;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(wasPaused && handler.isAlive()){
+            DataModel.getLobbyMediaplayer().start();
+            wasPaused = false;
+        }
+        else if(wasPaused){
+            wasPaused = false;
+            LaunchAlert("Connection error","Lost connection, please log in again");
+            startActivity(new Intent(this,MenuActivity.class));
+            finish();
+        }
     }
 }

@@ -60,7 +60,10 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         }
         DataModel.getLobbyMediaplayer().setLooping(true);
         DataModel.getLobbyMediaplayer().seekTo(DataModel.getLobbyMediaplayerLength());
-        DataModel.getLobbyMediaplayer().start();
+
+        if(DataModel.isMusicOn()) {
+            DataModel.getLobbyMediaplayer().start();
+        }
 
 
         lv = (ListView) findViewById(R.id.lobbylist);

@@ -49,6 +49,8 @@ public class DataModel {
     private static String textOnScreen = "";
     private static boolean isOver = false;
     private static boolean isVictory = false;
+    private static boolean issound = true;
+    private static boolean ismusic = true;
     private static int fps = 0;
     private static int server_sent_packets = 0;
     private static int powerupCountOnMap = 0;
@@ -60,6 +62,8 @@ public class DataModel {
     private static MediaPlayer defeatmusic;
     private static MediaPlayer victorymusic;
     private static MediaPlayer gamemusic;
+    private static MediaPlayer menumusic;
+    private static int menumusiclength;
 
     private static JSONArray powerupsOnMap = new JSONArray();
     private static int length;
@@ -136,6 +140,22 @@ public class DataModel {
 
     public static MediaPlayer getGamemusic() {
         return gamemusic;
+    }
+
+    public static void setMenumusic(MediaPlayer mediaPlayer) {
+        menumusic = mediaPlayer;
+    }
+
+    public static MediaPlayer getMenumusic() {
+        return menumusic;
+    }
+
+    public static void setMenumusiclength(int length) {
+        menumusiclength = length;
+    }
+
+    public static int getMenumusiclength() {
+        return menumusiclength;
     }
 
     public DataModel(){
@@ -536,28 +556,32 @@ public class DataModel {
 
     //Sound methods
 
-    public static void setSound(boolean on, Context context){
-        SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = SPname.edit();
-        editor.putBoolean("Sound", on);
-        editor.commit();
+    public static void setSound(boolean sound){
+        issound = sound;
+//        SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
+//        SharedPreferences.Editor editor = SPname.edit();
+//        editor.putBoolean("Sound", on);
+//        editor.commit();
     }
 
-    public static boolean isSoundOn(Context context){
-        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("Sound", false);
+    public static boolean isSoundOn(){
+        //return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("Sound", false);
+        return issound;
     }
 
     //Music methods
 
-    public static void setMusic(boolean on, Context context){
-        SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = SPname.edit();
-        editor.putBoolean("Music", on);
-        editor.commit();
+    public static void setMusic(boolean music){
+        ismusic = music;
+//        SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
+//        SharedPreferences.Editor editor = SPname.edit();
+//        editor.putBoolean("Music", on);
+//        editor.commit();
     }
 
-    public static boolean isMusicOn(Context context){
-        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("Music", false);
+    public static boolean isMusicOn(){
+        return ismusic;
+        //return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("Music", false);
     }
 
     public static JSONArray getPowerupsOnMap() {

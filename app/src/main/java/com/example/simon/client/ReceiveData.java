@@ -446,7 +446,9 @@ public class ReceiveData extends Thread {
                         System.out.println("Player died editing alive player count");
 
                         //Play player died sound
-                        DataModel.getDiesound().start();
+                        if (DataModel.isSoundOn()) {
+                            DataModel.getDiesound().start();
+                        }
 
                         DataModel.setPlayerCount(alivePlayerCount);
 

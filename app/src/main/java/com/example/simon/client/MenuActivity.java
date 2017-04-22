@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xml.sax.DTDHandler;
 
 import java.util.List;
 import java.util.UUID;
@@ -34,7 +35,6 @@ public class MenuActivity extends Activity {
     String PrefName = "Name";
     Button startButton;
     Button settingsButton;
-    MediaPlayer mediaPlayer;
     String uniqueID;
     boolean ispaused;
 
@@ -61,9 +61,12 @@ public class MenuActivity extends Activity {
 
         DataModel.setDiesound(MediaPlayer.create(this, R.raw.hitsound));
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.birds);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.start();
+        DataModel.setMenumusic(MediaPlayer.create(this, R.raw.birds));
+        DataModel.getMenumusic().seekTo(DataModel.getLobbyMediaplayerLength());
+        DataModel.getMenumusic().setLooping(true);
+        if(DataModel.isMusicOn()) {
+            DataModel.getMenumusic().start();
+        }
         ispaused = false;
 
         startButton = (Button)findViewById(R.id.button3);
@@ -101,7 +104,8 @@ public class MenuActivity extends Activity {
 //                mediaPlayer.stop();
 //            }
 //        }
-        mediaPlayer.pause();
+        DataModel.getMenumusic().pause();
+        DataModel.setMenumusiclength(DataModel.getMenumusic().getCurrentPosition());
         ispaused = true;
 
     }
@@ -110,7 +114,7 @@ public class MenuActivity extends Activity {
     protected void onResume(){
         super.onResume();
         if(ispaused) {
-            mediaPlayer.start();
+            DataModel.getMenumusic().start();
         }
     }
 
@@ -152,7 +156,7 @@ public class MenuActivity extends Activity {
 
 
     public void onClick(View v){
-        mediaPlayer.stop();
+        DataModel.getMenumusic().stop();
         startActivity(new Intent(this, GameActivity.class));
 
     }
@@ -235,7 +239,7 @@ public class MenuActivity extends Activity {
 
     public void launchLobby(){
 
-        mediaPlayer.stop();
+        DataModel.getMenumusic().stop();
         startActivity(new Intent(this,LobbyActivity.class));
     }
 

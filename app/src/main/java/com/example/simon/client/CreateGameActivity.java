@@ -35,6 +35,8 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
 
     private Typeface font;
 
+    private boolean wasPaused;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +81,9 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
         });
 
         DataModel.getLobbyMediaplayer().seekTo(DataModel.getLobbyMediaplayerLength());
-        DataModel.getLobbyMediaplayer().start();
+        if(DataModel.isMusicOn()) {
+            DataModel.getLobbyMediaplayer().start();
+        }
 
     }
 
@@ -150,6 +154,23 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
         Intent intent = new Intent(this,LobbyActivity.class);
         startActivity(intent);
     }
+
+    public void LaunchAlert(String title, String message){
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setMessage(message);
+        alertDialogBuilder.create();
+        alertDialogBuilder.show();
+
+    }
+
+
     @Override
     public void onBackPressed(){
         Log.d("jeifj", "huedjie");
@@ -178,6 +199,28 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
         }
         else{
             LaunchError();
+        }
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        DataModel.getLobbyMediaplayer().pause();
+        wasPaused = true;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(wasPaused && handler.isAlive()){
+            DataModel.getLobbyMediaplayer().start();
+            wasPaused = false;
+        }
+        else if(wasPaused){
+            wasPaused = false;
+            LaunchAlert("Connection error","Lost connection, please log in again");
+            startActivity(new Intent(this,MenuActivity.class));
+            finish();
         }
     }
 }
