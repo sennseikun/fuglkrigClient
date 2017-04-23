@@ -556,32 +556,44 @@ public class DataModel {
 
     //Sound methods
 
+    public static void setSavedSound(Context context, boolean on){
+        SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = SPname.edit();
+        editor.putBoolean("Sound", on);
+        editor.commit();
+    }
+
+    public static boolean getSavedSound(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("Sound", false);
+    }
+
     public static void setSound(boolean sound){
         issound = sound;
-//        SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
-//        SharedPreferences.Editor editor = SPname.edit();
-//        editor.putBoolean("Sound", on);
-//        editor.commit();
     }
 
     public static boolean isSoundOn(){
-        //return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("Sound", false);
         return issound;
     }
 
     //Music methods
 
+    public static void setSavedMusic(Context context, boolean on){
+        SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = SPname.edit();
+        editor.putBoolean("Music", on);
+        editor.commit();
+    }
+
+    public static boolean getSavedMusic(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("Music", false);
+    }
+
     public static void setMusic(boolean music){
         ismusic = music;
-//        SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
-//        SharedPreferences.Editor editor = SPname.edit();
-//        editor.putBoolean("Music", on);
-//        editor.commit();
     }
 
     public static boolean isMusicOn(){
         return ismusic;
-        //return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("Music", false);
     }
 
     public static JSONArray getPowerupsOnMap() {
