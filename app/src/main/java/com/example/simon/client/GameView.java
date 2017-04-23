@@ -466,9 +466,9 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
             //Draw text
             canvas.drawText(DataModel.getTextOnScreen(), canvasWidth/2 - 100, canvasHeight/2, countdownTextPaint);
-            canvas.drawText("Received packets: " + dataInfo, 10, 50, packettextPaint);
-            canvas.drawText("FPS: "+DataModel.getFps(), 10, 150, packettextPaint);
-            canvas.drawText("Server data: " + DataModel.getServer_sent_packets(), 10, 250, packettextPaint);
+            //canvas.drawText("Received packets: " + dataInfo, 10, 50, packettextPaint);
+            //canvas.drawText("FPS: "+DataModel.getFps(), 10, 150, packettextPaint);
+            //canvas.drawText("Server data: " + DataModel.getServer_sent_packets(), 10, 250, packettextPaint);
 
         }
     }
