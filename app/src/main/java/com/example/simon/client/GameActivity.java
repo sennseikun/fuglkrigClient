@@ -20,7 +20,11 @@ import static android.graphics.Color.BLUE;
 
 public class GameActivity extends Activity implements AsyncResponse {
 
-
+    /**
+     * This method override the superclass onCreate method to add our own functions in it.
+     * What happens when you creat the game.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,12 +47,21 @@ public class GameActivity extends Activity implements AsyncResponse {
         DataModel.setDefeatmusic(MediaPlayer.create(this, R.raw.defeatmusic));
         DataModel.setVictorymusic(MediaPlayer.create(this, R.raw.victorymusic));
     }
+
+    /**
+     * This method override the superclass onStop method to add our own functions in it.
+     * What happens when you stop the game, and it stops the music.
+     */
     @Override
     public void onStop(){
         DataModel.getGamemusic().stop();
         super.onStop();
     }
 
+    /**
+     * This method override the superclass onDestroy method to add our own functions in it.
+     * What happens when you destroy the activity, stops the music and all the threads in the app.
+     */
     @Override
     public void onDestroy(){
         DataModel.getGamemusic().stop();
@@ -62,6 +75,10 @@ public class GameActivity extends Activity implements AsyncResponse {
         finish();
     }
 
+    /**
+     * This method override the superclass onPause method to add our own functions in it.
+     * What happens when you pause the activity, stops the music and all the threads in the app.
+     */
     @Override
     public void onPause(){
         DataModel.getGamemusic().stop();
@@ -75,6 +92,10 @@ public class GameActivity extends Activity implements AsyncResponse {
         finish();
     }
 
+    /**
+     * This method override the superclass onBackPressed method to add our own functions in it.
+     * What happens when you press the backbutton in the game, stops the game activity and returns you to the lobby..
+     */
     @Override
     public void onBackPressed(){
         if(DataModel.isOver()){
@@ -87,6 +108,9 @@ public class GameActivity extends Activity implements AsyncResponse {
         }
     }
 
+    /**
+     * Builds the warning when you start a game.
+     */
     public void launchWarning(){
         new AlertDialog.Builder(this)
                 .setTitle("Warning")
@@ -118,6 +142,10 @@ public class GameActivity extends Activity implements AsyncResponse {
                 .show();
     }
 
+    /**
+     * This is when the game is over, and you are to be returned to the lobby.
+     * @param output
+     */
     @Override
     public void processFinish(String output) {
 

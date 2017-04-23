@@ -43,6 +43,10 @@ public class LobbyActivity extends Activity implements AsyncResponse {
     private Button createGame;
 
 
+    /**
+     * This method is what happens when the lobby is created.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +89,9 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         LoadLobbys();
     }
 
-
+    /**
+     * This method is called when the app is paused in the lobby.
+     */
     @Override
     public void onPause(){
         super.onPause();
@@ -93,6 +99,9 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         wasPaused = true;
     }
 
+    /**
+     * This method is called when you try to resume the lobby after the game is paused.
+     */
     @Override
     public void onResume(){
         super.onResume();
@@ -109,8 +118,9 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         }
     }
 
-    //This method updates the listview from DataModel's lobbylist
-
+    /**
+     * This method updates the listview from DataModel's lobbylist
+     */
     public void updateList() {
         // replace the array adapters contents with the ArrayList corresponding to the day
 
@@ -142,6 +152,9 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         }
     }
 
+    /**
+     * This method intitialize the list of players in the lobby
+     */
     public void initList(){
 
         adapter = new customListAdapter(list);
@@ -189,8 +202,9 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         Log.d("Init list","Was called");
     }
 
-    //This method sends JSON object to server and asks for lobbies
-
+    /**
+     * This method sends JSON object to server and asks for lobbies
+     */
     public void LoadLobbys(){
 
         noLobbies.setVisibility(View.GONE);
@@ -221,8 +235,9 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         }
     }
 
-    //Makes sure the lobbylist is reset on quit
-
+    /**
+     * Makes sure the lobbylist is reset on quit
+     */
     @Override
     public void onDestroy(){
         super.onDestroy();
@@ -231,8 +246,11 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         finish();
     }
 
-    //Launches a game lobby, reset game lobby data on phone and lobby list data
-
+    /**
+     * Launches a game lobby, reset game lobby data on phone and lobby list data
+     * @param name of the lobby
+     * @param player number of players
+     */
     public void launchGame(String name, int player){
         DataModel.setGameLobby(null);
 
@@ -253,8 +271,10 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         loadingLayout.setVisibility(View.VISIBLE);
     }
 
-    //Go to create game, make sure to reset lobbylist
-
+    /**
+     * Go to create game, make sure to reset lobbylist
+     * @param v
+     */
     public void goToCreate(View v){
         createGame.setEnabled(false);
 
@@ -277,16 +297,18 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         finish();
     }
 
-    //Go to menu, reset lobby list
-
+    /**
+     * Go to menu, reset lobby list
+     */
     public void goToMenu(){
         DataModel.setLobbyList(null);
         startActivity(new Intent(this,MenuActivity.class));
         finish();
     }
 
-    //Make sure that the right logic is called on quitting the game, kill connection
-
+    /**
+     * Make sure that the right logic is called on quitting the game, kill connection
+     */
     @Override
     public void onBackPressed(){
 
@@ -299,8 +321,9 @@ public class LobbyActivity extends Activity implements AsyncResponse {
         goToMenu();
     }
 
-    //Launches password check if game has password
-
+    /**
+     * Launches password check if game has password
+     */
     public void launchPasswordCheck(){
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
@@ -344,11 +367,20 @@ public class LobbyActivity extends Activity implements AsyncResponse {
 
     }
 
+    /**
+     * Refreshes the lobby with the view v.
+     * @param v
+     */
     public void RefreshLobbys(View v){
         loadingLayout.setVisibility(View.VISIBLE);
         LoadLobbys();
     }
 
+    /**
+     * Builds the alert when the lobby is launched.
+     * @param title
+     * @param message
+     */
     public void LaunchAlert(String title, String message){
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -365,8 +397,10 @@ public class LobbyActivity extends Activity implements AsyncResponse {
 
     }
 
-    //Here async tasks called in receiver thread is executed
-
+    /**
+     * Here async tasks called in receiver thread is executed
+     * @param output
+     */
     @Override
     public void processFinish(String output) {
         System.out.println("Output from processfinish in LobbyActivity: "+output);

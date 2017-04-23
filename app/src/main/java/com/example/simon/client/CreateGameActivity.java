@@ -38,6 +38,10 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
     private boolean wasPaused;
 
 
+    /**
+     * This is the method that runs when the game activity is created
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +91,9 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
 
     }
 
+    /**
+     * Shows alert if there is something wrong.
+     */
     public void LaunchAlert(){
 
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -102,6 +109,10 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
         alertDialogBuilder.show();
 
     }
+
+    /**
+     * Shows alert if there is an error at launch.
+     */
     public void LaunchError(){
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -117,6 +128,9 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
 
     }
 
+    /**
+     * This method create a game.
+     */
     public void create(){
 
 
@@ -148,6 +162,9 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
         }
     }
 
+    /**
+     * This method shut down the music if the game is canceled.
+     */
     public void cancel(){
         DataModel.getLobbyMediaplayer().pause();
         DataModel.getLobbyMediaplayer().seekTo(DataModel.getLobbyMediaplayerLength());
@@ -155,6 +172,11 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
         startActivity(intent);
     }
 
+    /**
+     * This is the alert when you launch the game.
+     * @param title
+     * @param message
+     */
     public void LaunchAlert(String title, String message){
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -171,6 +193,10 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
     }
 
 
+    /**
+     * This method is called when the backbutton is pressed.
+     * Returns you to the lobby.
+     */
     @Override
     public void onBackPressed(){
         Log.d("jeifj", "huedjie");
@@ -181,6 +207,11 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
         finish();
     }
 
+    /**
+     * This method is called when the game is finished.
+     * And returns you to the lobby.
+     * @param output
+     */
     @Override
     public void processFinish(String output) {
 
@@ -202,6 +233,10 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
         }
     }
 
+    /**
+     * This method is called when the game is paused.
+     * Shut down the music.
+     */
     @Override
     protected void onPause(){
         super.onPause();
@@ -209,6 +244,11 @@ public class CreateGameActivity extends Activity implements AsyncResponse {
         wasPaused = true;
     }
 
+    /**
+     * This method is called when you resume the game.
+     * Start the mediaplayer if the lobby is still active.
+     * Gives an error msg if the connection is lost.
+     */
     @Override
     public void onResume(){
         super.onResume();

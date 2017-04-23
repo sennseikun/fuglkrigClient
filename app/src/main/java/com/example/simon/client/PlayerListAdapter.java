@@ -33,11 +33,18 @@ public class PlayerListAdapter extends BaseAdapter {
         this.data = data;
     }
 
+    /**
+     * @return the count of the players in the list-
+     */
     @Override
     public int getCount() {
         return data.size();
     }
 
+    /**
+     * @param position
+     * @return the player in the position of the param.
+     */
     @Override
     public String getItem(int position) {
         return data.get(position);
@@ -52,11 +59,19 @@ public class PlayerListAdapter extends BaseAdapter {
         return -1;
     }
 
+    /**
+     * @param position
+     * @return 0...
+     */
     @Override
     public long getItemId(int position) {
         return 0;
     }
 
+    /**
+     * Update the list of receipts.
+     * @param newList
+     */
     public void updateReceiptsList(List<String> newList) {
 
         data.clear();
@@ -66,6 +81,12 @@ public class PlayerListAdapter extends BaseAdapter {
         this.notifyDataSetChanged();
     }
 
+    /**
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return the view of the list.
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final View result;

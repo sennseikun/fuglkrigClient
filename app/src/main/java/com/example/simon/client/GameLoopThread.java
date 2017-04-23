@@ -24,6 +24,9 @@ public class GameLoopThread extends Thread {
         return glt;
     }
 
+    /**
+     * This is the method that goes while the game runs does all the calculations.
+     */
     @Override
     public void run() {
 
@@ -64,13 +67,25 @@ public class GameLoopThread extends Thread {
         System.out.println("GameLoop is stopped");
     }
 
+    /**
+     * Sets this view to the given param
+     * @param view
+     */
     public void setView(GameView view){
         this.view = view;
     }
 
+    /**
+     * Setting the running state to the given param.
+     * @param run
+     */
     public void setRunning(boolean run){
         running = run;
     }
+
+    /**
+     * Stops the game from running.
+     */
     public void stopRunning(){
         running = false;
         glt = null;

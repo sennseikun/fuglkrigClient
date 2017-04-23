@@ -24,25 +24,45 @@ public class customListAdapter extends BaseAdapter {
 
     private List<Lobby> data;
 
+    /**
+     * Set the lobbylist to the given list.
+     * @param data
+     */
     public customListAdapter(List<Lobby> data){
         this.data = data;
     }
 
+    /**
+     * @return the size of the current lobbylist.
+     */
     @Override
     public int getCount() {
         return data.size();
     }
 
+    /**
+     * @param position
+     * @return the item in the position that was given.
+     */
     @Override
     public Lobby getItem(int position) {
         return data.get(position);
     }
 
+    /**
+     * TODO what is this?
+     * @param position
+     * @return return the value 0
+     */
     @Override
     public long getItemId(int position) {
         return 0;
     }
 
+    /**
+     * Update the list with the given new list.
+     * @param newList
+     */
     public void updateReceiptsList(List<Lobby> newList) {
 
         data.clear();
@@ -51,6 +71,13 @@ public class customListAdapter extends BaseAdapter {
         this.notifyDataSetChanged();
     }
 
+    /**
+     *
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return the view for the given object in the lobbylist.
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final View result;

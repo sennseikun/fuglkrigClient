@@ -125,6 +125,10 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
     }
 
+    /**
+     * Initiate the competitors by the given HashMap.
+     * @param hm
+     */
     public void competitorsInit(HashMap hm){
 
 
@@ -138,6 +142,9 @@ public class GameView extends SurfaceView implements AsyncResponse {
         isInit = true;
     }
 
+    /**
+     * Initiate the buttons for the game view.
+     */
     public void buttonsInit(){
         //Button 1
 
@@ -180,6 +187,9 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
     }
 
+    /**
+     * Recycling the bitmaps.
+     */
     public void recycleBitmaps(){
         for(Bitmap b: greyButtonBitMaps){
             b.recycle();
@@ -215,6 +225,9 @@ public class GameView extends SurfaceView implements AsyncResponse {
         currentMap = null;
     }
 
+    /**
+     * @return the button bitmap
+     */
     private Bitmap getButtonBitmap(){
         switch(DataModel.getPowerup_type()){
             case 1:
@@ -227,10 +240,16 @@ public class GameView extends SurfaceView implements AsyncResponse {
         return powerupIcon;
     }
 
+    /**
+     * Sets the game to Game Over.
+     */
     public void setGameOver(){
         gameOver = true;
     }
 
+    /**
+     * Initiate the map
+     */
     public void initMaps(){
 
         System.out.println("Init maps");
@@ -264,6 +283,9 @@ public class GameView extends SurfaceView implements AsyncResponse {
         alphaPaint.setAlpha(42);
     }
 
+    /**
+     * Initiate the game over screen.
+     */
     public void initGameOverScreens(){
         String resource = "defeattext";
         int scaler = 2;
@@ -294,6 +316,10 @@ public class GameView extends SurfaceView implements AsyncResponse {
                 (int)(winBackground.getHeight()*DataModel.getRatioY()*scaler), true);
     }
 
+    /**
+     * Runs the drawing of the screen with the given canvas.
+     * @param canvas
+     */
     @Override
     public void draw(Canvas canvas){
         super.draw(canvas);
@@ -447,6 +473,11 @@ public class GameView extends SurfaceView implements AsyncResponse {
         }
     }
 
+    /**
+     *
+     * @param me
+     * @return boolean value false and does for what should happen when the screen is touched.
+     */
     //@Override
     public boolean onTouchEvent(MotionEvent me) {
 
@@ -527,13 +558,24 @@ public class GameView extends SurfaceView implements AsyncResponse {
         return false;
     }
 
+    /**
+     * @return the screen width
+     */
     private static int getScreenWidth(){
         return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
+
+    /**
+     * @return the screen height.
+     */
     private static int getScreenHeight(){
         return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
+    /**
+     * Sets the game to finished.
+     * @param output
+     */
     @Override
     public void processFinish(String output) {
         dataInfo = output;

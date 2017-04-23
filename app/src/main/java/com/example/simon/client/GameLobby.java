@@ -36,6 +36,11 @@ public class GameLobby extends Activity implements AsyncResponse  {
     private Button btn_start;
     private boolean wasPaused;
 
+    /**
+     * This method override the superclass onCreate method to add our own functions in it.
+     * What happens when you start the activity.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,18 +101,32 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
     }
 
+    /**
+     * @return the screens width.
+     */
     private static int getScreenWidth(){
         return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
+
+    /**
+     * @return the screens height.
+     */
     private static int getScreenHeight(){
         return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
+    /**
+     * Takes you to the list of lobbies.
+     */
     public void goToLobbyList(){
         startActivity(new Intent(this,LobbyActivity.class));
         finish();
     }
 
+    /**
+     * Starts the lobby with the given view.
+     * @param view
+     */
     public void StartGame(View view) {
 
         JSONObject json = new JSONObject();
@@ -137,6 +156,9 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
     }
 
+    /**
+     * Update the list of lobbies.
+     */
     public void updateListView(){
         List<String> newList = new ArrayList<>();
         newList.addAll(DataModel.getPlayersInLobby());
@@ -147,12 +169,20 @@ public class GameLobby extends Activity implements AsyncResponse  {
         lv.setAdapter(adapter);
     }
 
+    /**
+     * Initiate a new list of lobbies.
+     */
     public void InitListView(){
         List<String> players = DataModel.getPlayersInLobby();
         adapter = new PlayerListAdapter(players);
         lv.setAdapter(adapter);
     }
 
+    /**
+     * Build the alert on launch of the lobbylist.
+     * @param title
+     * @param message
+     */
     public void LaunchAlert(String title, String message){
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -168,6 +198,10 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
     }
 
+    /**
+     * This method override the superclass onDestroy method to add our own functions in it.
+     * What happens when you destroy the activity.
+     */
     @Override
     public void onDestroy(){
         super.onDestroy();
@@ -175,12 +209,18 @@ public class GameLobby extends Activity implements AsyncResponse  {
         finish();
     }
 
+    /**
+     * Updates the number of players in a lobby.
+     * @param players
+     */
     public void updatePlayers(int players){
         txtPlayers.setText(players+"/"+maxPlayers);
     }
 
-    //This method sends updated info to server
-
+    /**
+     * This method sends updated info to server.
+     * Happens when you cancel the lobby.
+     */
     private void cancel(){
         DataModel.getLobbyMediaplayer().pause();
         JSONObject json = new JSONObject();
@@ -198,6 +238,9 @@ public class GameLobby extends Activity implements AsyncResponse  {
         }
     }
 
+    /**
+     * This is the method that is called when the backbutton is pressed.
+     */
     @Override
     public void onBackPressed(){
         cancel();
@@ -205,6 +248,10 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
     //If connection is killed a asynctask is fired to kill the process
 
+    /**
+     * What happens when there is a win condition.
+     * @param output
+     */
     @Override
     public void processFinish(String output) {
         //updatePlayers(Integer.parseInt(DataModel.getPlayerCount(name)));
@@ -247,6 +294,9 @@ public class GameLobby extends Activity implements AsyncResponse  {
 
     }
 
+    /**
+     * This method is called when you pause the app in the lobby.
+     */
     @Override
     public void onPause(){
         super.onPause();
@@ -254,6 +304,9 @@ public class GameLobby extends Activity implements AsyncResponse  {
         wasPaused = true;
     }
 
+    /**
+     * This method tries to resume the app after a pause.
+     */
     @Override
     public void onResume(){
         super.onResume();

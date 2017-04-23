@@ -39,6 +39,10 @@ public class MenuActivity extends Activity {
     boolean ispaused;
 
 
+    /**
+     * This is the method that is called when the menu is created.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +93,9 @@ public class MenuActivity extends Activity {
 
     }
 
+    /**
+     * This is the method that is called when you pause the game in the menu.
+     */
     @Override
     protected void onPause(){
         super.onPause();
@@ -110,6 +117,9 @@ public class MenuActivity extends Activity {
 
     }
 
+    /**
+     * This is the method that is called when you try to run the app after you paused it in the menu.
+     */
     @Override
     protected void onResume(){
         super.onResume();
@@ -118,6 +128,11 @@ public class MenuActivity extends Activity {
         }
     }
 
+    /**
+     * Sets the prefered name for the player.
+     * @param prefName
+     * @param context
+     */
     public void setPrefName(String prefName, Context context){
         SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = SPname.edit();
@@ -125,46 +140,83 @@ public class MenuActivity extends Activity {
         editor.commit();
     }
 
+    /**
+     * Sets the prefered ID for a player.
+     * @param prefID
+     * @param context
+     */
     public void setPrefID(String prefID, Context context){
         SharedPreferences SPID = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = SPID.edit();
         editor.putString("GUID", prefID);
         editor.commit();
     }
+
+    /**
+     * @param context
+     * @return return the prefered ID.
+     */
     public String getPrefID(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context).getString("GUID", "");
     }
 
+    /**
+     * Disable the buttons.
+     */
     public void disableButton(){
         startButton.setEnabled(false);
         settingsButton.setEnabled(false);
     }
 
+    /**
+     * Enable the buttons.
+     */
     public void enableButton(){
         startButton.setEnabled(true);
         settingsButton.setEnabled(true);
     }
 
+    /**
+     * @param context
+     * @return the prefered name of the player.
+     */
     public String getPrefName(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context).getString(PrefName, "");
     }
 
+    /**
+     * This is the method that is called when you press the back button.
+     */
     @Override
     public void onBackPressed(){
         finish();
     }
 
 
+    /**
+     * This method is called when you click button #1.
+     * @param v
+     */
     public void onClick(View v){
         DataModel.getMenumusic().stop();
         startActivity(new Intent(this, GameActivity.class));
 
     }
+
+    /**
+     * This method is called when you click button #2.
+     * @param v
+     */
     public void onClick2(View v){
         disableButton();
         startActivity(new Intent(this,SettingsActivity.class));
         finish();
     }
+
+    /**
+     * This method is called when you click button #3.
+     * @param v
+     */
     public void onClick3(View v){
         disableButton();
 
@@ -201,6 +253,10 @@ public class MenuActivity extends Activity {
         }
     }
 
+    /**
+     * This method intitialize the connection to the server.
+     * @param name
+     */
     public void initializeConnection(String name){
         JSONObject initValue = new JSONObject();
         try {
@@ -237,15 +293,25 @@ public class MenuActivity extends Activity {
         }
     }
 
+    /**
+     * This method launches the lobby.
+     */
     public void launchLobby(){
 
         DataModel.getMenumusic().stop();
         startActivity(new Intent(this,LobbyActivity.class));
     }
 
+    /**
+     * This method launches an error msg.
+     */
     public void launchToast(){
         Toast.makeText(this,"Illegal name",Toast.LENGTH_LONG).show();
     }
+
+    /**
+     * This method launches the server error msg.
+     */
     public void launchServerError(){
         new AlertDialog.Builder(this)
                 .setTitle("Error connecting to server")
@@ -259,6 +325,9 @@ public class MenuActivity extends Activity {
                 .show();
     }
 
+    /**
+     * This method resets the nick of the player.
+     */
     public void restart(){
         DataModel.setNick("");
         setPrefName("",getBaseContext());
@@ -267,6 +336,9 @@ public class MenuActivity extends Activity {
         handler.stopSending();
     }
 
+    /**
+     * This method launches the nicks of a player.
+     */
     public void launchNick(){
 
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

@@ -23,11 +23,18 @@ public class Powerup {
         this.type = type;
     }
 
+    /**
+     * @return type of the powerup.
+     */
     @Override
     public String toString(){
         return this.type + "";
     }
 
+    /**
+     * @param context
+     * @return the bitmap of powerups
+     */
     public Bitmap getBitMap(Context context){
 
         String drawableName = "";
@@ -66,18 +73,30 @@ public class Powerup {
     }
 
 
+    /**
+     * @return the x position of the powerup.
+     */
     public int getxPos() {
         return xPos;
     }
 
+    /**
+     * @return the y postion of the powerup.
+     */
     public int getyPos() {
         return yPos;
     }
 
+    /**
+     * @return the id of the powerup
+     */
     public int getId() {
         return Id;
     }
 
+    /**
+     * @return the type of the powerup.
+     */
     public int getType() {
         return type;
     }
