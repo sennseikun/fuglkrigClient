@@ -30,6 +30,10 @@ public class ReceiveData extends Thread {
 
     private final String init_packet = "0";
 
+    /**
+     * Sets the socket to the client.
+     * @param client
+     */
     public ReceiveData(Socket client){
         this.client = client;
         running = true;
@@ -37,13 +41,16 @@ public class ReceiveData extends Thread {
         isInit = false;
     }
 
-
+    /**
+     * @return checks if the application is stopped
+     */
     public boolean isStopped(){
         return isStopped;
     }
 
-
-
+    /**
+     * Stops the thread.
+     */
     public void stopThread(){
         try {
             client.close();
@@ -53,6 +60,9 @@ public class ReceiveData extends Thread {
         }
     }
 
+    /**
+     * This is the method that is running this part of the appliaction.
+     */
     @Override
     public void run(){
 
@@ -94,8 +104,9 @@ public class ReceiveData extends Thread {
                     break;
                 }
 
-                //Setup player on server side, verify name
-
+                /**
+                 * Setup player on server side, verify name
+                 */
                 if(packet_number.equals("0")){
                     if(translated.getString("userValid").equals("0")){
                         DataModel.setNick("ERROR");
@@ -107,8 +118,9 @@ public class ReceiveData extends Thread {
                     }
                 }
 
-                //Get all lobbys
-
+                /**
+                 * Get all lobbys
+                 */
                 else if(packet_number.equals("1")){
                     int count = translated.getInt("Count");
 
@@ -131,8 +143,9 @@ public class ReceiveData extends Thread {
                     }
                 }
 
-                //Answer when creating a new lobby
-
+                /**
+                 * Answer when creating a new lobby
+                 */
                 else if(packet_number.equals("2")){
                     int value = translated.getInt("Valid");
                     DataModel.setGameIsValid(value);
@@ -142,8 +155,9 @@ public class ReceiveData extends Thread {
                     data.execute();
                 }
 
-                //Leave lobby
-
+                /**
+                 * Leave lobby
+                 */
                 else if(packet_number.equals("3")){
 
                     String lobbyname = translated.getString("LobbyID");
@@ -162,22 +176,25 @@ public class ReceiveData extends Thread {
                         AsyncUpdater data = new AsyncUpdater();
                         data.delegate = DataModel.getGameLobby();
 
-                        //If the player is the one leaving
-
+                        /**
+                         * If the player is the one leaving
+                         */
                         if(name.equals(DataModel.getNick())){
                             data.execute();
                         }
 
-                        //If someone else is leaving
-
+                        /**
+                         * If someone else is leaving
+                         */
                         else{
                             data.execute("2");
                         }
                     }
                 }
 
-                //Join lobby
-
+                /**
+                 * Join lobby
+                 */
                 else if(packet_number.equals("4")){
 
                     String lobbyname = translated.getString("LobbyID");
@@ -200,8 +217,9 @@ public class ReceiveData extends Thread {
                         data.execute("2");
                     }
 
-                    //IF player is in game lobby already
-
+                    /**
+                     * IF player is in game lobby already
+                     */
                     else if(DataModel.getGameLobby() != null){
                         String name = translated.getString("PlayerName");
                         DataModel.addPlayerToLobby(name);
@@ -239,32 +257,36 @@ public class ReceiveData extends Thread {
                     }
                 }
 
-                //Lobby is full package
-
+                /**
+                 * Lobby is full package
+                 */
                 else if(packet_number.equals("9")){
                     AsyncUpdater data = new AsyncUpdater();
                     data.delegate = DataModel.getLobbyList();
                     data.execute("5");
                 }
 
-                //Game doesn't exist package
-
+                /**
+                 * Game doesn't exist package
+                 */
                 else if(packet_number.equals("20")){
                     AsyncUpdater data = new AsyncUpdater();
                     data.delegate = DataModel.getLobbyList();
                     data.execute("6");
                 }
 
-                //Game is started package
-
+                /**
+                 * Game is started package
+                 */
                 else if(packet_number.equals("21")){
                     AsyncUpdater data = new AsyncUpdater();
                     data.delegate = DataModel.getLobbyList();
                     data.execute("7");
                 }
 
-                //Begin game package
-
+                /**
+                 * Begin game package
+                 */
                 else if(packet_number.equals("14")){
 
 
@@ -340,8 +362,9 @@ public class ReceiveData extends Thread {
                     data.execute("3");
                 }
 
-                //Update game package
-
+                /**
+                 * Update game package
+                 */
                 else if(packet_number.equals("15")){
 
                     String textOnScreen = translated.getString("PrintToPlayer");
@@ -366,8 +389,9 @@ public class ReceiveData extends Thread {
 
                     int playerCount = jsonArray.length();
 
-                    //Failcheck for drawing to many competitors
-
+                    /**
+                     * Failcheck for drawing to many competitors
+                     */
                     if(playerCount != DataModel.getCompetitors().size() + 1 && !DataModel.getCompetitors().isEmpty() && jsonArray.length() > 1){
 
                         System.out.println("Difference between client state and server data");
@@ -440,7 +464,9 @@ public class ReceiveData extends Thread {
 
                         System.out.println("Player died editing alive player count");
 
-                        //Play player died sound
+                        /**
+                         * Play player died sound
+                         */
                         if (DataModel.isSoundOn()) {
                             DataModel.getDiesound().start();
                         }
@@ -469,8 +495,9 @@ public class ReceiveData extends Thread {
                     DataModel.setPowerups(powerups);
                 }
 
-                //You died
-
+                /**
+                 * You died
+                 */
                 else if(packet_number.equals("16")){
                     boolean victory = translated.getBoolean("Victory");
                     DataModel.setIsOver(true);
@@ -480,8 +507,9 @@ public class ReceiveData extends Thread {
                     System.out.println("Got package 16");
                 }
 
-                //You won
-
+                /**
+                 * You won
+                 */
                 else if(packet_number.equals("17")){
                     //
                 }

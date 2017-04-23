@@ -23,30 +23,47 @@ public class UpdateServer extends Thread {
         return updater;
     }
 
+    /**
+     * @return the boolean value if the is running.
+     */
     public boolean getRunning() {
         return running;
     }
 
+    /**
+     * This method stops updateServer from running.
+     */
     public void stopRunning() {
         running = false;
         updater = null;
     }
 
+    /**
+     * @param obj1
+     * @param obj2
+     * @return the boolean value of comparing to JSONObjects.
+     */
     public boolean compareJson(JSONObject obj1, JSONObject obj2) {
         boolean different = false;
 
-        //makes sure the objects are not null (which they are in the start of the game
+        /**
+         * makes sure the objects are not null (which they are in the start of the game
+         */
         if (obj1 == null || obj2 == null) {
             System.out.println("Didnt send data because null");
             return true;
         }
 
         try {
-            //checks if X is different
+            /**
+             * checks if X is different
+             */
             if (!obj1.get("TargetX").equals(obj2.get("TargetX"))) {
                 different = true;
             }
-            //checks if Y is different
+            /**
+             * checks if Y is different
+             */
             else if (!obj1.get("TargetY").equals(obj2.get("TargetY"))) {
                 different = true;
             }
@@ -58,6 +75,10 @@ public class UpdateServer extends Thread {
         return different;
     }
 
+    /**
+     * This is the method that is running the updateServer class.
+     * Sending data to the server.
+     */
     @Override
     public void run() {
 
@@ -96,7 +117,9 @@ public class UpdateServer extends Thread {
         System.out.println("Update loop is stopped");
     }
 
-    //Send powerup to deploy
+    /**
+     * Send powerup to deploy
+     */
     public void sendPowerup(){
         RequestHandler handler = DataModel.getSocket();
         JSONObject powerupData = new JSONObject();

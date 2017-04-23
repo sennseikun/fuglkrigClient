@@ -22,6 +22,10 @@ public class SettingsActivity extends Activity {
     private Button btn_music;
     private Button btn_changeName;
 
+    /**
+     * This is the method that is called on the creation of the activity for the settings.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,10 +80,15 @@ public class SettingsActivity extends Activity {
         }
     }
 
+    /**
+     * This method sets if you want sounds or not.
+     */
     public void changeSound(){
         DataModel.setSound(!DataModel.isSoundOn());
         DataModel.setSavedSound(this,DataModel.isSoundOn());
-        //Change button layout here
+        /**
+         * Change button layout here
+         */
         if(DataModel.isSoundOn()){
             btn_sound.setBackgroundResource(R.drawable.whensoundonpressed);
         }
@@ -88,6 +97,10 @@ public class SettingsActivity extends Activity {
         }
 
     }
+
+    /**
+     * This method sets if you want the music or not.
+     */
     public void changeMusic(){
         DataModel.setMusic(!DataModel.isMusicOn());
         DataModel.setSavedMusic(this,DataModel.isMusicOn());
@@ -105,6 +118,9 @@ public class SettingsActivity extends Activity {
 
     }
 
+    /**
+     * This method gives you the opertunity to change nick.
+     */
     public void launchNick(){
 
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -134,10 +150,19 @@ public class SettingsActivity extends Activity {
 
     }
 
+    /**
+     * @param context
+     * @return your nick thats stored in the application.
+     */
     public String getPrefName(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context).getString("Name", "");
     }
 
+    /**
+     * Sets the value for your nick so you got the same all the time.
+     * @param prefName
+     * @param context
+     */
     public void setPrefName(String prefName, Context context){
         SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = SPname.edit();
@@ -145,12 +170,18 @@ public class SettingsActivity extends Activity {
         editor.commit();
     }
 
+    /**
+     * This method is called when you push the back button and returns you to the menu.
+     */
     @Override
     public void onBackPressed(){
         startActivity(new Intent(this,MenuActivity.class));
         finish();
     }
 
+    /**
+     * This method pauses the game if you close the screen.
+     */
     @Override
     protected void onPause(){
         super.onPause();

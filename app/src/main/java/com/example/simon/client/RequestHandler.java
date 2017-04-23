@@ -36,10 +36,17 @@ public class RequestHandler extends Thread {
 
     }
 
+    /**
+     * Sends the data to the server.
+     * @param json
+     */
     public void sendData(JSONObject json){
         this.json = json;
     }
 
+    /**
+     * This is the method that stops sending to the server.
+     */
     public void stopSending(){
         receiver.stopThread();
 
@@ -49,12 +56,17 @@ public class RequestHandler extends Thread {
         running = false;
     }
 
+    /**
+     * This is the method that initialize the handler for the request from and to the server.
+     */
     public void init(){
         String serverName = "";
 
         URL url = null;
 
-        //gets ip address to server
+        /**
+         * gets ip address to server
+         */
         try {
             url = new URL("http://guttormsen.io/fuglkrig/ip.txt");
             Scanner s = new Scanner(url.openStream());
@@ -85,6 +97,10 @@ public class RequestHandler extends Thread {
         }
     }
 
+    /**
+     * This is the method that is running the request handler.
+     * It's in a loop while it should run.
+     */
     @Override
     public void run(){
 
