@@ -1,10 +1,5 @@
 package com.example.simon.client;
 
-import android.media.MediaPlayer;
-import android.os.SystemClock;
-import android.provider.ContactsContract;
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,7 +65,7 @@ public class ReceiveData extends Thread {
                 if(System.currentTimeMillis() > startTime + 1000){
                     startTime = System.currentTimeMillis();
                     if(DataModel.getGameView() != null){
-                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        AsyncUpdater data = new AsyncUpdater();
                         data.delegate = DataModel.getGameView();
                         data.execute(packages+ "");
                     }
@@ -130,7 +125,7 @@ public class ReceiveData extends Thread {
                     }
 
                     if(DataModel.getLobbyList() != null){
-                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        AsyncUpdater data = new AsyncUpdater();
                         data.delegate = DataModel.getLobbyList();
                         data.execute();
                     }
@@ -142,7 +137,7 @@ public class ReceiveData extends Thread {
                     int value = translated.getInt("Valid");
                     DataModel.setGameIsValid(value);
                     DataModel.setHostPlayer(DataModel.getNick());
-                    AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                    AsyncUpdater data = new AsyncUpdater();
                     data.delegate = DataModel.getCreateGame();
                     data.execute();
                 }
@@ -164,7 +159,7 @@ public class ReceiveData extends Thread {
 
                     if(DataModel.getGameLobby() != null){
                         DataModel.removePlayerFromLobby(name);
-                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        AsyncUpdater data = new AsyncUpdater();
                         data.delegate = DataModel.getGameLobby();
 
                         //If the player is the one leaving
@@ -200,7 +195,7 @@ public class ReceiveData extends Thread {
                             DataModel.addPlayerToLobby(name);
                         }
 
-                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        AsyncUpdater data = new AsyncUpdater();
                         data.delegate = DataModel.getLobbyList();
                         data.execute("2");
                     }
@@ -210,7 +205,7 @@ public class ReceiveData extends Thread {
                     else if(DataModel.getGameLobby() != null){
                         String name = translated.getString("PlayerName");
                         DataModel.addPlayerToLobby(name);
-                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        AsyncUpdater data = new AsyncUpdater();
                         data.delegate = DataModel.getGameLobby();
                         data.execute("2");
                     }
@@ -221,24 +216,24 @@ public class ReceiveData extends Thread {
                     else{
                     }
                     if(DataModel.getGameLobby() != null){
-                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        AsyncUpdater data = new AsyncUpdater();
                         data.delegate = DataModel.getGameLobby();
                         data.execute();
                     }
                     if(DataModel.getLobbyList() != null){
-                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        AsyncUpdater data = new AsyncUpdater();
                         data.delegate = DataModel.getLobbyList();
                         data.execute();
                     }
                 }
                 else if(packet_number.equals("8")){
                     if(translated.getString("Status").equals("1")){
-                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        AsyncUpdater data = new AsyncUpdater();
                         data.delegate = DataModel.getLobbyList();
                         data.execute("4");
                     }
                     else{
-                        AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                        AsyncUpdater data = new AsyncUpdater();
                         data.delegate = DataModel.getLobbyList();
                         data.execute("3");
                     }
@@ -247,7 +242,7 @@ public class ReceiveData extends Thread {
                 //Lobby is full package
 
                 else if(packet_number.equals("9")){
-                    AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                    AsyncUpdater data = new AsyncUpdater();
                     data.delegate = DataModel.getLobbyList();
                     data.execute("5");
                 }
@@ -255,7 +250,7 @@ public class ReceiveData extends Thread {
                 //Game doesn't exist package
 
                 else if(packet_number.equals("20")){
-                    AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                    AsyncUpdater data = new AsyncUpdater();
                     data.delegate = DataModel.getLobbyList();
                     data.execute("6");
                 }
@@ -263,7 +258,7 @@ public class ReceiveData extends Thread {
                 //Game is started package
 
                 else if(packet_number.equals("21")){
-                    AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                    AsyncUpdater data = new AsyncUpdater();
                     data.delegate = DataModel.getLobbyList();
                     data.execute("7");
                 }
@@ -340,7 +335,7 @@ public class ReceiveData extends Thread {
                     }
 
 
-                    AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+                    AsyncUpdater data = new AsyncUpdater();
                     data.delegate = DataModel.getGameLobby();
                     data.execute("3");
                 }
@@ -501,18 +496,18 @@ public class ReceiveData extends Thread {
             }
         }
         if(DataModel.getGameLobby() != null){
-            AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+            AsyncUpdater data = new AsyncUpdater();
             data.delegate = DataModel.getGameLobby();
             data.execute("1");
         }
         if(DataModel.getLobbyList() != null){
-            AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+            AsyncUpdater data = new AsyncUpdater();
             data.delegate = DataModel.getLobbyList();
             data.execute("1");
         }
         if(DataModel.getGameView() != null && DataModel.getInGame() != null){
             System.out.println("Connection lost: Ending game activity");
-            AsyncUpdateLobbyList data = new AsyncUpdateLobbyList();
+            AsyncUpdater data = new AsyncUpdater();
             data.delegate = DataModel.getInGame();
             data.execute("1");
         }

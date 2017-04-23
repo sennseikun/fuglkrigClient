@@ -55,6 +55,9 @@ public class MenuActivity extends Activity {
         DataModel.setLobbyList(null);
         DataModel.setGameLobby(null);
 
+        DataModel.setMusic(DataModel.getSavedMusic(this));
+        DataModel.setSound(DataModel.getSavedSound(this));
+
 
         if(getPrefID(this).equals("")){
             uniqueID = UUID.randomUUID().toString();

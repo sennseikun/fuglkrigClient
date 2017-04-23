@@ -955,23 +955,29 @@ public class DataModel {
      */
 
 
+    public static void setSavedSound(Context context, boolean on){
+        SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = SPname.edit();
+        editor.putBoolean("Sound", on);
+        editor.commit();
+    }
+
+    public static boolean getSavedSound(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("Sound", false);
+    }
+
     /**
      * Sets the setting if you want music.
      * @param sound
      */
     public static void setSound(boolean sound){
         issound = sound;
-//        SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
-//        SharedPreferences.Editor editor = SPname.edit();
-//        editor.putBoolean("Sound", on);
-//        editor.commit();
     }
 
     /**
      * @return the boolean value if the player wants sound or not.
      */
     public static boolean isSoundOn(){
-        //return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("Sound", false);
         return issound;
     }
 
@@ -979,16 +985,24 @@ public class DataModel {
      * Music methods
      */
 
+
+    public static void setSavedMusic(Context context, boolean on){
+        SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = SPname.edit();
+        editor.putBoolean("Music", on);
+        editor.commit();
+    }
+
+    public static boolean getSavedMusic(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("Music", false);
+    }
+
     /**
      * Sets the music to the param.
      * @param music
      */
     public static void setMusic(boolean music){
         ismusic = music;
-//        SharedPreferences SPname = PreferenceManager.getDefaultSharedPreferences(context);
-//        SharedPreferences.Editor editor = SPname.edit();
-//        editor.putBoolean("Music", on);
-//        editor.commit();
     }
 
     /**
@@ -996,7 +1010,6 @@ public class DataModel {
      */
     public static boolean isMusicOn(){
         return ismusic;
-        //return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("Music", false);
     }
 
     /**

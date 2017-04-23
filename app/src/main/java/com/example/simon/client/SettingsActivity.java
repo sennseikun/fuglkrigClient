@@ -31,11 +31,6 @@ public class SettingsActivity extends Activity {
         DataModel.getMenumusic().seekTo(DataModel.getMenumusiclength());
 
 
-        if(DataModel.isMusicOn()) {
-            DataModel.getMenumusic().start();
-        }
-
-
         btn_sound = (Button)findViewById(R.id.btn_sound);
 
         btn_sound.setOnClickListener(new View.OnClickListener() {
@@ -64,12 +59,28 @@ public class SettingsActivity extends Activity {
                 launchNick();
             }
         });
+
+        if(DataModel.isMusicOn()) {
+            btn_music.setBackgroundResource(R.drawable.whenmusiconpressed);
+            DataModel.getMenumusic().start();
+        }
+        else{
+            btn_music.setBackgroundResource(R.drawable.whenmusicoffpressed);
+        }
+
+        if(DataModel.isSoundOn()){
+            btn_sound.setBackgroundResource(R.drawable.whensoundonpressed);
+        }
+        else {
+            btn_sound.setBackgroundResource(R.drawable.whensoundoffpressed);
+        }
     }
 
     public void changeSound(){
         DataModel.setSound(!DataModel.isSoundOn());
+        DataModel.setSavedSound(this,DataModel.isSoundOn());
         //Change button layout here
-        if(!DataModel.isSoundOn()){
+        if(DataModel.isSoundOn()){
             btn_sound.setBackgroundResource(R.drawable.whensoundonpressed);
         }
         else {
@@ -79,7 +90,8 @@ public class SettingsActivity extends Activity {
     }
     public void changeMusic(){
         DataModel.setMusic(!DataModel.isMusicOn());
-        if(!DataModel.isMusicOn()) {
+        DataModel.setSavedMusic(this,DataModel.isMusicOn());
+        if(DataModel.isMusicOn()) {
             btn_music.setBackgroundResource(R.drawable.whenmusiconpressed);
             DataModel.setMenumusiclength(DataModel.getMenumusic().getCurrentPosition());
             DataModel.getMenumusic().pause();

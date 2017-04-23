@@ -6,7 +6,7 @@ import android.os.AsyncTask;
  * Created by thoma on 3/25/2017.
  */
 
-public class AsyncUpdateLobbyList extends AsyncTask<String,Void,String> {
+public class AsyncUpdater extends AsyncTask<String,Void,String> {
 
     public AsyncResponse delegate = null;
 
