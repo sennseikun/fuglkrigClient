@@ -273,13 +273,17 @@ public class GameView extends SurfaceView implements AsyncResponse {
 
         DataModel.getGamemusic().stop();
 
-        if(DataModel.isMusicOn()) {
-            if (DataModel.isVictory()) {
+        if (DataModel.isVictory()) {
+            resource = "wintext";
+
+            if(DataModel.isMusicOn()){
                 DataModel.getVictorymusic().start();
-                resource = "wintext";
-            } else {
-                DataModel.getDefeatmusic().start();
+
             }
+        }
+
+        if(DataModel.isMusicOn()) {
+            DataModel.getDefeatmusic().start();
         }
 
         Resources resources = getResources();
