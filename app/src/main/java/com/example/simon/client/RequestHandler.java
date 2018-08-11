@@ -68,7 +68,7 @@ public class RequestHandler extends Thread {
          * gets ip address to server
          */
         try {
-            url = new URL("http://guttormsen.io/fuglkrig/ip.txt");
+            url = new URL("URL_HERE");
             Scanner s = new Scanner(url.openStream());
             serverName = s.nextLine();
 
